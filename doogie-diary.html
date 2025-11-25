@@ -1,0 +1,3784 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doogie - Personal Diary</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap');
+
+        @font-face {
+            font-family: 'NeoDunggeunmo';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.3/NeoDunggeunmo.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000000;
+            color: #ffffff;
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            line-height: 1.4;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle, #00ff00 0.5px, transparent 0.5px);
+            background-size: 50px 50px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 9999;
+            animation: noise 0.5s steps(8) infinite;
+        }
+
+        @keyframes noise {
+            0% {
+                opacity: 0.02;
+                background-position: 0 0;
+            }
+            10% {
+                opacity: 0.04;
+                background-position: -5px -10px;
+            }
+            20% {
+                opacity: 0.01;
+                background-position: 15px 5px;
+            }
+            30% {
+                opacity: 0.03;
+                background-position: -10px 15px;
+            }
+            40% {
+                opacity: 0.02;
+                background-position: 8px -8px;
+            }
+            50% {
+                opacity: 0.01;
+                background-position: -15px 12px;
+            }
+            60% {
+                opacity: 0.03;
+                background-position: 12px -5px;
+            }
+            70% {
+                opacity: 0.02;
+                background-position: -8px 8px;
+            }
+            80% {
+                opacity: 0.01;
+                background-position: 5px 15px;
+            }
+            90% {
+                opacity: 0.02;
+                background-position: -12px -12px;
+            }
+            100% {
+                opacity: 0.01;
+                background-position: 0 0;
+            }
+        }
+
+        .screen {
+            width: 100vw;
+            height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            border: 1px solid #00ff00;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            background: #008800;
+            color: #00ff00;
+            box-shadow:
+                0 0 0 1px #00ff00,
+                0 0 0 2px #000000,
+                0 0 0 3px #00ff00;
+        }
+
+        /* Title Screen */
+        .title-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Twinkling Stars Background */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00ff00;
+            box-shadow: 0 0 2px #00ff00;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.2;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.5);
+            }
+        }
+
+        .logo {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 82px;
+            color: #00ff00;
+            text-shadow: 6px 6px 0px #008800;
+            margin-bottom: 60px;
+            letter-spacing: 12px;
+            position: relative;
+            animation: glitch 3s infinite;
+            z-index: 1;
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% {
+                text-shadow: 6px 6px 0px #008800;
+                transform: translate(0);
+            }
+            92% {
+                text-shadow:
+                    -2px 0 0 #ff00ff,
+                    2px 0 0 #00ffff,
+                    6px 6px 0px #008800;
+                transform: translate(-2px, 0);
+            }
+            94% {
+                text-shadow:
+                    2px 0 0 #ff00ff,
+                    -2px 0 0 #00ffff,
+                    6px 6px 0px #008800;
+                transform: translate(2px, 0);
+            }
+            96% {
+                text-shadow:
+                    -2px 0 0 #ff00ff,
+                    2px 0 0 #00ffff,
+                    6px 6px 0px #008800;
+                transform: translate(0);
+            }
+        }
+
+        .main-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .menu-item {
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 24px;
+            color: #00ff00;
+            cursor: pointer;
+            padding: 6px 20px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-item:hover,
+        .menu-item.selected {
+            background: #00ff00;
+            color: #000000;
+            border: 2px solid #00ff00;
+        }
+
+        .menu-item::before {
+            content: '';
+            margin-right: 10px;
+        }
+
+        .menu-item.selected::before {
+            content: '▶ ';
+        }
+
+        .app-container {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+        }
+
+        .main-container {
+            flex: 1;
+            border: 1px solid #00ff00;
+            display: flex;
+            flex-direction: column;
+            background: #000000;
+            overflow: hidden;
+            box-shadow:
+                0 0 0 1px #00ff00,
+                0 0 0 2px #000000,
+                0 0 0 3px #00ff00;
+        }
+
+        .diary-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #000000;
+            overflow: hidden;
+            aspect-ratio: 4 / 3;  /* 4:3 비율 강제 */
+            margin: auto;
+            max-width: 100vw;
+            max-height: 100vh;
+        }
+
+        .menu-bar {
+            background: #000000;
+            color: #00ff00;
+            padding: 10px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border: none;
+            border-bottom: 1px solid #00ff00;
+        }
+
+        .menu-bar * {
+            border: none;
+            text-decoration: none;
+        }
+
+        .menu-item-wrapper {
+            position: relative;
+        }
+
+        .menu-bar .menu-item-top {
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 5px 10px;
+            border: none;
+            text-decoration: none;
+        }
+
+        .menu-bar .menu-item-top:hover {
+            color: #ffffff;
+        }
+
+        .diary-list-panel {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            background: #000000;
+            border: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            z-index: 9999;
+            min-width: 300px;
+        }
+
+        .diary-list-panel.open {
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid #00ff00;
+        }
+
+        .diary-list-panel .list-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #004400;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            transition: background 0.2s;
+        }
+
+        .diary-list-panel .list-item:hover {
+            background: #003300;
+        }
+
+        /* Picture dropdown menu */
+        .picture-menu-panel {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #000000;
+            border: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            z-index: 1000;
+            min-width: 200px;
+        }
+
+        .picture-menu-panel.open {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #00ff00;
+        }
+
+        .picture-menu-panel .menu-option {
+            padding: 10px 15px;
+            border-bottom: 1px solid #004400;
+            cursor: pointer;
+            color: #00ff00;
+            transition: background 0.2s;
+            font-family: 'NeoDunggeunmo', monospace;
+        }
+
+        .picture-menu-panel .menu-option:hover {
+            background: #003300;
+        }
+
+        .diary-list-panel .list-date {
+            color: #00ff00;
+            min-width: 100px;
+        }
+
+        .diary-list-panel .list-preview {
+            color: #008800;
+            flex: 1;
+            margin-left: 15px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background: #000000;
+            border: none;
+            border-top: none;
+            min-height: 0;
+        }
+
+        .date-header {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #00ff00;
+            font-family: 'VT323', monospace;
+            border: none;
+        }
+
+        .editor {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #00ff00;
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 20px;
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+            caret-color: transparent;
+            position: relative;
+            overflow-y: auto;
+            min-height: 0;
+        }
+
+        .editor::placeholder {
+            color: transparent;
+        }
+
+        .editor-wrapper {
+            position: relative;
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .editor-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .images-section {
+            flex: 1;
+            display: none;  /* Hidden by default */
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            min-height: 0;
+        }
+
+        .images-section.has-images {
+            display: flex;  /* Show when images exist */
+            border-left: 1px solid #00ff00;
+            padding-left: 20px;
+        }
+
+        .images-container {
+            display: grid;
+            gap: 10px;
+            width: 100%;
+            height: 100%;
+            grid-auto-rows: 1fr;
+        }
+
+        /* 1장: 전체 */
+        .images-container[data-image-count="1"] {
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+        }
+
+        /* 2장: 세로로 2개 */
+        .images-container[data-image-count="2"] {
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+
+        /* 3장: 상단 1개, 하단 2개 */
+        .images-container[data-image-count="3"] {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+
+        .images-container[data-image-count="3"] .image-item:first-child {
+            grid-column: 1 / 3;
+        }
+
+        /* 4장 이상: 2x2 격자 */
+        .images-container[data-image-count="4"],
+        .images-container[data-image-count="5"],
+        .images-container[data-image-count="6"],
+        .images-container[data-image-count="7"],
+        .images-container[data-image-count="8"],
+        .images-container[data-image-count="9"] {
+            grid-template-columns: 1fr 1fr;
+            grid-auto-rows: 1fr;
+        }
+
+        .image-item {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .image-item img {
+            display: block;
+            image-rendering: pixelated;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            cursor: pointer;
+        }
+
+        .image-item .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 24px;
+            height: 24px;
+            background: #00ff00;
+            color: #000000;
+            border: 2px solid #00ff00;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .image-item:hover .remove-image {
+            opacity: 1;
+        }
+
+        .image-item .remove-image:hover {
+            background: #ff0000;
+            border-color: #ff0000;
+            color: #000000;
+        }
+
+
+        .cursor {
+            position: absolute;
+            width: 14px;
+            height: 4px;
+            background: #00ff00;
+            pointer-events: none;
+            z-index: 10;
+            animation: cursorBlink 1s step-end infinite;
+        }
+
+        @keyframes cursorBlink {
+            0%, 50% {
+                opacity: 1;
+            }
+            51%, 100% {
+                opacity: 0;
+            }
+        }
+
+        .image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .image-modal.active {
+            display: flex;
+        }
+
+        .image-modal img {
+            max-width: 90vw;
+            max-height: 90vh;
+            image-rendering: pixelated;
+            border: 3px solid #00ff00;
+            clip-path: inset(0 0 100% 0);
+            transition: none;
+        }
+
+        .image-modal img.scanning {
+            animation: scanReveal 1.5s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+        }
+
+        @keyframes scanReveal {
+            0% {
+                clip-path: inset(0 0 100% 0);
+            }
+            100% {
+                clip-path: inset(0 0 0% 0);
+            }
+        }
+
+        /* Scanline effect overlay */
+        .image-modal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to bottom,
+                rgba(0, 255, 0, 0.8) 0%,
+                rgba(0, 255, 0, 0.3) 50%,
+                rgba(0, 255, 0, 0) 100%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1001;
+        }
+
+        .image-modal.active::before {
+            animation: scanline 1.5s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+        }
+
+        @keyframes scanline {
+            0% {
+                opacity: 1;
+                top: 0;
+            }
+            95% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                top: 100%;
+            }
+        }
+
+        .image-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #00ff00;
+            font-size: 48px;
+            cursor: pointer;
+            font-family: 'VT323', monospace;
+            text-shadow: 2px 2px 0 #000000;
+        }
+
+        .image-modal-close:hover {
+            color: #ff0000;
+        }
+
+        .status-bar {
+            background: #000000;
+            color: #00ff00;
+            padding: 5px 10px;
+            border-top: 1px solid #00ff00;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .entry-list {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+        }
+
+        .entry-item {
+            padding: 10px;
+            border: 1px solid #00ff00;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .entry-item:hover {
+            background: #003300;
+        }
+
+        .entry-item .entry-date {
+            color: #00ff00;
+            font-size: 22px;
+        }
+
+        .entry-item .entry-preview {
+            color: #008800;
+            margin-top: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .mode-view {
+            display: flex;
+        }
+
+        .mode-list {
+            display: none;
+        }
+
+        .list-footer {
+            margin-top: 30px;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #00ff00;
+        }
+
+        .settings-link-button {
+            background: transparent;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            padding: 10px 30px;
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .settings-link-button:hover {
+            background: #00ff00;
+            color: #000000;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.6);
+        }
+
+        /* Calendar View - Split Layout */
+        .calendar-container {
+            display: none;
+            flex-direction: row;
+            gap: 0;
+            overflow: hidden;
+        }
+
+        .calendar-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 20px;
+            border-right: 1px solid #00ff00;
+            overflow-y: auto;
+        }
+
+        .calendar-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-nav-btn {
+            background: transparent;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            padding: 5px 15px;
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calendar-nav-btn:hover {
+            background: #00ff00;
+            color: #000000;
+        }
+
+        .calendar-title {
+            font-family: 'VT323', monospace;
+            font-size: 24px;
+            color: #00ff00;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            color: #00ff00;
+            padding: 8px;
+            border-bottom: 1px solid #00ff00;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #003300;
+            background: #000000;
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            color: #008800;
+            cursor: default;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .calendar-day.other-month {
+            color: #003300;
+        }
+
+        .calendar-day.today {
+            border: 2px solid #00ff00;
+            color: #00ff00;
+        }
+
+        .calendar-day.has-entry {
+            cursor: pointer;
+        }
+
+        .calendar-day.has-entry:hover {
+            background: #003300;
+            color: #00ff00;
+        }
+
+        .calendar-day .entry-dot {
+            position: absolute;
+            bottom: 4px;
+            width: 4px;
+            height: 4px;
+            background: #00ff00;
+            border-radius: 50%;
+        }
+
+        .calendar-day.has-entry:hover .entry-dot {
+            background: #00ff00;
+            box-shadow: 0 0 5px #00ff00;
+        }
+
+        .calendar-list-section {
+            padding: 20px;
+        }
+
+        .calendar-list-title {
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            color: #00ff00;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #00ff00;
+        }
+
+        .blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #000000;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00ff00;
+        }
+
+        .help-screen {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .help-title {
+            color: #00ff00;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .help-item {
+            margin-left: 20px;
+            color: #00ff00;
+        }
+
+        /* Settings Screen */
+        .settings-screen {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            padding: 40px;
+            align-items: center;
+        }
+
+        .settings-title {
+            color: #00ff00;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 0px #008800;
+        }
+
+        .settings-section {
+            width: 100%;
+            max-width: 600px;
+            border: 2px solid #00ff00;
+            padding: 30px;
+            background: rgba(0, 50, 0, 0.3);
+        }
+
+        .setting-item {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .setting-label {
+            color: #00ff00;
+            font-size: 20px;
+            font-family: 'VT323', monospace;
+            text-align: center;
+        }
+
+        .setting-control {
+            display: flex;
+            gap: 20px;
+        }
+
+        .lang-button {
+            background: transparent;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            padding: 12px 30px;
+            font-family: 'VT323', monospace;
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 120px;
+        }
+
+        .lang-button:hover {
+            background: #00ff00;
+            color: #000000;
+        }
+
+        .lang-button.active {
+            background: #00ff00;
+            color: #000000;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+        }
+
+        .settings-footer {
+            color: #00aa00;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        /* Credits Screen - Retro Game Style */
+        .credits-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 15px;
+            padding: 30px 20px;
+            text-align: center;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Night Sky Stars */
+        .credits-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 300px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .credits-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00ff00;
+            box-shadow: 0 0 3px #00ff00;
+            animation: twinkle 2s infinite;
+        }
+
+        /* Title Section */
+        .credits-game-title {
+            position: relative;
+            z-index: 1;
+            margin: 20px 0 10px 0;
+        }
+
+        .title-text {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 64px;
+            color: #00ff00;
+            text-shadow:
+                4px 4px 0px #008800,
+                0 0 20px rgba(0, 255, 0, 0.5);
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+        }
+
+        .title-subtitle {
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            color: #00aa00;
+            letter-spacing: 2px;
+        }
+
+        /* NYC Skyline */
+        .nyc-skyline {
+            position: relative;
+            z-index: 1;
+            margin: 10px 0 5px 0;
+            height: 120px;
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .road {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 30px;
+            background: #002200;
+            margin: 0 0 15px 0;
+            overflow: visible;
+            z-index: 1;
+        }
+
+        .road::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-image: repeating-linear-gradient(
+                to right,
+                #005500 0px,
+                #005500 10px,
+                transparent 10px,
+                transparent 20px
+            );
+            transform: translateY(-50%);
+        }
+
+        .car {
+            position: absolute;
+            width: 28px;
+            height: 14px;
+            background: transparent;
+            image-rendering: pixelated;
+        }
+
+        .car.top-lane {
+            top: 3px;
+        }
+
+        .car.bottom-lane {
+            bottom: 3px;
+        }
+
+        .car.left-to-right {
+            animation: driveRight linear;
+        }
+
+        .car.right-to-left {
+            animation: driveLeft linear;
+            transform: scaleX(-1);
+        }
+
+        @keyframes driveRight {
+            from {
+                left: -30px;
+            }
+            to {
+                left: 100%;
+            }
+        }
+
+        @keyframes driveLeft {
+            from {
+                right: -30px;
+            }
+            to {
+                right: 100%;
+            }
+        }
+
+        .building {
+            position: relative;
+            background: #004d00;
+            border: 1px solid #004d00;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 3px;
+            gap: 2px;
+            flex-wrap: wrap;
+        }
+
+        .building-top {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            background: #004d00;
+            opacity: 0.8;
+        }
+
+        .building-crown {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 8px solid #004d00;
+            opacity: 0.7;
+        }
+
+        .building-setback {
+            position: absolute;
+            top: 0;
+            background: #003300;
+            border: 1px solid #004d00;
+        }
+
+        .window {
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .window.off {
+            opacity: 0.15;
+        }
+
+        .credits-company {
+            margin: 30px 0 20px 0;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .company-box {
+            color: #00ff00;
+            font-family: 'Press Start 2P', 'VT323', monospace;
+            font-size: 24px;
+            padding: 0;
+            animation: glowPulse 2s ease-in-out infinite;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .company-box .asterisk {
+            font-size: 16.8px; /* 24px * 0.7 = 30% 감소 */
+        }
+
+        .company-box .bracket {
+            font-size: 24px;
+        }
+
+        .company-box .company-text {
+            font-size: 24px;
+            letter-spacing: 3px;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                text-shadow:
+                    2px 2px 0px #008800,
+                    0 0 10px #00ff00,
+                    0 0 20px #00ff00;
+            }
+            50% {
+                text-shadow:
+                    2px 2px 0px #008800,
+                    0 0 20px #00ff00,
+                    0 0 40px #00ff00,
+                    0 0 60px #00ff00;
+            }
+        }
+
+        .credits-cast {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .credits-character {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .char-box {
+            background: #001100;
+            border: 3px solid #00ff00;
+            padding: 0;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+            width: 180px;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+
+        .char-box:hover {
+            border-color: #00ff00;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
+            background: #002200;
+        }
+
+        .char-box.drag-over {
+            border-color: #ffffff;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+            background: #003300;
+        }
+
+        .char-box::after {
+            content: 'Click or Drop Image';
+            position: absolute;
+            bottom: 5px;
+            font-size: 10px;
+            color: #006600;
+            font-family: 'VT323', monospace;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .char-box:hover::after {
+            opacity: 1;
+        }
+
+        .char-portrait {
+            width: 180px;
+            height: 180px;
+            image-rendering: pixelated;
+            object-fit: cover;
+        }
+
+        .char-placeholder pre {
+            margin: 0;
+            color: #00ff00;
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            line-height: 1.2;
+            opacity: 0.6;
+        }
+
+        .char-name {
+            color: #00ff00;
+            font-size: 16px;
+            font-family: 'VT323', monospace;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px #008800;
+            cursor: pointer;
+            padding: 4px 8px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .char-name:hover {
+            border-color: #00ff00;
+            background: #002200;
+        }
+
+        .char-name.editing {
+            background: #003300;
+            border-color: #00ff00;
+            outline: none;
+        }
+
+        .char-role {
+            color: #00aa00;
+            font-size: 14px;
+            font-family: 'NeoDunggeunmo', monospace;
+            cursor: pointer;
+            padding: 4px 8px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            margin-top: -12px;
+        }
+
+        .char-role:hover {
+            border-color: #00aa00;
+            background: #002200;
+        }
+
+        .char-role.editing {
+            background: #003300;
+            border-color: #00aa00;
+            outline: none;
+        }
+
+        .credits-game-footer {
+            color: #00ff00;
+            font-size: 18px;
+            font-family: 'VT323', monospace;
+            line-height: 2;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .year-correction {
+            position: relative;
+            display: inline-block;
+        }
+
+        .strikethrough {
+            text-decoration: line-through;
+            color: #00cc00;
+            text-decoration-thickness: 1px;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+
+        .corrected-year {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        /* Image Crop Modal */
+        .crop-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .crop-modal.active {
+            display: flex;
+        }
+
+        .crop-container {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+
+        .crop-canvas-container {
+            position: relative;
+            border: 2px solid #00ff00;
+            display: inline-block;
+        }
+
+        .crop-preview {
+            image-rendering: auto;
+        }
+
+        .crop-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .crop-selection {
+            position: absolute;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+            cursor: move;
+        }
+
+        .crop-handle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #00ff00;
+            border: 1px solid #000;
+        }
+
+        .crop-handle.nw { top: -5px; left: -5px; cursor: nw-resize; }
+        .crop-handle.ne { top: -5px; right: -5px; cursor: ne-resize; }
+        .crop-handle.sw { bottom: -5px; left: -5px; cursor: sw-resize; }
+        .crop-handle.se { bottom: -5px; right: -5px; cursor: se-resize; }
+
+        .crop-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .crop-button {
+            background: transparent;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            padding: 10px 30px;
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+
+        .crop-button:hover {
+            background: #00ff00;
+            color: #000000;
+        }
+
+        /* Confirmation Dialog */
+        .confirm-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .confirm-dialog.active {
+            display: flex;
+        }
+
+        .confirm-box {
+            background: #000000;
+            border: 3px solid #00ff00;
+            padding: 30px;
+            min-width: 400px;
+            box-shadow:
+                0 0 0 1px #00ff00,
+                0 0 0 4px #000000,
+                0 0 0 5px #00ff00;
+        }
+
+        .confirm-title {
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 24px;
+            color: #00ff00;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .confirm-message {
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 18px;
+            color: #00ff00;
+            margin-bottom: 30px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .confirm-button {
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 18px;
+            padding: 10px 30px;
+            background: #000000;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .confirm-button:hover {
+            background: #00ff00;
+            color: #000000;
+        }
+
+        .confirm-button.selected {
+            background: #00ff00;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="screen">
+        <!-- Title Screen -->
+        <div class="main-container title-screen" id="titleScreen">
+            <div class="stars" id="stars"></div>
+            <div class="logo">DOOGIE</div>
+            <div class="main-menu">
+                <div class="menu-item" data-action="write">일기쓰기</div>
+                <div class="menu-item" data-action="list">나의 일기장</div>
+                <div class="menu-item" data-action="credits">디스켓</div>
+            </div>
+        </div>
+
+        <!-- App Container -->
+        <div class="app-container" id="appContainer">
+            <div class="diary-container">
+            <div class="menu-bar">
+                <span class="menu-item-top" data-action="home">Home</span>
+                <span class="menu-item-top" data-action="new">New</span>
+                <span class="menu-item-top" data-action="save">Save</span>
+                <div class="menu-item-wrapper">
+                    <span class="menu-item-top" data-action="picture">Picture</span>
+                    <div class="picture-menu-panel" id="pictureMenuPanel">
+                        <!-- Picture menu will be populated here -->
+                    </div>
+                </div>
+                <div class="menu-item-wrapper">
+                    <span class="menu-item-top" data-action="list">List</span>
+                    <div class="diary-list-panel" id="diaryListPanel">
+                        <!-- Diary list will be populated here -->
+                    </div>
+                </div>
+                <span class="menu-item-top" data-action="export">Export</span>
+                <span class="menu-item-top" data-action="import">Import</span>
+                <span class="menu-item-top" data-action="help">Help</span>
+                <span class="menu-item-top" data-action="fullscreen" id="fullscreenBtn">Fullscreen</span>
+            </div>
+
+            <div class="content mode-view">
+                <div class="date-header" id="dateHeader"></div>
+                <div class="editor-wrapper">
+                    <div class="editor-section">
+                        <textarea class="editor" id="editor"></textarea>
+                        <div class="cursor" id="cursor"></div>
+                    </div>
+                    <div class="images-section" id="imagesSection">
+                        <div class="images-container" id="imagesContainer"></div>
+                    </div>
+                </div>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;" multiple>
+                <input type="file" id="importInput" accept=".json,application/json" style="display: none;">
+            </div>
+
+            <div class="content mode-list entry-list" id="entryList">
+                <!-- Entry list will be populated here -->
+            </div>
+
+            <div class="content mode-calendar calendar-container" id="calendarContainer">
+                <div class="calendar-left">
+                    <div class="calendar-header">
+                        <button class="calendar-nav-btn" id="prevMonthBtn">◀</button>
+                        <div class="calendar-title" id="calendarTitle">JANUARY 2025</div>
+                        <button class="calendar-nav-btn" id="nextMonthBtn">▶</button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Calendar will be populated here -->
+                    </div>
+                </div>
+                <div class="calendar-right">
+                    <div class="calendar-list-section">
+                        <div class="calendar-list-title">Diary Entries</div>
+                        <div id="calendarEntryList">
+                            <!-- Entry list will be populated here -->
+                        </div>
+                    </div>
+                    <div class="list-footer">
+                        <button class="settings-link-button" id="settingsLinkButtonCalendar">⚙ Settings</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content mode-help help-screen" id="helpScreen">
+                <div class="help-title">═══ HELP SCREEN ═══</div>
+                <div class="help-item"><span class="shortcut">F1</span> - 도움말 보기/닫기</div>
+                <div class="help-item"><span class="shortcut">F2</span> - 현재 일기 저장</div>
+                <div class="help-item"><span class="shortcut">F3</span> - 일기 목록 보기</div>
+                <div class="help-item"><span class="shortcut">F4</span> - 새 일기 작성</div>
+                <div class="help-item"><span class="shortcut">ESC</span> - 목록/도움말에서 나가기</div>
+                <div style="margin-top: 30px; color: #aaaaaa;">
+                    ┌─────────────────────────────────────────────┐<br>
+                    │ 모든 일기는 브라우저에 자동 저장됩니다.      │<br>
+                    │ F2를 눌러 수동으로 저장할 수도 있습니다.     │<br>
+                    └─────────────────────────────────────────────┘
+                </div>
+            </div>
+
+            <div class="content mode-settings settings-screen" id="settingsScreen">
+                <div class="settings-title">═══ SETTINGS ═══</div>
+                <div class="settings-section">
+                    <div class="setting-item">
+                        <div class="setting-label">Language / 언어</div>
+                        <div class="setting-control">
+                            <button class="lang-button active" data-lang="ko">한국어</button>
+                            <button class="lang-button" data-lang="en">English</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-footer">Press ESC to Return</div>
+            </div>
+
+            <div class="content mode-credits credits-screen" id="creditsScreen">
+                <!-- Night Sky with Twinkling Stars -->
+                <div class="credits-stars" id="creditsStars"></div>
+
+                <!-- Game Title -->
+                <div class="credits-game-title">
+                    <div class="title-text">DOOGIE</div>
+                    <div class="title-subtitle">An Interactive Diary Experience</div>
+                </div>
+
+                <!-- NYC Skyline -->
+                <div class="nyc-skyline" id="nycSkyline"></div>
+
+                <!-- Road with Cars -->
+                <div class="road" id="road"></div>
+
+                <div class="credits-company">
+                    <div class="company-box">
+                        <span class="asterisk">**</span>
+                        <span class="bracket"><<</span>
+                        <span class="company-text">POPUP STUDIO</span>
+                        <span class="bracket">>></span>
+                        <span class="asterisk">**</span>
+                    </div>
+                </div>
+
+                <div class="credits-cast">
+                    <div class="credits-character">
+                        <div class="char-box">
+                            <canvas class="char-portrait" id="char1Canvas" width="180" height="180"></canvas>
+                        </div>
+                        <div class="char-name">KOYU THE CREATOR</div>
+                        <div class="char-role">POPUP-STUDIO</div>
+                    </div>
+
+                    <div class="credits-character">
+                        <div class="char-box">
+                            <canvas class="char-portrait" id="char2Canvas" width="180" height="180"></canvas>
+                        </div>
+                        <div class="char-name">CLAUDE THE WIZARD</div>
+                        <div class="char-role">Anthropic AI</div>
+                    </div>
+
+                    <div class="credits-character">
+                        <div class="char-box">
+                            <canvas class="char-portrait" id="char3Canvas" width="180" height="180"></canvas>
+                        </div>
+                        <div class="char-name">CHARACTER 3</div>
+                        <div class="char-role">Role TBD</div>
+                    </div>
+
+                    <div class="credits-character">
+                        <div class="char-box">
+                            <canvas class="char-portrait" id="char4Canvas" width="180" height="180"></canvas>
+                        </div>
+                        <div class="char-name">CHARACTER 4</div>
+                        <div class="char-role">Role TBD</div>
+                    </div>
+
+                    <div class="credits-character">
+                        <div class="char-box">
+                            <canvas class="char-portrait" id="char5Canvas" width="180" height="180"></canvas>
+                        </div>
+                        <div class="char-name">CHARACTER 5</div>
+                        <div class="char-role">Role TBD</div>
+                    </div>
+
+                    <div class="credits-character">
+                        <div class="char-box">
+                            <canvas class="char-portrait" id="char6Canvas" width="180" height="180"></canvas>
+                        </div>
+                        <div class="char-name">CHARACTER 6</div>
+                        <div class="char-role">Role TBD</div>
+                    </div>
+                </div>
+
+                <div class="credits-game-footer">
+                    ✦ ✦ ✦  Press ESC to Continue  ✦ ✦ ✦<br>
+                    <br>
+                    © <span class="year-correction"><span class="strikethrough">1985</span><span class="corrected-year">2025</span></span> POPUP-STUDIO - Made with 💚 in DOS Era
+                </div>
+            </div>
+
+            <div class="status-bar">
+                <div id="statusLeft">Ready</div>
+                <div id="statusRight">
+                    <span id="charCount">0 chars</span> |
+                    <span id="entryCount">0 entries</span>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+        <div class="image-modal-close" id="modalClose">X</div>
+        <img id="modalImage" src="" alt="">
+    </div>
+
+    <!-- Crop Modal -->
+    <div class="crop-modal" id="cropModal">
+        <div class="crop-container">
+            <div class="crop-canvas-container">
+                <img class="crop-preview" id="cropPreview" src="" alt="">
+                <div class="crop-selection" id="cropSelection">
+                    <div class="crop-handle nw"></div>
+                    <div class="crop-handle ne"></div>
+                    <div class="crop-handle sw"></div>
+                    <div class="crop-handle se"></div>
+                </div>
+            </div>
+            <div class="crop-buttons">
+                <button class="crop-button" id="cropConfirm">CROP & APPLY</button>
+                <button class="crop-button" id="cropCancel">CANCEL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Dialog -->
+    <div class="confirm-dialog" id="confirmDialog">
+        <div class="confirm-box">
+            <div class="confirm-title">┌─ 확인 ─┐</div>
+            <div class="confirm-message" id="confirmMessage">저장하지 않은 내용이 있습니다.<br>저장하시겠습니까?</div>
+            <div class="confirm-buttons">
+                <button class="confirm-button" id="confirmYes">Yes</button>
+                <button class="confirm-button" id="confirmNo">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let currentMode = 'title'; // title, view, list, help
+        let currentDate = new Date().toISOString().split('T')[0];
+        let currentEntryNumber = 1; // For multiple entries on same date
+        let entries = {};
+        let autoSaveTimeout = null;
+        let selectedMenuItem = 0;
+        let hasUnsavedChanges = false;
+        let lastSavedContent = '';
+
+        // DOM Elements
+        const titleScreen = document.getElementById('titleScreen');
+        const appContainer = document.getElementById('appContainer');
+        const editor = document.getElementById('editor');
+        const dateHeader = document.getElementById('dateHeader');
+        const entryList = document.getElementById('entryList');
+        const statusLeft = document.getElementById('statusLeft');
+        const statusRight = document.getElementById('statusRight');
+        const charCount = document.getElementById('charCount');
+        const entryCount = document.getElementById('entryCount');
+        const contentView = document.querySelector('.mode-view');
+        const contentList = document.querySelector('.mode-list');
+        const helpScreen = document.querySelector('.mode-help');
+        const settingsScreen = document.querySelector('.mode-settings');
+        const creditsScreen = document.querySelector('.mode-credits');
+        const menuItems = document.querySelectorAll('.menu-item');
+        const topMenuItems = document.querySelectorAll('.menu-item-top');
+        const diaryListPanel = document.getElementById('diaryListPanel');
+        const pictureMenuPanel = document.getElementById('pictureMenuPanel');
+        const cursor = document.getElementById('cursor');
+        const fileInput = document.getElementById('fileInput');
+        const imagesContainer = document.getElementById('imagesContainer');
+        const imagesSection = document.getElementById('imagesSection');
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalClose = document.getElementById('modalClose');
+        const confirmDialog = document.getElementById('confirmDialog');
+        const confirmYes = document.getElementById('confirmYes');
+        const confirmNo = document.getElementById('confirmNo');
+        const starsContainer = document.getElementById('stars');
+        const creditsStars = document.getElementById('creditsStars');
+        const importInput = document.getElementById('importInput');
+        const calendarContainer = document.getElementById('calendarContainer');
+        const calendarGrid = document.getElementById('calendarGrid');
+        const calendarTitle = document.getElementById('calendarTitle');
+        const prevMonthBtn = document.getElementById('prevMonthBtn');
+        const nextMonthBtn = document.getElementById('nextMonthBtn');
+        const calendarEntryList = document.getElementById('calendarEntryList');
+        const settingsLinkButtonCalendar = document.getElementById('settingsLinkButtonCalendar');
+
+        // Calendar state
+        let currentCalendarYear = new Date().getFullYear();
+        let currentCalendarMonth = new Date().getMonth(); // 0-11
+
+        // Canvas for text measurement
+        let measureCanvas = null;
+        let measureCtx = null;
+
+        // Create twinkling stars
+        function createStars() {
+            const starCount = 50; // 별의 개수
+            starsContainer.innerHTML = '';
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+
+                // 랜덤 위치
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+
+                // 랜덤 애니메이션 딜레이 (깜빡임 타이밍을 다르게)
+                star.style.animationDelay = Math.random() * 3 + 's';
+
+                // 랜덤 애니메이션 지속시간 (2~4초 사이)
+                star.style.animationDuration = (2 + Math.random() * 2) + 's';
+
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Create NYC Skyline with buildings
+        function createNYCSkyline() {
+            const skyline = document.getElementById('nycSkyline');
+            if (!skyline) return;
+
+            skyline.innerHTML = '';
+
+            // More diverse building configurations with different styles and window types
+            const buildings = [
+                { width: 25, height: 55, windowsPerRow: 2, rows: 5, style: 'antenna', windowType: 'small' },
+                { width: 42, height: 95, windowsPerRow: 3, rows: 9, style: 'crown', windowType: 'wide' },
+                { width: 30, height: 70, windowsPerRow: 2, rows: 7, style: 'flat', windowType: 'square' },
+                { width: 55, height: 110, windowsPerRow: 4, rows: 11, style: 'antenna', windowType: 'tall' },
+                { width: 35, height: 80, windowsPerRow: 2, rows: 8, style: 'flat', windowType: 'small' },
+                { width: 48, height: 100, windowsPerRow: 3, rows: 10, style: 'crown', windowType: 'square' },
+                { width: 28, height: 60, windowsPerRow: 2, rows: 6, style: 'flat', windowType: 'wide' },
+                { width: 40, height: 88, windowsPerRow: 3, rows: 8, style: 'antenna', windowType: 'tall' },
+                { width: 32, height: 75, windowsPerRow: 2, rows: 7, style: 'flat', windowType: 'small' },
+                { width: 50, height: 105, windowsPerRow: 4, rows: 10, style: 'crown', windowType: 'square' },
+                { width: 38, height: 68, windowsPerRow: 3, rows: 6, style: 'flat', windowType: 'wide' },
+                { width: 45, height: 92, windowsPerRow: 3, rows: 9, style: 'antenna', windowType: 'tall' },
+                { width: 33, height: 78, windowsPerRow: 2, rows: 8, style: 'flat', windowType: 'small' },
+                { width: 52, height: 98, windowsPerRow: 4, rows: 9, style: 'crown', windowType: 'square' },
+                { width: 36, height: 65, windowsPerRow: 2, rows: 6, style: 'flat', windowType: 'wide' }
+            ];
+
+            buildings.forEach(config => {
+                const building = document.createElement('div');
+                building.className = 'building';
+                building.style.width = config.width + 'px';
+                building.style.height = config.height + 'px';
+
+                // Add rooftop decoration based on style
+                if (config.style === 'antenna') {
+                    const antenna = document.createElement('div');
+                    antenna.className = 'building-top';
+                    const antennaHeight = 10 + Math.random() * 15;
+                    antenna.style.height = antennaHeight + 'px';
+                    antenna.style.top = -antennaHeight + 'px';
+                    building.appendChild(antenna);
+                } else if (config.style === 'crown') {
+                    const crown = document.createElement('div');
+                    crown.className = 'building-crown';
+                    building.appendChild(crown);
+                }
+
+                // Create windows with different sizes based on type
+                const totalWindows = config.windowsPerRow * config.rows;
+
+                // Define window dimensions based on type
+                let windowWidth, windowHeight;
+                switch(config.windowType) {
+                    case 'small':
+                        windowWidth = 3;
+                        windowHeight = 3;
+                        break;
+                    case 'wide':
+                        windowWidth = 6;
+                        windowHeight = 3;
+                        break;
+                    case 'tall':
+                        windowWidth = 3;
+                        windowHeight = 6;
+                        break;
+                    case 'square':
+                    default:
+                        windowWidth = 4;
+                        windowHeight = 4;
+                        break;
+                }
+
+                for (let i = 0; i < totalWindows; i++) {
+                    const window = document.createElement('div');
+                    window.className = 'window';
+
+                    // Set window size
+                    window.style.width = windowWidth + 'px';
+                    window.style.height = windowHeight + 'px';
+
+                    // Random green tone for each window (between #006600 and #00cc00)
+                    const greenValue = Math.floor(102 + Math.random() * 102); // 102-204 range
+                    const greenHex = greenValue.toString(16).padStart(2, '0');
+                    window.style.backgroundColor = `#00${greenHex}00`;
+
+                    // Randomly turn off some windows initially
+                    if (Math.random() > 0.65) {
+                        window.classList.add('off');
+                    }
+
+                    building.appendChild(window);
+                }
+
+                skyline.appendChild(building);
+            });
+
+            // Animate window lights randomly - multiple windows at once
+            setInterval(() => {
+                const windows = document.querySelectorAll('.nyc-skyline .window');
+                // Toggle 8-12 random windows each time
+                const numToToggle = 8 + Math.floor(Math.random() * 5);
+                for (let i = 0; i < numToToggle; i++) {
+                    const randomWindow = windows[Math.floor(Math.random() * windows.length)];
+                    if (randomWindow) {
+                        randomWindow.classList.toggle('off');
+                    }
+                }
+            }, 250);
+        }
+
+        // Create credits screen stars
+        function createCreditsStars() {
+            const starCount = 30; // 크레딧 화면 별 개수
+            creditsStars.innerHTML = '';
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'credits-star';
+
+                // 랜덤 위치 (상단 영역에만)
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 250 + 'px';
+
+                // 랜덤 애니메이션 딜레이
+                star.style.animationDelay = Math.random() * 2 + 's';
+
+                // 랜덤 애니메이션 지속시간
+                star.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+
+                creditsStars.appendChild(star);
+            }
+        }
+
+        // Setup drag and drop for character portraits
+        function setupCharacterUpload() {
+            const charBoxes = document.querySelectorAll('.char-box');
+
+            charBoxes.forEach((box, index) => {
+                const canvas = box.querySelector('canvas');
+                if (!canvas) return;
+
+                // File input for click upload
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*';
+                fileInput.style.display = 'none';
+                document.body.appendChild(fileInput);
+
+                // Click to upload
+                box.addEventListener('click', () => {
+                    fileInput.click();
+                });
+
+                fileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        processCharacterImage(file, canvas);
+                    }
+                });
+
+                // Drag and drop
+                box.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    box.classList.add('drag-over');
+                });
+
+                box.addEventListener('dragleave', () => {
+                    box.classList.remove('drag-over');
+                });
+
+                box.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    box.classList.remove('drag-over');
+
+                    const file = e.dataTransfer.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        processCharacterImage(file, canvas);
+                    }
+                });
+            });
+        }
+
+        // Setup editable character names and roles
+        function setupEditableText() {
+            const charNames = document.querySelectorAll('.char-name');
+            const charRoles = document.querySelectorAll('.char-role');
+
+            function makeEditable(element) {
+                element.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent triggering char-box click
+
+                    // If already editing, don't create another
+                    if (element.classList.contains('editing')) return;
+
+                    const originalText = element.textContent;
+                    element.classList.add('editing');
+                    element.contentEditable = true;
+                    element.focus();
+
+                    // Select all text
+                    const range = document.createRange();
+                    range.selectNodeContents(element);
+                    const selection = window.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+
+                    // Save on Enter or blur
+                    const saveEdit = () => {
+                        element.classList.remove('editing');
+                        element.contentEditable = false;
+
+                        // Remove empty text
+                        if (element.textContent.trim() === '') {
+                            element.textContent = originalText;
+                        }
+
+                        // Save to localStorage
+                        saveCharacterData();
+                    };
+
+                    const handleKeydown = (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            saveEdit();
+                            element.removeEventListener('keydown', handleKeydown);
+                            element.removeEventListener('blur', handleBlur);
+                        } else if (e.key === 'Escape') {
+                            e.preventDefault();
+                            element.textContent = originalText;
+                            element.classList.remove('editing');
+                            element.contentEditable = false;
+                            element.removeEventListener('keydown', handleKeydown);
+                            element.removeEventListener('blur', handleBlur);
+                        }
+                    };
+
+                    const handleBlur = () => {
+                        saveEdit();
+                        element.removeEventListener('keydown', handleKeydown);
+                        element.removeEventListener('blur', handleBlur);
+                    };
+
+                    element.addEventListener('keydown', handleKeydown);
+                    element.addEventListener('blur', handleBlur);
+                });
+            }
+
+            charNames.forEach(makeEditable);
+            charRoles.forEach(makeEditable);
+        }
+
+        // Save character data to localStorage
+        function saveCharacterData() {
+            const characters = [];
+
+            for (let i = 1; i <= 6; i++) {
+                const charName = document.querySelector(`.credits-character:nth-child(${i}) .char-name`);
+                const charRole = document.querySelector(`.credits-character:nth-child(${i}) .char-role`);
+                const canvas = document.getElementById(`char${i}Canvas`);
+
+                characters.push({
+                    name: charName ? charName.textContent : '',
+                    role: charRole ? charRole.textContent : '',
+                    image: canvas ? canvas.toDataURL() : null
+                });
+            }
+
+            localStorage.setItem('doogie-characters', JSON.stringify(characters));
+        }
+
+        // Load character data from localStorage
+        function loadCharacterData() {
+            const saved = localStorage.getItem('doogie-characters');
+            if (!saved) return;
+
+            try {
+                const characters = JSON.parse(saved);
+
+                characters.forEach((char, index) => {
+                    const i = index + 1;
+                    const charName = document.querySelector(`.credits-character:nth-child(${i}) .char-name`);
+                    const charRole = document.querySelector(`.credits-character:nth-child(${i}) .char-role`);
+                    const canvas = document.getElementById(`char${i}Canvas`);
+
+                    if (charName && char.name) charName.textContent = char.name;
+                    if (charRole && char.role) charRole.textContent = char.role;
+
+                    if (canvas && char.image) {
+                        const img = new Image();
+                        img.onload = () => {
+                            const ctx = canvas.getContext('2d');
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        };
+                        img.src = char.image;
+                    }
+                });
+            } catch (e) {
+                console.error('Failed to load character data:', e);
+            }
+        }
+
+        // Language switching functionality
+        function setupLanguageButtons() {
+            const langButtons = document.querySelectorAll('.lang-button');
+
+            langButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const lang = button.dataset.lang;
+
+                    // Update active state
+                    langButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    // Save language
+                    localStorage.setItem('doogie-language', lang);
+
+                    // Apply language
+                    applyLanguage(lang);
+                });
+            });
+        }
+
+        function loadLanguage() {
+            const savedLang = localStorage.getItem('doogie-language') || 'ko';
+            applyLanguage(savedLang);
+
+            // Update button state
+            const langButtons = document.querySelectorAll('.lang-button');
+            langButtons.forEach(btn => {
+                if (btn.dataset.lang === savedLang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        function applyLanguage(lang) {
+            const translations = {
+                ko: {
+                    menuWrite: '일기쓰기',
+                    menuList: '나의 일기장',
+                    menuCredits: '디스켓',
+                    settingsButton: '⚙ Settings'
+                },
+                en: {
+                    menuWrite: 'Diary',
+                    menuList: 'Memory',
+                    menuCredits: 'Diskette',
+                    settingsButton: '⚙ Settings'
+                }
+            };
+
+            const texts = translations[lang];
+
+            // Update menu items
+            const menuItems = document.querySelectorAll('.main-menu .menu-item');
+            menuItems[0].textContent = texts.menuWrite;
+            menuItems[1].textContent = texts.menuList;
+            menuItems[2].textContent = texts.menuCredits;
+
+            // Update settings button
+            const settingsButton = document.getElementById('settingsLinkButton');
+            if (settingsButton) {
+                settingsButton.textContent = texts.settingsButton;
+            }
+        }
+
+        // Setup settings button in diary list
+        function setupSettingsButton() {
+            const settingsButton = document.getElementById('settingsLinkButton');
+            if (settingsButton) {
+                settingsButton.addEventListener('click', () => {
+                    switchMode('settings');
+                });
+            }
+        }
+
+        // Create cars on the road
+        function createCars() {
+            const road = document.getElementById('road');
+            if (!road) return;
+
+            // Function to create a car canvas (sedan style)
+            function createCarCanvas() {
+                const canvas = document.createElement('canvas');
+                canvas.width = 28;
+                canvas.height = 14;
+                const ctx = canvas.getContext('2d');
+
+                const greenValue = 102 + Math.floor(Math.random() * 102);
+                const greenHex = greenValue.toString(16).padStart(2, '0');
+                const bodyColor = `#00${greenHex}00`;
+
+                const darkGreen = Math.floor(greenValue * 0.6).toString(16).padStart(2, '0');
+                const windowColor = `#00${darkGreen}00`;
+
+                // Car body (rounded sedan shape)
+                ctx.fillStyle = bodyColor;
+                ctx.fillRect(4, 7, 20, 6); // main body
+                ctx.fillRect(8, 4, 12, 4); // cabin
+
+                // Windows
+                ctx.fillStyle = windowColor;
+                ctx.fillRect(9, 5, 4, 3); // front window
+                ctx.fillRect(15, 5, 4, 3); // back window
+
+                // Wheels (darker)
+                ctx.fillStyle = '#003300';
+                ctx.fillRect(6, 12, 3, 2);
+                ctx.fillRect(19, 12, 3, 2);
+
+                return canvas.toDataURL();
+            }
+
+            // Function to create a truck canvas
+            function createTruckCanvas() {
+                const canvas = document.createElement('canvas');
+                canvas.width = 28;
+                canvas.height = 14;
+                const ctx = canvas.getContext('2d');
+
+                const greenValue = 102 + Math.floor(Math.random() * 102);
+                const greenHex = greenValue.toString(16).padStart(2, '0');
+                const bodyColor = `#00${greenHex}00`;
+
+                const darkGreen = Math.floor(greenValue * 0.6).toString(16).padStart(2, '0');
+                const windowColor = `#00${darkGreen}00`;
+
+                // Cargo area (back) - now on the left
+                ctx.fillStyle = bodyColor;
+                ctx.fillRect(2, 4, 16, 9); // larger cargo box
+
+                // Cargo door lines
+                ctx.fillStyle = '#003300';
+                ctx.fillRect(2, 5, 1, 7);
+
+                // Truck cabin (front) - now on the right
+                ctx.fillStyle = bodyColor;
+                ctx.fillRect(18, 7, 8, 6); // cabin
+
+                // Window (front window)
+                ctx.fillStyle = windowColor;
+                ctx.fillRect(20, 8, 5, 3);
+
+                // Front bumper/grille
+                ctx.fillStyle = '#003300';
+                ctx.fillRect(26, 9, 1, 3);
+
+                // Wheels
+                ctx.fillStyle = '#003300';
+                ctx.fillRect(4, 12, 3, 2); // back wheel
+                ctx.fillRect(22, 12, 3, 2); // front wheel
+
+                return canvas.toDataURL();
+            }
+
+            // Spawn cars at random intervals
+            setInterval(() => {
+                const car = document.createElement('div');
+                car.className = 'car';
+
+                // Random vehicle type (70% car, 30% truck)
+                const isTruck = Math.random() > 0.7;
+                const vehicleCanvas = isTruck ? createTruckCanvas() : createCarCanvas();
+
+                car.style.backgroundImage = `url(${vehicleCanvas})`;
+                car.style.backgroundSize = 'contain';
+                car.style.backgroundRepeat = 'no-repeat';
+
+                // Random direction (50% each)
+                const isLeftToRight = Math.random() > 0.5;
+
+                if (isLeftToRight) {
+                    car.classList.add('left-to-right', 'bottom-lane');
+                } else {
+                    car.classList.add('right-to-left', 'top-lane');
+                }
+
+                // Random speed (6-10 seconds)
+                const duration = 6 + Math.random() * 4;
+                car.style.animationDuration = duration + 's';
+
+                road.appendChild(car);
+
+                // Remove car after animation
+                setTimeout(() => {
+                    car.remove();
+                }, duration * 1000);
+            }, 1500); // Spawn new car every 1.5 seconds
+        }
+
+        // Show crop modal and process image
+        function processCharacterImage(file, canvas) {
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                showCropModal(e.target.result, canvas);
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        // Setup and show crop modal
+        function showCropModal(imageSrc, targetCanvas) {
+            const cropModal = document.getElementById('cropModal');
+            const cropPreview = document.getElementById('cropPreview');
+            const cropSelection = document.getElementById('cropSelection');
+            const cropConfirm = document.getElementById('cropConfirm');
+            const cropCancel = document.getElementById('cropCancel');
+
+            const img = new Image();
+
+            img.onload = () => {
+                // Show image
+                cropPreview.src = imageSrc;
+                cropModal.classList.add('active');
+
+                // Calculate initial square crop (center)
+                const maxSize = Math.max(img.width, img.height);
+                const displayScale = Math.min(window.innerWidth * 0.8, window.innerHeight * 0.8) / maxSize;
+                const displayWidth = img.width * displayScale;
+                const displayHeight = img.height * displayScale;
+
+                cropPreview.style.width = displayWidth + 'px';
+                cropPreview.style.height = displayHeight + 'px';
+
+                const size = Math.min(displayWidth, displayHeight);
+                const left = (displayWidth - size) / 2;
+                const top = (displayHeight - size) / 2;
+
+                cropSelection.style.left = left + 'px';
+                cropSelection.style.top = top + 'px';
+                cropSelection.style.width = size + 'px';
+                cropSelection.style.height = size + 'px';
+
+                // Setup drag functionality
+                setupCropDrag(cropSelection, cropPreview);
+
+                // Confirm button
+                cropConfirm.onclick = () => {
+                    const rect = cropSelection.getBoundingClientRect();
+                    const previewRect = cropPreview.getBoundingClientRect();
+
+                    const scaleX = img.width / displayWidth;
+                    const scaleY = img.height / displayHeight;
+
+                    const cropX = (rect.left - previewRect.left) * scaleX;
+                    const cropY = (rect.top - previewRect.top) * scaleY;
+                    const cropSize = parseFloat(cropSelection.style.width) * scaleX;
+
+                    applyCroppedImage(img, cropX, cropY, cropSize, targetCanvas);
+                    cropModal.classList.remove('active');
+                };
+
+                // Cancel button
+                cropCancel.onclick = () => {
+                    cropModal.classList.remove('active');
+                };
+            };
+
+            img.src = imageSrc;
+        }
+
+        // Setup crop drag and resize functionality
+        function setupCropDrag(selection, preview) {
+            let isDragging = false;
+            let isResizing = false;
+            let resizeHandle = null;
+            let startX, startY, startLeft, startTop, startWidth, startHeight;
+
+            // Drag to move
+            selection.addEventListener('mousedown', (e) => {
+                if (e.target.classList.contains('crop-handle')) {
+                    // Start resizing
+                    isResizing = true;
+                    resizeHandle = e.target;
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    startLeft = parseInt(selection.style.left);
+                    startTop = parseInt(selection.style.top);
+                    startWidth = selection.offsetWidth;
+                    startHeight = selection.offsetHeight;
+                    e.preventDefault();
+                    return;
+                }
+
+                // Start dragging
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startLeft = parseInt(selection.style.left);
+                startTop = parseInt(selection.style.top);
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    // Move selection
+                    const deltaX = e.clientX - startX;
+                    const deltaY = e.clientY - startY;
+
+                    const newLeft = Math.max(0, Math.min(startLeft + deltaX, preview.offsetWidth - selection.offsetWidth));
+                    const newTop = Math.max(0, Math.min(startTop + deltaY, preview.offsetHeight - selection.offsetHeight));
+
+                    selection.style.left = newLeft + 'px';
+                    selection.style.top = newTop + 'px';
+                } else if (isResizing && resizeHandle) {
+                    // Resize selection (maintaining square aspect ratio)
+                    const deltaX = e.clientX - startX;
+                    const deltaY = e.clientY - startY;
+
+                    const handleClass = resizeHandle.className;
+                    let newSize = startWidth;
+                    let newLeft = startLeft;
+                    let newTop = startTop;
+
+                    if (handleClass.includes('se')) {
+                        // Southeast: expand right/down
+                        newSize = Math.max(50, startWidth + Math.max(deltaX, deltaY));
+                    } else if (handleClass.includes('sw')) {
+                        // Southwest: expand left/down
+                        const delta = Math.max(-deltaX, deltaY);
+                        newSize = Math.max(50, startWidth + delta);
+                        newLeft = startLeft - (newSize - startWidth);
+                    } else if (handleClass.includes('ne')) {
+                        // Northeast: expand right/up
+                        const delta = Math.max(deltaX, -deltaY);
+                        newSize = Math.max(50, startWidth + delta);
+                        newTop = startTop - (newSize - startWidth);
+                    } else if (handleClass.includes('nw')) {
+                        // Northwest: expand left/up
+                        const delta = Math.max(-deltaX, -deltaY);
+                        newSize = Math.max(50, startWidth + delta);
+                        newLeft = startLeft - (newSize - startWidth);
+                        newTop = startTop - (newSize - startWidth);
+                    }
+
+                    // Constrain to image bounds
+                    if (newLeft < 0) {
+                        newSize += newLeft;
+                        newLeft = 0;
+                    }
+                    if (newTop < 0) {
+                        newSize += newTop;
+                        newTop = 0;
+                    }
+                    if (newLeft + newSize > preview.offsetWidth) {
+                        newSize = preview.offsetWidth - newLeft;
+                    }
+                    if (newTop + newSize > preview.offsetHeight) {
+                        newSize = preview.offsetHeight - newTop;
+                    }
+
+                    selection.style.width = newSize + 'px';
+                    selection.style.height = newSize + 'px';
+                    selection.style.left = newLeft + 'px';
+                    selection.style.top = newTop + 'px';
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                isResizing = false;
+                resizeHandle = null;
+            });
+        }
+
+        // Apply cropped and pixelated image
+        function applyCroppedImage(img, cropX, cropY, cropSize, targetCanvas) {
+            const ctx = targetCanvas.getContext('2d');
+            const pixelSize = 3;
+
+            const w = Math.floor(cropSize / pixelSize);
+            const h = Math.floor(cropSize / pixelSize);
+
+            // Create temporary canvas
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = w;
+            tempCanvas.height = h;
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCtx.imageSmoothingEnabled = false;
+
+            // Draw cropped image
+            tempCtx.drawImage(img, cropX, cropY, cropSize, cropSize, 0, 0, w, h);
+
+            // Convert to green palette
+            const imageData = tempCtx.getImageData(0, 0, w, h);
+            const data = imageData.data;
+
+            for (let i = 0; i < data.length; i += 4) {
+                const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                const greenLevel = Math.floor(brightness / 51) * 51;
+
+                data[i] = 0;
+                data[i + 1] = greenLevel;
+                data[i + 2] = 0;
+            }
+
+            tempCtx.putImageData(imageData, 0, 0);
+
+            // Draw to final canvas
+            ctx.clearRect(0, 0, 180, 180);
+            ctx.imageSmoothingEnabled = false;
+            ctx.drawImage(tempCanvas, 0, 0, 180, 180);
+
+            // Save character data
+            saveCharacterData();
+        }
+
+        // Load and pixelate character portraits (deprecated - using drag&drop now)
+        function loadCharacterPortraits() {
+            // This function is now deprecated
+            // Users can drag and drop images directly onto character boxes
+            return;
+
+            characters.forEach((char) => {
+                const canvas = document.getElementById(char.canvas);
+                if (!canvas) return;
+
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+
+                // Set crossOrigin before setting src to avoid CORS issues
+                img.crossOrigin = 'anonymous';
+
+                img.onload = () => {
+                    try {
+                        // Pixelate effect
+                        const pixelSize = 3;
+                        const w = Math.floor(img.width / pixelSize);
+                        const h = Math.floor(img.height / pixelSize);
+
+                        // Create temporary canvas for pixelation
+                        const tempCanvas = document.createElement('canvas');
+                        tempCanvas.width = w;
+                        tempCanvas.height = h;
+                        const tempCtx = tempCanvas.getContext('2d');
+                        tempCtx.imageSmoothingEnabled = false;
+                        tempCtx.drawImage(img, 0, 0, w, h);
+
+                        // Get pixel data and convert to green palette
+                        const imageData = tempCtx.getImageData(0, 0, w, h);
+                        const data = imageData.data;
+
+                        for (let i = 0; i < data.length; i += 4) {
+                            const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                            const greenLevel = Math.floor(brightness / 51) * 51; // 5 levels
+
+                            data[i] = 0;           // R
+                            data[i + 1] = greenLevel; // G
+                            data[i + 2] = 0;           // B
+                        }
+
+                        tempCtx.putImageData(imageData, 0, 0);
+
+                        // Draw to final canvas
+                        ctx.imageSmoothingEnabled = false;
+                        ctx.drawImage(tempCanvas, 0, 0, 120, 120);
+                    } catch (e) {
+                        console.error('CORS error - please open HTML via local server:', e);
+                        // Just draw the image without pixelation if CORS fails
+                        ctx.drawImage(img, 0, 0, 120, 120);
+                    }
+                };
+
+                img.onerror = (e) => {
+                    console.error('Failed to load image:', char.url, e);
+                    // Draw placeholder if image fails to load
+                    ctx.fillStyle = '#001100';
+                    ctx.fillRect(0, 0, 120, 120);
+                    ctx.strokeStyle = '#00ff00';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(5, 5, 110, 110);
+
+                    // Draw question marks
+                    ctx.fillStyle = '#00ff00';
+                    ctx.font = '48px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('?', 60, 60);
+                };
+
+                // Encode URL to handle spaces and special characters
+                img.src = encodeURI(char.url);
+            });
+        }
+
+        // Initialize
+        function init() {
+            createStars();
+            createCreditsStars();
+            createNYCSkyline();
+            createCars();
+            loadEntries();
+            updateStatus();
+            setupMenuListeners();
+            setupTopMenuListeners();
+            selectMenuItem(0);
+            setupCursor();
+            setupTextMeasurement();
+            setupImageHandlers();
+            setupImageModal();
+            setupConfirmDialog();
+            setupImportHandler();
+            setupCharacterUpload();
+            setupEditableText();
+            loadCharacterData();
+            setupLanguageButtons();
+            loadLanguage();
+            setupSettingsButton();
+            setupCalendar();
+        }
+
+        // Calendar functions
+        function setupCalendar() {
+            // Month navigation
+            prevMonthBtn.addEventListener('click', () => {
+                currentCalendarMonth--;
+                if (currentCalendarMonth < 0) {
+                    currentCalendarMonth = 11;
+                    currentCalendarYear--;
+                }
+                renderCalendar();
+                renderCalendarEntryList();
+            });
+
+            nextMonthBtn.addEventListener('click', () => {
+                currentCalendarMonth++;
+                if (currentCalendarMonth > 11) {
+                    currentCalendarMonth = 0;
+                    currentCalendarYear++;
+                }
+                renderCalendar();
+                renderCalendarEntryList();
+            });
+
+            // Settings button
+            settingsLinkButtonCalendar.addEventListener('click', () => {
+                switchMode('settings');
+            });
+        }
+
+        function renderCalendar() {
+            const monthNames = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
+                                'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
+
+            calendarTitle.textContent = `${monthNames[currentCalendarMonth]} ${currentCalendarYear}`;
+
+            // Clear grid
+            calendarGrid.innerHTML = '';
+
+            // Day headers
+            const dayHeaders = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            dayHeaders.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'calendar-day-header';
+                header.textContent = day;
+                calendarGrid.appendChild(header);
+            });
+
+            // Get first day of month and total days
+            const firstDay = new Date(currentCalendarYear, currentCalendarMonth, 1);
+            const lastDay = new Date(currentCalendarYear, currentCalendarMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = firstDay.getDay();
+
+            // Get previous month days
+            const prevMonthLastDay = new Date(currentCalendarYear, currentCalendarMonth, 0);
+            const prevMonthDays = prevMonthLastDay.getDate();
+
+            // Today's date for highlighting
+            const today = new Date();
+            const isCurrentMonth = today.getFullYear() === currentCalendarYear && today.getMonth() === currentCalendarMonth;
+            const todayDate = today.getDate();
+
+            // Count entries per date
+            const entryCounts = {};
+            Object.keys(entries).forEach(key => {
+                const parsed = parseEntryKey(key);
+                const date = parsed.date;
+                entryCounts[date] = (entryCounts[date] || 0) + 1;
+            });
+
+            // Add previous month days
+            for (let i = startingDayOfWeek - 1; i >= 0; i--) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day other-month';
+                day.textContent = prevMonthDays - i;
+                calendarGrid.appendChild(day);
+            }
+
+            // Add current month days
+            for (let date = 1; date <= daysInMonth; date++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day';
+                day.textContent = date;
+
+                // Check if today
+                if (isCurrentMonth && date === todayDate) {
+                    day.classList.add('today');
+                }
+
+                // Check if has entries
+                const dateStr = `${currentCalendarYear}-${String(currentCalendarMonth + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+                const count = entryCounts[dateStr] || 0;
+
+                if (count > 0) {
+                    day.classList.add('has-entry');
+
+                    // Add entry dot
+                    const dot = document.createElement('span');
+                    dot.className = 'entry-dot';
+                    day.appendChild(dot);
+
+                    // Click handler to load entry
+                    day.addEventListener('click', () => {
+                        loadEntryByDate(dateStr);
+                    });
+                }
+
+                calendarGrid.appendChild(day);
+            }
+
+            // Add next month days to fill the grid
+            const totalCells = 42; // 6 rows x 7 days
+            const currentCells = startingDayOfWeek + daysInMonth;
+            const remainingCells = totalCells - currentCells;
+
+            for (let date = 1; date <= remainingCells; date++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day other-month';
+                day.textContent = date;
+                calendarGrid.appendChild(day);
+            }
+
+            // Render the entry list for this month
+            renderCalendarEntryList();
+        }
+
+        function renderCalendarEntryList() {
+            calendarEntryList.innerHTML = '';
+
+            // Filter entries for current month
+            const monthEntries = Object.keys(entries).filter(key => {
+                const parsed = parseEntryKey(key);
+                const date = new Date(parsed.date + 'T00:00:00');
+                return date.getFullYear() === currentCalendarYear && date.getMonth() === currentCalendarMonth;
+            }).sort().reverse();
+
+            if (monthEntries.length === 0) {
+                const emptyMsg = document.createElement('div');
+                emptyMsg.style.color = '#555555';
+                emptyMsg.style.textAlign = 'center';
+                emptyMsg.style.marginTop = '30px';
+                emptyMsg.textContent = 'No entries this month';
+                calendarEntryList.appendChild(emptyMsg);
+                return;
+            }
+
+            monthEntries.forEach(key => {
+                const item = document.createElement('div');
+                item.className = 'entry-item';
+                item.dataset.entryKey = key;
+
+                const parsed = parseEntryKey(key);
+                const dateDiv = document.createElement('div');
+                dateDiv.className = 'entry-date';
+                const d = new Date(parsed.date + 'T00:00:00');
+                const entryNumText = parsed.number > 1 ? ` (${parsed.number})` : '';
+                dateDiv.textContent = `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}${entryNumText}`;
+
+                const preview = document.createElement('div');
+                preview.className = 'entry-preview';
+
+                const entry = entries[key];
+                const text = typeof entry === 'string' ? entry : (entry.text || '');
+                const imageCount = (entry.images && entry.images.length) ? ` [사진 ${entry.images.length}장]` : '';
+                preview.textContent = text.substring(0, 100) + imageCount;
+
+                item.appendChild(dateDiv);
+                item.appendChild(preview);
+
+                item.addEventListener('click', () => {
+                    loadEntry(key);
+                });
+
+                calendarEntryList.appendChild(item);
+            });
+        }
+
+        function loadEntryByDate(dateStr) {
+            // Find all entries for this date
+            const dateEntries = Object.keys(entries).filter(key => {
+                const parsed = parseEntryKey(key);
+                return parsed.date === dateStr;
+            }).sort();
+
+            if (dateEntries.length === 0) return;
+
+            // Load the first entry
+            loadEntry(dateEntries[0]);
+        }
+
+        // Entry key management
+        function getEntryKey(date, number) {
+            return number === 1 ? date : `${date}_(${number})`;
+        }
+
+        function parseEntryKey(key) {
+            const match = key.match(/^(.+)_\((\d+)\)$/);
+            if (match) {
+                return { date: match[1], number: parseInt(match[2]) };
+            }
+            return { date: key, number: 1 };
+        }
+
+        function getNextEntryNumber(date) {
+            let maxNumber = 0;
+            Object.keys(entries).forEach(key => {
+                const parsed = parseEntryKey(key);
+                if (parsed.date === date && parsed.number > maxNumber) {
+                    maxNumber = parsed.number;
+                }
+            });
+            return maxNumber + 1;
+        }
+
+        function getCurrentEntryKey() {
+            return getEntryKey(currentDate, currentEntryNumber);
+        }
+
+        // Confirm Dialog
+        function setupConfirmDialog() {
+            confirmYes.addEventListener('click', () => {
+                saveCurrentEntry();
+                confirmDialog.classList.remove('active');
+                proceedWithNewEntry();
+            });
+
+            confirmNo.addEventListener('click', () => {
+                confirmDialog.classList.remove('active');
+                proceedWithNewEntry();
+            });
+        }
+
+        function checkUnsavedChanges() {
+            const currentContent = editor.value.trim();
+            return currentContent !== lastSavedContent;
+        }
+
+        function showConfirmDialog() {
+            confirmDialog.classList.add('active');
+        }
+
+        function proceedWithNewEntry() {
+            // First, ensure current entry is properly saved if needed
+            // (already done by confirmYes or we're proceeding without saving)
+
+            const today = new Date().toISOString().split('T')[0];
+            currentDate = today;
+            currentEntryNumber = getNextEntryNumber(today);
+
+            // Clear editor BEFORE updating lastSavedContent
+            editor.value = '';
+            imagesContainer.innerHTML = '';
+
+            // Hide images section
+            const imagesSection = document.getElementById('imagesSection');
+            if (imagesSection) {
+                imagesSection.classList.remove('has-images');
+            }
+
+            // Update lastSavedContent to empty string so it matches editor
+            lastSavedContent = '';
+
+            updateDateHeader();
+            updateCharCount();
+            switchMode('view');
+            hasUnsavedChanges = false;
+
+            // Focus on editor
+            editor.focus();
+        }
+
+        function setupTextMeasurement() {
+            measureCanvas = document.createElement('canvas');
+            measureCtx = measureCanvas.getContext('2d');
+            measureCtx.font = '20px NeoDunggeunmo, monospace';
+        }
+
+        // Cursor management
+        function setupCursor() {
+            editor.addEventListener('input', updateCursorPosition);
+            editor.addEventListener('click', updateCursorPosition);
+            editor.addEventListener('keyup', updateCursorPosition);
+            editor.addEventListener('keydown', updateCursorPosition);
+            editor.addEventListener('focus', () => {
+                cursor.style.display = 'block';
+                updateCursorPosition();
+            });
+            editor.addEventListener('blur', () => {
+                cursor.style.display = 'none';
+            });
+        }
+
+        function updateCursorPosition() {
+            const textBeforeCursor = editor.value.substring(0, editor.selectionStart);
+            const lines = textBeforeCursor.split('\n');
+            const currentLine = lines.length - 1;
+            const currentLineText = lines[currentLine];
+
+            // Use canvas to measure actual text width
+            const textWidth = measureCtx.measureText(currentLineText).width;
+
+            // Calculate line height based on CSS
+            const lineHeight = 32; // 20px font-size * 1.6 line-height
+
+            cursor.style.top = (currentLine * lineHeight + lineHeight - 4) + 'px';
+            cursor.style.left = textWidth + 'px';
+        }
+
+        // Image handling
+        function setupImageHandlers() {
+            // File input change
+            fileInput.addEventListener('change', (e) => {
+                handleFiles(e.target.files);
+                fileInput.value = ''; // Reset
+            });
+        }
+
+        function openImagePicker() {
+            fileInput.click();
+        }
+
+        function handleFiles(files) {
+            for (let file of files) {
+                if (!file.type.startsWith('image/')) continue;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    pixelateImage(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function pixelateImage(dataUrl) {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                // Pixelate by scaling down then up
+                const pixelSize = 3; // Lower = more pixels, higher = more pixelated
+                const w = Math.floor(img.width / pixelSize);
+                const h = Math.floor(img.height / pixelSize);
+
+                // Draw small (pixelated base)
+                canvas.width = w;
+                canvas.height = h;
+                ctx.imageSmoothingEnabled = false;
+                ctx.drawImage(img, 0, 0, w, h);
+
+                // Get pixel data and reduce colors
+                const imageData = ctx.getImageData(0, 0, w, h);
+                const data = imageData.data;
+
+                // Reduce to green palette
+                for (let i = 0; i < data.length; i += 4) {
+                    const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                    const greenLevel = Math.floor(brightness / 64) * 64; // 4 levels
+
+                    data[i] = 0;           // R
+                    data[i + 1] = greenLevel; // G
+                    data[i + 2] = 0;           // B
+                }
+
+                ctx.putImageData(imageData, 0, 0);
+
+                // Create thumbnail (scale to 600px max for display)
+                const thumbMaxSize = 600;
+                const thumbScale = Math.min(thumbMaxSize / img.width, thumbMaxSize / img.height);
+                const thumbW = Math.floor(img.width * thumbScale);
+                const thumbH = Math.floor(img.height * thumbScale);
+
+                const displayCanvas = document.createElement('canvas');
+                displayCanvas.width = thumbW;
+                displayCanvas.height = thumbH;
+                const displayCtx = displayCanvas.getContext('2d');
+                displayCtx.imageSmoothingEnabled = false;
+                displayCtx.drawImage(canvas, 0, 0, thumbW, thumbH);
+
+                // Create modal image (10x larger than original 150px = 1500px max)
+                const modalMaxSize = 1500;
+                const modalScale = Math.min(modalMaxSize / img.width, modalMaxSize / img.height);
+                const modalW = Math.floor(img.width * modalScale);
+                const modalH = Math.floor(img.height * modalScale);
+
+                const modalCanvas = document.createElement('canvas');
+                modalCanvas.width = modalW;
+                modalCanvas.height = modalH;
+                const modalCtx = modalCanvas.getContext('2d');
+                modalCtx.imageSmoothingEnabled = false;
+                modalCtx.drawImage(canvas, 0, 0, modalCanvas.width, modalCanvas.height);
+
+                const thumbnailData = displayCanvas.toDataURL();
+                const modalData = modalCanvas.toDataURL();
+                addImageToEntry(thumbnailData, modalData);
+            };
+            img.src = dataUrl;
+        }
+
+        function addImageToEntry(thumbnailData, modalData) {
+            const key = getCurrentEntryKey();
+            if (!entries[key]) {
+                entries[key] = { text: '', images: [] };
+            }
+            if (typeof entries[key] === 'string') {
+                entries[key] = { text: entries[key], images: [] };
+            }
+            if (!entries[key].images) {
+                entries[key].images = [];
+            }
+
+            entries[key].images.push({
+                thumbnail: thumbnailData,
+                full: modalData
+            });
+            saveEntries();
+            displayImages();
+            showStatus('Image added!', 2000);
+        }
+
+        function displayImages() {
+            imagesContainer.innerHTML = '';
+            const key = getCurrentEntryKey();
+            const entry = entries[key];
+
+            // Show or hide images section based on whether images exist
+            if (!entry || !entry.images || entry.images.length === 0) {
+                imagesSection.classList.remove('has-images');
+                imagesContainer.removeAttribute('data-image-count');
+                return;
+            }
+
+            imagesSection.classList.add('has-images');
+
+            // Set image count for grid layout
+            imagesContainer.setAttribute('data-image-count', entry.images.length);
+
+            entry.images.forEach((imageData, index) => {
+                const div = document.createElement('div');
+                div.className = 'image-item';
+
+                const img = document.createElement('img');
+                // Handle both old format (string) and new format (object)
+                if (typeof imageData === 'string') {
+                    img.src = imageData;
+                    img.onclick = () => openImageModal(imageData);
+                } else {
+                    img.src = imageData.thumbnail;
+                    img.onclick = () => openImageModal(imageData.full);
+                }
+
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-image';
+                removeBtn.textContent = 'X';
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    removeImage(index);
+                };
+
+                div.appendChild(img);
+                div.appendChild(removeBtn);
+                imagesContainer.appendChild(div);
+            });
+        }
+
+        function removeImage(index) {
+            const key = getCurrentEntryKey();
+            const entry = entries[key];
+            if (entry && entry.images) {
+                entry.images.splice(index, 1);
+                saveEntries();
+                displayImages();
+                showStatus('Image removed', 2000);
+            }
+        }
+
+        // Image Modal
+        function setupImageModal() {
+            modalClose.addEventListener('click', closeImageModal);
+            imageModal.addEventListener('click', (e) => {
+                if (e.target === imageModal) {
+                    closeImageModal();
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && imageModal.classList.contains('active')) {
+                    closeImageModal();
+                }
+            });
+        }
+
+        function openImageModal(dataUrl) {
+            modalImage.src = dataUrl;
+            imageModal.classList.add('active');
+
+            // Remove scanning class first to reset animation
+            modalImage.classList.remove('scanning');
+
+            // Trigger reflow to restart animation
+            void modalImage.offsetWidth;
+
+            // Add scanning class to start animation
+            modalImage.classList.add('scanning');
+        }
+
+        function closeImageModal() {
+            imageModal.classList.remove('active');
+            // Remove scanning class when closing
+            modalImage.classList.remove('scanning');
+            modalImage.src = '';
+        }
+
+        // Menu functions
+        function setupMenuListeners() {
+            menuItems.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    handleMenuAction(item.dataset.action);
+                });
+                item.addEventListener('mouseenter', () => {
+                    selectMenuItem(index);
+                });
+            });
+        }
+
+        function setupTopMenuListeners() {
+            topMenuItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    handleTopMenuAction(item.dataset.action);
+                });
+            });
+        }
+
+        function handleTopMenuAction(action) {
+            if (action === 'home') {
+                returnToMenu();
+            } else if (action === 'new') {
+                newEntry();
+            } else if (action === 'save') {
+                saveCurrentEntry();
+            } else if (action === 'list') {
+                toggleDiaryList();
+            } else if (action === 'picture') {
+                togglePictureMenu();
+            } else if (action === 'export') {
+                exportDiary();
+            } else if (action === 'import') {
+                importDiary();
+            } else if (action === 'help') {
+                switchMode('help');
+            } else if (action === 'fullscreen') {
+                toggleFullscreen();
+            }
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                // Enter fullscreen
+                const element = document.documentElement;
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.webkitRequestFullscreen) { // Safari
+                    element.webkitRequestFullscreen();
+                } else if (element.msRequestFullscreen) { // IE11
+                    element.msRequestFullscreen();
+                }
+                showStatus('Press ESC to exit fullscreen', 3000);
+            } else {
+                // Exit fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) { // Safari
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { // IE11
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        function toggleDiaryList() {
+            const isOpen = diaryListPanel.classList.contains('open');
+
+            // Close picture menu if it's open
+            if (pictureMenuPanel.classList.contains('open')) {
+                pictureMenuPanel.classList.remove('open');
+                document.removeEventListener('click', handlePictureMenuOutsideClick);
+            }
+
+            if (isOpen) {
+                diaryListPanel.classList.remove('open');
+                document.removeEventListener('click', handleOutsideClick);
+            } else {
+                renderDiaryListPanel();
+                diaryListPanel.classList.add('open');
+                // Add click listener after a short delay to prevent immediate closing
+                setTimeout(() => {
+                    document.addEventListener('click', handleOutsideClick);
+                }, 100);
+            }
+        }
+
+        function handleOutsideClick(e) {
+            // Check if click is outside the diary list panel and List button
+            if (!diaryListPanel.contains(e.target) &&
+                !e.target.closest('[data-action="list"]') &&
+                !e.target.closest('.menu-item-wrapper')) {
+                diaryListPanel.classList.remove('open');
+                document.removeEventListener('click', handleOutsideClick);
+            }
+        }
+
+        function togglePictureMenu() {
+            const isOpen = pictureMenuPanel.classList.contains('open');
+
+            // Close diary list if it's open
+            if (diaryListPanel.classList.contains('open')) {
+                diaryListPanel.classList.remove('open');
+                document.removeEventListener('click', handleOutsideClick);
+            }
+
+            if (isOpen) {
+                pictureMenuPanel.classList.remove('open');
+                document.removeEventListener('click', handlePictureMenuOutsideClick);
+            } else {
+                renderPictureMenu();
+                pictureMenuPanel.classList.add('open');
+                // Add click listener after a short delay to prevent immediate closing
+                setTimeout(() => {
+                    document.addEventListener('click', handlePictureMenuOutsideClick);
+                }, 100);
+            }
+        }
+
+        function handlePictureMenuOutsideClick(e) {
+            // Check if click is outside the picture menu panel and Picture button
+            if (!pictureMenuPanel.contains(e.target) &&
+                !e.target.closest('[data-action="picture"]') &&
+                !e.target.closest('.menu-item-wrapper')) {
+                pictureMenuPanel.classList.remove('open');
+                document.removeEventListener('click', handlePictureMenuOutsideClick);
+            }
+        }
+
+        function renderPictureMenu() {
+            pictureMenuPanel.innerHTML = '';
+
+            // Add Picture option
+            const addPictureOption = document.createElement('div');
+            addPictureOption.className = 'menu-option';
+            addPictureOption.textContent = 'Add Picture';
+            addPictureOption.addEventListener('click', () => {
+                pictureMenuPanel.classList.remove('open');
+                document.removeEventListener('click', handlePictureMenuOutsideClick);
+                openImagePicker();
+            });
+            pictureMenuPanel.appendChild(addPictureOption);
+
+            // Get current entry to check if there are images
+            const key = getCurrentEntryKey();
+            const entry = entries[key];
+            const hasImages = entry && entry.images && entry.images.length > 0;
+
+            if (hasImages) {
+                // View Images option (opens modal for first image or shows list)
+                const viewImagesOption = document.createElement('div');
+                viewImagesOption.className = 'menu-option';
+                viewImagesOption.textContent = `View Images (${entry.images.length})`;
+                viewImagesOption.addEventListener('click', () => {
+                    pictureMenuPanel.classList.remove('open');
+                    document.removeEventListener('click', handlePictureMenuOutsideClick);
+                    // Open first image in modal
+                    if (entry.images[0]) {
+                        const imageData = entry.images[0];
+                        if (typeof imageData === 'string') {
+                            openImageModal(imageData);
+                        } else {
+                            openImageModal(imageData.full);
+                        }
+                    }
+                });
+                pictureMenuPanel.appendChild(viewImagesOption);
+            }
+        }
+
+        function renderDiaryListPanel() {
+            diaryListPanel.innerHTML = '';
+
+            const keys = Object.keys(entries).sort().reverse();
+            console.log('All entry keys:', keys);
+            console.log('Total entries:', keys.length);
+
+            if (keys.length === 0) {
+                const noEntry = document.createElement('div');
+                noEntry.style.padding = '20px';
+                noEntry.style.color = '#00ff00';
+                noEntry.textContent = 'No entries yet';
+                diaryListPanel.appendChild(noEntry);
+                return;
+            }
+
+            keys.forEach(key => {
+                const item = document.createElement('div');
+                item.className = 'list-item';
+
+                const parsed = parseEntryKey(key);
+                const dateSpan = document.createElement('span');
+                dateSpan.className = 'list-date';
+                const d = new Date(parsed.date + 'T00:00:00');
+                const entryNumText = parsed.number > 1 ? ` (${parsed.number})` : '';
+                dateSpan.textContent = `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}${entryNumText}`;
+
+                const previewSpan = document.createElement('span');
+                previewSpan.className = 'list-preview';
+                const entry = entries[key];
+                const text = typeof entry === 'string' ? entry : (entry.text || '');
+                const imageCount = (entry.images && entry.images.length) ? ` [사진 ${entry.images.length}장]` : '';
+                previewSpan.textContent = text.substring(0, 50) + (text.length > 50 ? '...' : '') + imageCount;
+
+                item.appendChild(dateSpan);
+                item.appendChild(previewSpan);
+
+                item.addEventListener('click', () => {
+                    loadEntry(key);
+                    diaryListPanel.classList.remove('open');
+                });
+
+                diaryListPanel.appendChild(item);
+            });
+        }
+
+        function selectMenuItem(index) {
+            menuItems.forEach(item => item.classList.remove('selected'));
+            menuItems[index].classList.add('selected');
+            selectedMenuItem = index;
+        }
+
+        function handleMenuAction(action) {
+            if (action === 'write') {
+                startApp('write');
+            } else if (action === 'list') {
+                startApp('calendar');
+            } else if (action === 'credits') {
+                startApp('credits');
+            }
+        }
+
+        function startApp(mode) {
+            titleScreen.style.display = 'none';
+            appContainer.style.display = 'flex';
+
+            if (mode === 'write') {
+                updateDateHeader();
+                loadCurrentEntry();
+                switchMode('view');
+            } else if (mode === 'list') {
+                switchMode('list');
+            } else if (mode === 'calendar') {
+                switchMode('calendar');
+            } else if (mode === 'credits') {
+                switchMode('credits');
+            }
+        }
+
+        function returnToMenu() {
+            saveCurrentEntry();
+            appContainer.style.display = 'none';
+            titleScreen.style.display = 'flex';
+            currentMode = 'title';
+            selectMenuItem(0);
+        }
+
+        // Storage functions
+        function loadEntries() {
+            const saved = localStorage.getItem('doogie-diary');
+            if (saved) {
+                entries = JSON.parse(saved);
+            }
+        }
+
+        function saveEntries() {
+            localStorage.setItem('doogie-diary', JSON.stringify(entries));
+            showStatus('Saved!', 2000);
+        }
+
+        // Export diary to JSON file
+        function exportDiary() {
+            const dataStr = JSON.stringify(entries, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            const timestamp = new Date().toISOString().split('T')[0];
+            link.download = `doogie-diary-backup-${timestamp}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+            showStatus('Exported!', 2000);
+        }
+
+        // Import diary from JSON file
+        function importDiary() {
+            importInput.click();
+        }
+
+        // Setup import file handler
+        function setupImportHandler() {
+            importInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const importedData = JSON.parse(event.target.result);
+                        // Merge with existing entries
+                        entries = { ...entries, ...importedData };
+                        saveEntries();
+                        loadCurrentEntry();
+                        displayImages();
+                        showStatus('Imported successfully!', 2000);
+                    } catch (error) {
+                        showStatus('Import failed! Invalid file.', 3000);
+                    }
+                };
+                reader.readAsText(file);
+                // Reset input
+                importInput.value = '';
+            });
+        }
+
+        function loadCurrentEntry() {
+            const key = getCurrentEntryKey();
+            const entry = entries[key];
+            if (!entry) {
+                editor.value = '';
+            } else if (typeof entry === 'string') {
+                editor.value = entry;
+            } else {
+                editor.value = entry.text || '';
+            }
+            lastSavedContent = editor.value.trim();
+            updateCharCount();
+            displayImages();
+        }
+
+        function saveCurrentEntry() {
+            const content = editor.value.trim();
+            const key = getCurrentEntryKey();
+            const entry = entries[key];
+
+            console.log('saveCurrentEntry - key:', key, 'content length:', content.length);
+
+            const hasImages = entry && entry.images && entry.images.length > 0;
+
+            // Don't save if there's no content and no images
+            if (!content && !hasImages) {
+                // Only delete if the entry already exists in storage
+                if (entries[key]) {
+                    console.log('Deleting empty entry:', key);
+                    delete entries[key];
+                    saveEntries();
+                }
+                // Don't update lastSavedContent if there's nothing to save
+                return;
+            }
+
+            // Save the entry - always create or update the entry at the current key
+            if (!entries[key]) {
+                entries[key] = { text: '', images: [] };
+            }
+
+            // Preserve existing images if any
+            if (entry && entry.images) {
+                entries[key].images = entry.images;
+            } else if (!entries[key].images) {
+                entries[key].images = [];
+            }
+
+            entries[key].text = content;
+
+            console.log('Saved entry:', key);
+            console.log('All keys after save:', Object.keys(entries));
+            saveEntries();
+            lastSavedContent = content;
+        }
+
+        // UI Updates
+        function updateDateHeader() {
+            const date = new Date(currentDate + 'T00:00:00');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const year = date.getFullYear();
+            const daysOfWeek = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+            const dayOfWeek = daysOfWeek[date.getDay()];
+            // Don't show entry number in diary view - only in list views
+            const formatted = `${month}/${day}/${year} ${dayOfWeek}`;
+            dateHeader.textContent = formatted;
+        }
+
+        function updateCharCount() {
+            charCount.textContent = `${editor.value.length} chars`;
+        }
+
+        function updateStatus() {
+            entryCount.textContent = `${Object.keys(entries).length} entries`;
+        }
+
+        function showStatus(message, duration = 0) {
+            statusLeft.textContent = message;
+            if (duration > 0) {
+                setTimeout(() => {
+                    statusLeft.textContent = 'Ready';
+                }, duration);
+            }
+        }
+
+        // Mode switching
+        function switchMode(mode) {
+            currentMode = mode;
+
+            contentView.style.display = 'none';
+            contentList.style.display = 'none';
+            calendarContainer.style.display = 'none';
+            helpScreen.style.display = 'none';
+            settingsScreen.style.display = 'none';
+            creditsScreen.style.display = 'none';
+
+            if (mode === 'view') {
+                contentView.style.display = 'flex';
+                editor.focus();
+                updateCursorPosition();
+                showStatus('Ready');
+            } else if (mode === 'list') {
+                renderEntryList();
+                contentList.style.display = 'flex';
+                showStatus('Select entry with arrow keys and ENTER');
+            } else if (mode === 'calendar') {
+                renderCalendar();
+                calendarContainer.style.display = 'flex';
+                showStatus('Click on a date to view entries');
+            } else if (mode === 'help') {
+                helpScreen.style.display = 'flex';
+                showStatus('Press ESC to close help');
+            } else if (mode === 'settings') {
+                settingsScreen.style.display = 'flex';
+                showStatus('⚙ Settings - Press ESC to return');
+            } else if (mode === 'credits') {
+                creditsScreen.style.display = 'flex';
+                showStatus('💾 DOOGIE DISKETTE - Press ESC to return');
+            }
+        }
+
+        // Entry list
+        function renderEntryList() {
+            entryList.innerHTML = '';
+
+            const sortedKeys = Object.keys(entries).sort().reverse();
+
+            if (sortedKeys.length === 0) {
+                const emptyMsg = document.createElement('div');
+                emptyMsg.style.color = '#aaaaaa';
+                emptyMsg.style.textAlign = 'center';
+                emptyMsg.style.marginTop = '50px';
+                emptyMsg.textContent = '일기가 없습니다. F4를 눌러 새 일기를 작성하세요.';
+                entryList.appendChild(emptyMsg);
+                return;
+            }
+
+            sortedKeys.forEach(key => {
+                const item = document.createElement('div');
+                item.className = 'entry-item';
+                item.dataset.entryKey = key;
+
+                const parsed = parseEntryKey(key);
+                const dateDiv = document.createElement('div');
+                dateDiv.className = 'entry-date';
+                const d = new Date(parsed.date + 'T00:00:00');
+                const entryNumText = parsed.number > 1 ? ` (${parsed.number})` : '';
+                dateDiv.textContent = `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}${entryNumText}`;
+
+                const preview = document.createElement('div');
+                preview.className = 'entry-preview';
+
+                const entry = entries[key];
+                const text = typeof entry === 'string' ? entry : (entry.text || '');
+                const imageCount = (entry.images && entry.images.length) ? ` [사진 ${entry.images.length}장]` : '';
+                preview.textContent = text.substring(0, 100) + imageCount;
+
+                item.appendChild(dateDiv);
+                item.appendChild(preview);
+
+                item.addEventListener('click', () => {
+                    loadEntry(key);
+                });
+
+                entryList.appendChild(item);
+            });
+
+            // Add settings button at the end
+            const footer = document.createElement('div');
+            footer.className = 'list-footer';
+            const settingsButton = document.createElement('button');
+            settingsButton.className = 'settings-link-button';
+            settingsButton.id = 'settingsLinkButton';
+            settingsButton.textContent = '⚙ Settings';
+            settingsButton.addEventListener('click', () => {
+                switchMode('settings');
+            });
+            footer.appendChild(settingsButton);
+            entryList.appendChild(footer);
+        }
+
+        function loadEntry(key) {
+            // Save current entry BEFORE changing currentDate and currentEntryNumber
+            const oldKey = getCurrentEntryKey();
+            console.log('Switching from', oldKey, 'to', key);
+
+            saveCurrentEntry();
+
+            // Now switch to the new entry
+            const parsed = parseEntryKey(key);
+            currentDate = parsed.date;
+            currentEntryNumber = parsed.number;
+
+            console.log('New key is', getCurrentEntryKey());
+
+            updateDateHeader();
+            loadCurrentEntry();
+            switchMode('view');
+        }
+
+        function newEntry() {
+            // Check if there are unsaved changes
+            if (checkUnsavedChanges()) {
+                showConfirmDialog();
+            } else {
+                proceedWithNewEntry();
+            }
+        }
+
+        // Auto-save
+        editor.addEventListener('input', () => {
+            updateCharCount();
+
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(() => {
+                saveCurrentEntry();
+                updateStatus();
+            }, 2000);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Title screen navigation
+            if (currentMode === 'title') {
+                if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    selectMenuItem(Math.max(0, selectedMenuItem - 1));
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    selectMenuItem(Math.min(menuItems.length - 1, selectedMenuItem + 1));
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleMenuAction(menuItems[selectedMenuItem].dataset.action);
+                }
+                return;
+            }
+
+            // F1 - Help
+            if (e.key === 'F1') {
+                e.preventDefault();
+                if (currentMode === 'help') {
+                    switchMode('view');
+                } else {
+                    switchMode('help');
+                }
+            }
+
+            // F2 - Save
+            if (e.key === 'F2') {
+                e.preventDefault();
+                saveCurrentEntry();
+                updateStatus();
+            }
+
+            // F3 - List
+            if (e.key === 'F3') {
+                e.preventDefault();
+                if (currentMode === 'list') {
+                    switchMode('view');
+                } else {
+                    saveCurrentEntry();
+                    switchMode('list');
+                }
+            }
+
+            // F4 - New entry
+            if (e.key === 'F4') {
+                e.preventDefault();
+                newEntry();
+            }
+
+            // F5 - Add picture
+            if (e.key === 'F5') {
+                e.preventDefault();
+                if (currentMode === 'view') {
+                    openImagePicker();
+                }
+            }
+
+            // ESC - Return to menu or view
+            if (e.key === 'Escape') {
+                if (currentMode === 'view') {
+                    returnToMenu();
+                } else if (currentMode === 'credits') {
+                    returnToMenu();
+                } else if (currentMode !== 'title') {
+                    switchMode('view');
+                }
+            }
+        });
+
+        // Prevent accidental page close
+        window.addEventListener('beforeunload', (e) => {
+            saveCurrentEntry();
+        });
+
+        // Start
+        init();
+    </script>
+</body>
+</html>

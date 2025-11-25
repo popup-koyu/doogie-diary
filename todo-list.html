@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나의 할 일 체크리스트</title>
+    <style>
+        /* 전체 페이지 스타일 */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* 메인 컨테이너 */
+        h1 {
+            color: white;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* 입력 영역 스타일 */
+        #todoInput {
+            width: 70%;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 25px 0 0 25px;
+            outline: none;
+        }
+
+        #addButton {
+            width: 25%;
+            padding: 15px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 0 25px 25px 0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        #addButton:hover {
+            background-color: #45a049;
+        }
+
+        /* 입력 영역을 감싸는 div */
+        body > div {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* 할 일 목록 스타일 */
+        #todoList {
+            list-style: none;
+            padding: 0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 각 할 일 항목 스타일 */
+        #todoList li {
+            background: white;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        #todoList li:hover {
+            transform: translateX(5px);
+        }
+
+        /* 체크박스 스타일 */
+        #todoList li input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        /* 완료된 할 일 스타일 */
+        #todoList li.completed span {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        /* 할 일 텍스트 */
+        #todoList li span {
+            flex-grow: 1;
+        }
+
+        /* 삭제 버튼 */
+        #todoList li button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        #todoList li button:hover {
+            background-color: #da190b;
+        }
+    </style>
+</head>
+<body>
+    <h1>📝 오늘의 할 일</h1>
+
+    <!-- 할 일 입력 영역 -->
+    <div>
+        <input type="text" id="todoInput" placeholder="할 일을 입력하세요">
+        <button id="addButton">추가</button>
+    </div>
+
+    <!-- 할 일 목록이 표시될 영역 -->
+    <ul id="todoList">
+        <!-- 여기에 할 일들이 추가됩니다 -->
+    </ul>
+
+    <script>
+        // HTML 요소들 가져오기
+        const todoInput = document.getElementById('todoInput');
+        const addButton = document.getElementById('addButton');
+        const todoList = document.getElementById('todoList');
+
+        // 저장된 할 일 불러오기
+        function loadTodos() {
+            const savedTodos = localStorage.getItem('todos');
+            if (savedTodos) {
+                const todos = JSON.parse(savedTodos);
+                todos.forEach(todo => {
+                    createTodoElement(todo.text, todo.completed);
+                });
+            }
+        }
+
+        // 할 일 저장하기
+        function saveTodos() {
+            const todos = [];
+            const items = todoList.querySelectorAll('li');
+            items.forEach(item => {
+                const text = item.querySelector('span').textContent;
+                const completed = item.classList.contains('completed');
+                todos.push({ text, completed });
+            });
+            localStorage.setItem('todos', JSON.stringify(todos));
+        }
+
+        // 할 일 요소 만들기 (중복 코드 제거)
+        function createTodoElement(text, completed = false) {
+            const li = document.createElement('li');
+            if (completed) {
+                li.classList.add('completed');
+            }
+
+            // 체크박스 만들기
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = completed;
+            checkbox.addEventListener('change', function() {
+                if (checkbox.checked) {
+                    li.classList.add('completed');
+                } else {
+                    li.classList.remove('completed');
+                }
+                saveTodos(); // 변경사항 저장
+            });
+
+            // 할 일 텍스트
+            const span = document.createElement('span');
+            span.textContent = text;
+
+            // 삭제 버튼 만들기
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = '삭제';
+            deleteBtn.addEventListener('click', function() {
+                li.remove();
+                saveTodos(); // 삭제 후 저장
+            });
+
+            // 요소들을 li에 추가
+            li.appendChild(checkbox);
+            li.appendChild(span);
+            li.appendChild(deleteBtn);
+
+            // 목록에 추가
+            todoList.appendChild(li);
+        }
+
+        // "추가" 버튼 클릭하면 실행되는 함수
+        function addTodo() {
+            // 입력한 텍스트 가져오기
+            const todoText = todoInput.value.trim();
+
+            // 빈 문자열이면 아무것도 안 함
+            if (todoText === '') {
+                alert('할 일을 입력해주세요!');
+                return;
+            }
+
+            // 할 일 요소 만들기
+            createTodoElement(todoText, false);
+
+            // 저장하기
+            saveTodos();
+
+            // 입력창 비우기
+            todoInput.value = '';
+
+            // 입력창에 포커스
+            todoInput.focus();
+        }
+
+        // 버튼 클릭 이벤트
+        addButton.addEventListener('click', addTodo);
+
+        // 엔터키 누르면 추가
+        todoInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                addTodo();
+            }
+        });
+
+        // 페이지 로드 시 저장된 할 일 불러오기
+        loadTodos();
+    </script>
+</body>
+</html>
