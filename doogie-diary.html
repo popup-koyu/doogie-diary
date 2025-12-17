@@ -235,6 +235,8 @@
             display: none;
             flex: 1;
             flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
         }
 
         .main-container {
@@ -251,15 +253,14 @@
         }
 
         .diary-container {
-            flex: 1;
             display: flex;
             flex-direction: column;
             background: #000000;
             overflow: hidden;
-            aspect-ratio: 4 / 3;  /* 4:3 비율 강제 */
             margin: auto;
-            max-width: 100vw;
-            max-height: 100vh;
+            width: 100%;
+            flex: 1;
+            min-height: 0;
         }
 
         .menu-bar {
@@ -270,6 +271,7 @@
             justify-content: flex-start;
             align-items: center;
             gap: 20px;
+            flex-shrink: 0;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -296,6 +298,300 @@
 
         .menu-bar .menu-item-top:hover {
             color: #ffffff;
+        }
+
+        /* Mode Toggle Button */
+        .mode-toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+            padding-right: 10px;
+        }
+
+        .mode-toggle-label {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            color: #00ff00;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .mode-toggle-label.markdown-mode {
+            color: #55ff55;
+        }
+
+        .mode-toggle-btn {
+            width: 50px;
+            height: 24px;
+            background: #003300;
+            border: 2px solid #00ff00;
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .mode-toggle-btn:hover {
+            background: #004400;
+        }
+
+        .mode-toggle-btn.markdown-active {
+            background: #003300;
+            border-color: #55ff55;
+        }
+
+        .mode-toggle-indicator {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: #00ff00;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 5px #00ff00;
+        }
+
+        .mode-toggle-btn.markdown-active .mode-toggle-indicator {
+            left: 28px;
+            background: #55ff55;
+            box-shadow: 0 0 5px #55ff55;
+        }
+
+        /* Markdown Editor Styles */
+        .markdown-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .markdown-editor-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .markdown-toolbar {
+            display: flex;
+            gap: 5px;
+            padding: 8px;
+            background: #001a00;
+            border-bottom: 1px solid #00ff00;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        .md-tool-btn {
+            background: #002200;
+            border: 1px solid #00aa00;
+            color: #00ff00;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .md-tool-btn:hover {
+            background: #004400;
+            color: #ffffff;
+            border-color: #00ff00;
+        }
+
+        .md-preview-btn {
+            background: #220022;
+            border-color: #aa00aa;
+            color: #ff55ff;
+        }
+
+        .md-preview-btn:hover {
+            background: #440044;
+            border-color: #ff55ff;
+        }
+
+        .md-preview-btn.active {
+            background: #550055;
+            border-color: #ff55ff;
+            box-shadow: 0 0 5px #ff55ff;
+        }
+
+        .md-toolbar-separator {
+            width: 1px;
+            background: #004400;
+            margin: 0 5px;
+        }
+
+        .markdown-edit-area {
+            flex: 1;
+            display: flex;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .markdown-editor {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #00ff00;
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 18px;
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+            padding: 15px;
+            overflow-y: auto;
+            min-width: 0;
+            min-height: 0;
+        }
+
+        .markdown-editor::placeholder {
+            color: #004400;
+        }
+
+        .markdown-preview {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #001100;
+            border-left: 1px solid #00aa00;
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 18px;
+            line-height: 1.6;
+            min-width: 0;
+            min-height: 0;
+        }
+
+        /* Markdown Rendering - DOS Green Monotone Style */
+        .markdown-preview h1, .markdown-preview h2, .markdown-preview h3,
+        .markdown-preview h4, .markdown-preview h5, .markdown-preview h6 {
+            color: #00ff00;
+            font-family: 'NeoDunggeunmo', monospace;
+            margin: 20px 0 10px 0;
+            font-weight: normal;
+        }
+
+        .markdown-preview h1 { font-size: 28px; }
+        .markdown-preview h2 { font-size: 24px; }
+        .markdown-preview h3 { font-size: 20px; }
+        .markdown-preview h4 { font-size: 18px; }
+        .markdown-preview h5 { font-size: 16px; }
+        .markdown-preview h6 { font-size: 14px; }
+
+        .markdown-preview p {
+            color: #00ff00;
+            margin: 10px 0;
+        }
+
+        .markdown-preview strong {
+            color: #00ff00;
+            font-weight: bold;
+            text-shadow: 0 0 3px #00ff00;
+        }
+
+        .markdown-preview em {
+            color: #00aa00;
+            font-style: italic;
+        }
+
+        .markdown-preview code {
+            background: #1a0a00;
+            color: #ff8800;
+            padding: 2px 6px;
+            border: none;
+            font-family: 'NeoDunggeunmo', monospace;
+        }
+
+        .markdown-preview pre {
+            background: #1a0a00;
+            border: none;
+            padding: 15px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .markdown-preview pre code {
+            background: transparent;
+            padding: 0;
+            border: none;
+            color: #ff8800;
+        }
+
+        .markdown-preview a {
+            color: #00ff00;
+            text-decoration: underline;
+        }
+
+        .markdown-preview a:hover {
+            color: #55ff55;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        .markdown-preview blockquote {
+            border-left: 3px solid #00aa00;
+            padding-left: 15px;
+            margin: 15px 0;
+            color: #008800;
+            background: #001100;
+            padding: 10px 15px;
+        }
+
+        .markdown-preview ul, .markdown-preview ol {
+            color: #00ff00;
+            margin: 10px 0;
+            padding-left: 25px;
+        }
+
+        .markdown-preview li {
+            margin: 5px 0;
+        }
+
+        .markdown-preview table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        .markdown-preview th {
+            background: #002200;
+            color: #00ff00;
+            padding: 8px;
+            border: 1px solid #00aa00;
+            text-align: left;
+        }
+
+        .markdown-preview td {
+            padding: 8px;
+            border: 1px solid #004400;
+            color: #00ff00;
+        }
+
+        .markdown-preview tr:nth-child(even) {
+            background: #001100;
+        }
+
+        .markdown-preview hr {
+            border: none;
+            border-top: 1px solid #00aa00;
+            margin: 20px 0;
+        }
+
+        .markdown-preview del {
+            color: #006600;
+            text-decoration: line-through;
+        }
+
+        /* Mermaid Diagram Styling */
+        .markdown-preview .mermaid {
+            background: #001a00;
+            padding: 15px;
+            border: 1px solid #00aa00;
+            margin: 15px 0;
+            text-align: center;
         }
 
         .diary-list-panel {
@@ -381,7 +677,7 @@
             flex: 1;
             padding: 20px;
             overflow: hidden;
-            display: flex;
+            display: none;
             flex-direction: column;
             background: #000000;
             border: none;
@@ -395,6 +691,7 @@
             color: #00ff00;
             font-family: 'VT323', monospace;
             border: none;
+            flex-shrink: 0;
         }
 
         .editor {
@@ -538,12 +835,12 @@
 
         .cursor {
             position: absolute;
-            width: 14px;
-            height: 4px;
+            width: 12px;
+            height: 24px;
             background: #00ff00;
             pointer-events: none;
             z-index: 10;
-            animation: cursorBlink 1s step-end infinite;
+            animation: cursorBlink 0.69s step-end infinite;
         }
 
         @keyframes cursorBlink {
@@ -651,6 +948,11 @@
             border-top: 1px solid #00ff00;
             display: flex;
             justify-content: space-between;
+            flex-shrink: 0;
+            flex-grow: 0;
+            height: 30px;
+            min-height: 30px;
+            max-height: 30px;
         }
 
         .entry-list {
@@ -686,6 +988,8 @@
 
         .mode-view {
             display: flex;
+            flex-direction: column;
+            min-height: 0;
         }
 
         .mode-list {
@@ -1512,9 +1816,455 @@
             background: #00ff00;
             color: #000000;
         }
+
+        /* ========== CHRISTMAS SPECIAL ========== */
+
+        /* Snow Effect */
+        .snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
+            color: #ffffff;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            text-shadow: 0 0 3px #aaddff;
+            animation: snowfall linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Christmas Theme Colors */
+        body.christmas-theme {
+            --xmas-red: #ff0000;
+            --xmas-green: #00ff00;
+            --xmas-gold: #ffaa00;
+            --xmas-white: #ffffff;
+        }
+
+        /* Christmas Star Decorations */
+        body.christmas-theme .star {
+            animation: twinkleChristmas 1s infinite;
+        }
+
+        @keyframes twinkleChristmas {
+            0%, 100% {
+                opacity: 0.3;
+                background: #ff0000;
+                box-shadow: 0 0 3px #ff0000;
+            }
+            25% {
+                opacity: 1;
+                background: #00ff00;
+                box-shadow: 0 0 5px #00ff00;
+            }
+            50% {
+                opacity: 0.5;
+                background: #ffaa00;
+                box-shadow: 0 0 4px #ffaa00;
+            }
+            75% {
+                opacity: 1;
+                background: #ffffff;
+                box-shadow: 0 0 5px #ffffff;
+            }
+        }
+
+        /* Christmas Menu Styling */
+        body.christmas-theme .menu-bar {
+            border-bottom: 1px solid #ff0000;
+            background: linear-gradient(90deg, #001100 0%, #110000 50%, #001100 100%);
+        }
+
+        body.christmas-theme .status-bar {
+            border-top: 1px solid #ff0000;
+            background: linear-gradient(90deg, #110000 0%, #001100 50%, #110000 100%);
+        }
+
+        /* Christmas Settings Button */
+        .xmas-button {
+            background: #001100;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            padding: 8px 20px;
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .xmas-button:hover {
+            background: #002200;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        .xmas-button.active {
+            background: #002200;
+            color: #55ff55;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        body.christmas-theme .xmas-button.active {
+            background: #220000;
+            border-color: #ff0000;
+            color: #ff5555;
+            box-shadow: 0 0 10px #ff0000;
+        }
+
+        /* Easter Egg Modal */
+        .easter-egg-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .easter-egg-modal.show {
+            display: flex;
+        }
+
+        .easter-egg-content {
+            text-align: center;
+            animation: easterEggAppear 1s ease-out;
+        }
+
+        @keyframes easterEggAppear {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .easter-egg-tree {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: treeSparkle 0.5s ease-in-out infinite;
+        }
+
+        @keyframes treeSparkle {
+            0%, 100% { filter: drop-shadow(0 0 10px #00ff00); }
+            50% { filter: drop-shadow(0 0 20px #ffaa00) drop-shadow(0 0 30px #ff0000); }
+        }
+
+        .easter-egg-message {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 16px;
+            color: #00ff00;
+            line-height: 2;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        .easter-egg-message .red { color: #ff0000; text-shadow: 0 0 10px #ff0000; }
+        .easter-egg-message .gold { color: #ffaa00; text-shadow: 0 0 10px #ffaa00; }
+        .easter-egg-message .white { color: #ffffff; text-shadow: 0 0 10px #ffffff; }
+
+        .easter-egg-close {
+            margin-top: 30px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 12px;
+            color: #888888;
+            animation: blink 1s infinite;
+        }
+
+        /* Christmas Card Menu - Only show in December */
+        .xmas-menu-item {
+            display: none;
+            color: #ff5555 !important;
+        }
+
+        body.christmas-theme .xmas-menu-item {
+            display: inline;
+        }
+
+        /* Christmas Card Screen */
+        .xmas-card-screen {
+            padding: 20px;
+        }
+
+        .xmas-card-container {
+            display: flex;
+            gap: 30px;
+            height: 100%;
+            max-height: calc(100vh - 150px);
+        }
+
+        .xmas-card-preview {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #001100;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            padding: 20px;
+        }
+
+        /* Folder-style Card - Vertical Layout */
+        .xmas-card-folder {
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .xmas-card-panel {
+            width: 642px;
+            height: 360px;
+            box-sizing: border-box;
+        }
+
+        /* Top Panel: Message Area - DOS Style */
+        .xmas-card-top-panel {
+            background: #000000;
+            border: none;
+        }
+
+        /* Bottom Panel: GIF */
+        .xmas-card-bottom-panel {
+            border: none;
+        }
+
+        .xmas-card-gif {
+            width: 642px;
+            height: 360px;
+            display: block;
+        }
+
+        .xmas-card-message-area {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 20px 45px;
+            box-sizing: border-box;
+        }
+
+        .xmas-card-header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .xmas-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 16px;
+            color: #ffffff;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .xmas-card-subtitle {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            color: #ffffff;
+            display: block;
+        }
+
+        .xmas-card-tagline {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 11px;
+            color: #ffffff;
+            display: block;
+            margin-top: 8px;
+        }
+
+        .xmas-card-to {
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 20px;
+            color: #ffffff;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .xmas-card-message {
+            flex: 1;
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 18px;
+            color: #ffffff;
+            text-align: left;
+            line-height: 1.6;
+            word-break: keep-all;
+            overflow-y: visible;
+        }
+
+        .xmas-card-from {
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 20px;
+            color: #ffffff;
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        .xmas-card-year {
+            display: none;
+        }
+
+        .xmas-card-footer {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            color: #ffffff;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .xmas-card-editor {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 350px;
+        }
+
+        .xmas-card-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .xmas-card-field label {
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            color: #00ff00;
+        }
+
+        .xmas-card-field input,
+        .xmas-card-field textarea {
+            background: #001100;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 16px;
+            padding: 10px;
+            outline: none;
+        }
+
+        .xmas-card-field input:focus,
+        .xmas-card-field textarea:focus {
+            border-color: #55ff55;
+            box-shadow: 0 0 5px #00ff00;
+        }
+
+        .xmas-card-field textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        .xmas-card-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .xmas-card-btn {
+            background: #002200;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .xmas-card-btn:hover {
+            background: #004400;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        .xmas-card-list-title {
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            color: #ffaa00;
+            margin-top: 10px;
+        }
+
+        .xmas-card-list {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #004400;
+            background: #000800;
+            padding: 10px;
+            min-height: 100px;
+        }
+
+        .xmas-card-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid #003300;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .xmas-card-list-item:hover {
+            background: #002200;
+        }
+
+        .xmas-card-list-item-info {
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 14px;
+            color: #00ff00;
+        }
+
+        .xmas-card-list-item-delete {
+            color: #ff5555;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .xmas-card-list-item-delete:hover {
+            color: #ff0000;
+        }
     </style>
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Mermaid.js for diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <!-- html2canvas for card download -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <!-- gif.js for GIF animation export -->
+    <script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.min.js"></script>
+    <!-- omggif for GIF frame extraction (browser-compatible) -->
+    <script src="https://cdn.jsdelivr.net/npm/omggif@1.0.10/omggif.js"></script>
 </head>
 <body>
+    <!-- Snow Container -->
+    <div class="snow-container" id="snowContainer"></div>
+
+    <!-- Easter Egg Modal -->
+    <div class="easter-egg-modal" id="easterEggModal">
+        <div class="easter-egg-content">
+            <div class="easter-egg-tree">🎄</div>
+            <div class="easter-egg-message" id="easterEggMessage">
+                <span class="red">M</span><span class="gold">E</span><span class="green">R</span><span class="red">R</span><span class="gold">Y</span>
+                <span class="white">CHRISTMAS!</span><br><br>
+                <span style="font-size: 12px;">🎅 Santa says: Keep writing!</span><br>
+                <span style="font-size: 10px; color: #888888;">- From POPUP-STUDIO with ❤️ -</span>
+            </div>
+            <div class="easter-egg-close">Press any key to close</div>
+        </div>
+    </div>
+
     <div class="screen">
         <!-- Title Screen -->
         <div class="main-container title-screen" id="titleScreen">
@@ -1549,18 +2299,48 @@
                 <span class="menu-item-top" data-action="export">Export</span>
                 <span class="menu-item-top" data-action="import">Import</span>
                 <span class="menu-item-top" data-action="help">Help</span>
+                <span class="menu-item-top xmas-menu-item" data-action="xmascard" id="xmasCardMenu">🎄 Card</span>
                 <span class="menu-item-top" data-action="fullscreen" id="fullscreenBtn">Fullscreen</span>
+                <div class="mode-toggle-container">
+                    <span class="mode-toggle-label" id="modeLabel">DIARY</span>
+                    <button class="mode-toggle-btn" id="modeToggleBtn" title="Toggle Diary/Markdown Mode">
+                        <span class="mode-toggle-indicator" id="modeIndicator"></span>
+                    </button>
+                </div>
             </div>
 
-            <div class="content mode-view">
+            <div class="content mode-view" id="contentView">
                 <div class="date-header" id="dateHeader"></div>
-                <div class="editor-wrapper">
+                <!-- Diary Mode Editor -->
+                <div class="editor-wrapper" id="diaryEditorWrapper">
                     <div class="editor-section">
                         <textarea class="editor" id="editor"></textarea>
                         <div class="cursor" id="cursor"></div>
                     </div>
                     <div class="images-section" id="imagesSection">
                         <div class="images-container" id="imagesContainer"></div>
+                    </div>
+                </div>
+                <!-- Markdown Mode Editor -->
+                <div class="markdown-wrapper" id="markdownEditorWrapper" style="display: none;">
+                    <div class="markdown-editor-section">
+                        <div class="markdown-toolbar" id="markdownToolbar">
+                            <button class="md-tool-btn" data-action="heading" title="Heading (Ctrl+H)">#</button>
+                            <button class="md-tool-btn" data-action="bold" title="Bold (Ctrl+B)">B</button>
+                            <button class="md-tool-btn" data-action="italic" title="Italic (Ctrl+I)">I</button>
+                            <button class="md-tool-btn" data-action="code" title="Code (Ctrl+`)"><></button>
+                            <button class="md-tool-btn" data-action="link" title="Link (Ctrl+K)">🔗</button>
+                            <button class="md-tool-btn" data-action="list" title="List">•</button>
+                            <button class="md-tool-btn" data-action="quote" title="Quote">❝</button>
+                            <button class="md-tool-btn" data-action="table" title="Table">▦</button>
+                            <button class="md-tool-btn" data-action="mermaid" title="Mermaid Diagram">◈</button>
+                            <span class="md-toolbar-separator"></span>
+                            <button class="md-tool-btn md-preview-btn" data-action="preview" title="Toggle Preview (Ctrl+P)" id="previewToggleBtn">👁 Preview</button>
+                        </div>
+                        <div class="markdown-edit-area">
+                            <textarea class="markdown-editor" id="markdownEditor" placeholder="Write in Markdown..."></textarea>
+                            <div class="markdown-preview" id="markdownPreview" style="display: none;"></div>
+                        </div>
                     </div>
                 </div>
                 <input type="file" id="fileInput" accept="image/*" style="display: none;" multiple>
@@ -1602,10 +2382,16 @@
                 <div class="help-item"><span class="shortcut">F3</span> - 일기 목록 보기</div>
                 <div class="help-item"><span class="shortcut">F4</span> - 새 일기 작성</div>
                 <div class="help-item"><span class="shortcut">ESC</span> - 목록/도움말에서 나가기</div>
+                <div style="margin-top: 20px; color: #55ff55;">═══ MARKDOWN MODE ═══</div>
+                <div class="help-item"><span class="shortcut">Ctrl+M</span> - Diary/Markdown 모드 전환</div>
+                <div class="help-item"><span class="shortcut">Ctrl+P</span> - 마크다운 미리보기 토글</div>
                 <div style="margin-top: 30px; color: #aaaaaa;">
                     ┌─────────────────────────────────────────────┐<br>
                     │ 모든 일기는 브라우저에 자동 저장됩니다.      │<br>
                     │ F2를 눌러 수동으로 저장할 수도 있습니다.     │<br>
+                    │                                             │<br>
+                    │ <span style="color: #55ff55;">Markdown 모드</span>: 구조화된 문서 작성용     │<br>
+                    │ Mermaid 다이어그램도 지원됩니다!            │<br>
                     └─────────────────────────────────────────────┘
                 </div>
             </div>
@@ -1618,6 +2404,18 @@
                         <div class="setting-control">
                             <button class="lang-button active" data-lang="ko">한국어</button>
                             <button class="lang-button" data-lang="en">English</button>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">🎄 Christmas Mode</div>
+                        <div class="setting-control">
+                            <button class="xmas-button" id="xmasToggleBtn" data-xmas="off">OFF</button>
+                        </div>
+                    </div>
+                    <div class="setting-item xmas-bgm-setting" id="xmasBgmSetting" style="display: none;">
+                        <div class="setting-label">🎵 Christmas BGM</div>
+                        <div class="setting-control">
+                            <button class="xmas-button" id="bgmToggleBtn" data-bgm="off">OFF</button>
                         </div>
                     </div>
                 </div>
@@ -1707,6 +2505,60 @@
                 </div>
             </div>
 
+            <!-- Christmas Card Screen -->
+            <div class="content mode-xmascard xmas-card-screen" id="xmasCardScreen">
+                <div class="xmas-card-container">
+                    <div class="xmas-card-preview" id="xmasCardPreview">
+                        <div class="xmas-card-folder">
+                            <!-- Top Panel: Message Area - DOS Style -->
+                            <div class="xmas-card-panel xmas-card-top-panel">
+                                <div class="xmas-card-message-area">
+                                    <div class="xmas-card-header">
+                                        <span class="xmas-title">Merry Christmas</span>
+                                        <span class="xmas-card-subtitle">from</span>
+                                        <span class="xmas-card-subtitle">POPUP-STUDIO</span>
+                                        <span class="xmas-card-tagline">"Commit to Joy, Push the Vibes."</span>
+                                    </div>
+                                    <div class="xmas-card-to">Dear <span id="cardToPreview">_____</span>,</div>
+                                    <div class="xmas-card-message" id="cardMessagePreview">
+                                        Write your message...
+                                    </div>
+                                    <div class="xmas-card-from">- <span id="cardFromPreview">_____</span></div>
+                                    <div class="xmas-card-footer">press ENTER to continue</div>
+                                </div>
+                            </div>
+                            <!-- Bottom Panel: GIF -->
+                            <div class="xmas-card-panel xmas-card-bottom-panel">
+                                <img src="card_dos.gif" alt="Christmas Card" class="xmas-card-gif">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xmas-card-editor">
+                        <div class="xmas-card-field">
+                            <label>To (받는 사람)</label>
+                            <input type="text" id="cardToInput" placeholder="친구 이름" maxlength="20">
+                        </div>
+                        <div class="xmas-card-field">
+                            <label>Message (메시지)</label>
+                            <textarea id="cardMessageInput" placeholder="따뜻한 마음을 전해보세요..." maxlength="300"></textarea>
+                        </div>
+                        <div class="xmas-card-field">
+                            <label>From (보내는 사람)</label>
+                            <input type="text" id="cardFromInput" placeholder="내 이름" maxlength="20">
+                        </div>
+                        <div class="xmas-card-actions">
+                            <button class="xmas-card-btn" id="saveCardBtn">💾 Save Card</button>
+                            <button class="xmas-card-btn" id="downloadCardBtn">📥 Download</button>
+                            <button class="xmas-card-btn" id="newCardBtn">🆕 New</button>
+                        </div>
+                        <div class="xmas-card-list-title">📜 Saved Cards</div>
+                        <div class="xmas-card-list" id="xmasCardList">
+                            <!-- Saved cards will be listed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="status-bar">
                 <div id="statusLeft">Ready</div>
                 <div id="statusRight">
@@ -1756,6 +2608,220 @@
     </div>
 
     <script>
+        // ============================================
+        // IndexedDB Storage Class
+        // ============================================
+        class DiaryDB {
+            constructor(dbName = 'doogie-diary-db', version = 1) {
+                this.dbName = dbName;
+                this.version = version;
+                this.db = null;
+                this.isReady = false;
+                this.readyPromise = this.init();
+            }
+
+            async init() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(this.dbName, this.version);
+
+                    request.onerror = () => {
+                        console.error('IndexedDB open error:', request.error);
+                        reject(request.error);
+                    };
+
+                    request.onsuccess = () => {
+                        this.db = request.result;
+                        this.isReady = true;
+                        console.log('IndexedDB initialized successfully');
+                        resolve(this.db);
+                    };
+
+                    request.onupgradeneeded = (event) => {
+                        const db = event.target.result;
+
+                        // Create entries store
+                        if (!db.objectStoreNames.contains('entries')) {
+                            const entriesStore = db.createObjectStore('entries', { keyPath: 'key' });
+                            entriesStore.createIndex('date', 'date', { unique: false });
+                        }
+
+                        // Create settings store
+                        if (!db.objectStoreNames.contains('settings')) {
+                            db.createObjectStore('settings', { keyPath: 'key' });
+                        }
+
+                        // Create characters store
+                        if (!db.objectStoreNames.contains('characters')) {
+                            db.createObjectStore('characters', { keyPath: 'key' });
+                        }
+
+                        console.log('IndexedDB schema created/upgraded');
+                    };
+                });
+            }
+
+            async waitForReady() {
+                if (this.isReady) return this.db;
+                return this.readyPromise;
+            }
+
+            async getAllEntries() {
+                await this.waitForReady();
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['entries'], 'readonly');
+                    const store = transaction.objectStore('entries');
+                    const request = store.getAll();
+
+                    request.onsuccess = () => {
+                        const entries = {};
+                        request.result.forEach(item => {
+                            entries[item.key] = item.data;
+                        });
+                        resolve(entries);
+                    };
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            async saveEntry(key, data) {
+                await this.waitForReady();
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['entries'], 'readwrite');
+                    const store = transaction.objectStore('entries');
+                    const date = key.split('-#')[0]; // Extract date from key like "2024-01-15-#1"
+                    const request = store.put({ key, date, data });
+
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            async deleteEntry(key) {
+                await this.waitForReady();
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['entries'], 'readwrite');
+                    const store = transaction.objectStore('entries');
+                    const request = store.delete(key);
+
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            async saveAllEntries(entries) {
+                await this.waitForReady();
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['entries'], 'readwrite');
+                    const store = transaction.objectStore('entries');
+
+                    // Clear existing and add all
+                    store.clear();
+
+                    for (const [key, data] of Object.entries(entries)) {
+                        const date = key.split('-#')[0];
+                        store.put({ key, date, data });
+                    }
+
+                    transaction.oncomplete = () => resolve();
+                    transaction.onerror = () => reject(transaction.error);
+                });
+            }
+
+            async getSetting(key) {
+                await this.waitForReady();
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['settings'], 'readonly');
+                    const store = transaction.objectStore('settings');
+                    const request = store.get(key);
+
+                    request.onsuccess = () => resolve(request.result?.value);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            async saveSetting(key, value) {
+                await this.waitForReady();
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['settings'], 'readwrite');
+                    const store = transaction.objectStore('settings');
+                    const request = store.put({ key, value });
+
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            async getCharacters() {
+                await this.waitForReady();
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['characters'], 'readonly');
+                    const store = transaction.objectStore('characters');
+                    const request = store.get('characters');
+
+                    request.onsuccess = () => resolve(request.result?.value || []);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            async saveCharacters(characters) {
+                await this.waitForReady();
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['characters'], 'readwrite');
+                    const store = transaction.objectStore('characters');
+                    const request = store.put({ key: 'characters', value: characters });
+
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            // Migrate from localStorage to IndexedDB
+            async migrateFromLocalStorage() {
+                await this.waitForReady();
+
+                // Migrate diary entries
+                const savedDiary = localStorage.getItem('doogie-diary');
+                if (savedDiary) {
+                    try {
+                        const entries = JSON.parse(savedDiary);
+                        await this.saveAllEntries(entries);
+                        console.log('Migrated diary entries from localStorage');
+                        // Keep localStorage as backup for now, will be cleared after successful migration
+                    } catch (e) {
+                        console.error('Failed to migrate diary entries:', e);
+                    }
+                }
+
+                // Migrate characters
+                const savedChars = localStorage.getItem('doogie-characters');
+                if (savedChars) {
+                    try {
+                        const characters = JSON.parse(savedChars);
+                        await this.saveCharacters(characters);
+                        console.log('Migrated characters from localStorage');
+                    } catch (e) {
+                        console.error('Failed to migrate characters:', e);
+                    }
+                }
+
+                // Migrate language setting
+                const savedLang = localStorage.getItem('doogie-language');
+                if (savedLang) {
+                    await this.saveSetting('language', savedLang);
+                    console.log('Migrated language setting from localStorage');
+                }
+
+                // Clear localStorage after successful migration
+                localStorage.removeItem('doogie-diary');
+                localStorage.removeItem('doogie-characters');
+                localStorage.removeItem('doogie-language');
+                console.log('Cleared localStorage after migration');
+            }
+        }
+
+        // Initialize IndexedDB
+        const diaryDB = new DiaryDB();
+
         // State
         let currentMode = 'title'; // title, view, list, help
         let currentDate = new Date().toISOString().split('T')[0];
@@ -1765,6 +2831,11 @@
         let selectedMenuItem = 0;
         let hasUnsavedChanges = false;
         let lastSavedContent = '';
+
+        // Markdown Mode State
+        let editorMode = 'diary'; // 'diary' or 'markdown'
+        let markdownPreviewVisible = false;
+        let lastSavedMarkdownContent = '';
 
         // DOM Elements
         const titleScreen = document.getElementById('titleScreen');
@@ -1805,6 +2876,17 @@
         const nextMonthBtn = document.getElementById('nextMonthBtn');
         const calendarEntryList = document.getElementById('calendarEntryList');
         const settingsLinkButtonCalendar = document.getElementById('settingsLinkButtonCalendar');
+
+        // Markdown Mode DOM Elements
+        const modeToggleBtn = document.getElementById('modeToggleBtn');
+        const modeLabel = document.getElementById('modeLabel');
+        const modeIndicator = document.getElementById('modeIndicator');
+        const diaryEditorWrapper = document.getElementById('diaryEditorWrapper');
+        const markdownEditorWrapper = document.getElementById('markdownEditorWrapper');
+        const markdownEditor = document.getElementById('markdownEditor');
+        const markdownPreview = document.getElementById('markdownPreview');
+        const markdownToolbar = document.getElementById('markdownToolbar');
+        const previewToggleBtn = document.getElementById('previewToggleBtn');
 
         // Calendar state
         let currentCalendarYear = new Date().getFullYear();
@@ -2087,8 +3169,8 @@
             charRoles.forEach(makeEditable);
         }
 
-        // Save character data to localStorage
-        function saveCharacterData() {
+        // Save character data to IndexedDB
+        async function saveCharacterData() {
             const characters = [];
 
             for (let i = 1; i <= 6; i++) {
@@ -2103,16 +3185,18 @@
                 });
             }
 
-            localStorage.setItem('doogie-characters', JSON.stringify(characters));
+            try {
+                await diaryDB.saveCharacters(characters);
+            } catch (e) {
+                console.error('Failed to save character data:', e);
+            }
         }
 
-        // Load character data from localStorage
-        function loadCharacterData() {
-            const saved = localStorage.getItem('doogie-characters');
-            if (!saved) return;
-
+        // Load character data from IndexedDB
+        async function loadCharacterData() {
             try {
-                const characters = JSON.parse(saved);
+                const characters = await diaryDB.getCharacters();
+                if (!characters || characters.length === 0) return;
 
                 characters.forEach((char, index) => {
                     const i = index + 1;
@@ -2143,15 +3227,19 @@
             const langButtons = document.querySelectorAll('.lang-button');
 
             langButtons.forEach(button => {
-                button.addEventListener('click', () => {
+                button.addEventListener('click', async () => {
                     const lang = button.dataset.lang;
 
                     // Update active state
                     langButtons.forEach(btn => btn.classList.remove('active'));
                     button.classList.add('active');
 
-                    // Save language
-                    localStorage.setItem('doogie-language', lang);
+                    // Save language to IndexedDB
+                    try {
+                        await diaryDB.saveSetting('language', lang);
+                    } catch (e) {
+                        console.error('Failed to save language setting:', e);
+                    }
 
                     // Apply language
                     applyLanguage(lang);
@@ -2159,8 +3247,13 @@
             });
         }
 
-        function loadLanguage() {
-            const savedLang = localStorage.getItem('doogie-language') || 'ko';
+        async function loadLanguage() {
+            let savedLang = 'ko';
+            try {
+                savedLang = await diaryDB.getSetting('language') || 'ko';
+            } catch (e) {
+                console.error('Failed to load language setting:', e);
+            }
             applyLanguage(savedLang);
 
             // Update button state
@@ -2329,15 +3422,48 @@
             }, 1500); // Spawn new car every 1.5 seconds
         }
 
+        // Extract first frame from GIF and convert to PNG
+        async function extractGifFrame(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0);
+                        resolve(canvas.toDataURL('image/png'));
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Check if file is GIF
+        function isGifFile(file) {
+            return file.type === 'image/gif' || file.name.toLowerCase().endsWith('.gif');
+        }
+
         // Show crop modal and process image
-        function processCharacterImage(file, canvas) {
-            const reader = new FileReader();
+        async function processCharacterImage(file, canvas) {
+            let imageSrc;
 
-            reader.onload = (e) => {
-                showCropModal(e.target.result, canvas);
-            };
+            if (isGifFile(file)) {
+                // Extract first frame from GIF
+                imageSrc = await extractGifFrame(file);
+            } else {
+                // Regular image processing
+                imageSrc = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.readAsDataURL(file);
+                });
+            }
 
-            reader.readAsDataURL(file);
+            showCropModal(imageSrc, canvas);
         }
 
         // Setup and show crop modal
@@ -2625,13 +3751,297 @@
             });
         }
 
+        // ============================================
+        // Auto-formatting Functions
+        // ============================================
+
+        // Generate divider based on longest line width
+        function generateDivider(type) {
+            // Find the longest line in the editor
+            const lines = editor.value.split('\n');
+            let maxWidth = 0;
+
+            for (const line of lines) {
+                const width = measureCtx.measureText(line).width;
+                if (width > maxWidth) {
+                    maxWidth = width;
+                }
+            }
+
+            // Minimum width if no content or short content
+            if (maxWidth < 200) {
+                maxWidth = editor.clientWidth - 40;
+            }
+
+            if (type === 'dotted') {
+                // "- " pattern (dash + space)
+                const dashWidth = measureCtx.measureText('- ').width;
+                const repeatCount = Math.floor(maxWidth / dashWidth);
+                return Array(repeatCount).fill('-').join(' ');
+            } else {
+                // Solid underline
+                const underscoreWidth = measureCtx.measureText('_').width;
+                const repeatCount = Math.floor(maxWidth / underscoreWidth);
+                return '_'.repeat(repeatCount);
+            }
+        }
+
+        // Setup auto-formatting for editor
+        function setupAutoFormatting() {
+            editor.addEventListener('input', handleAutoFormat);
+            editor.addEventListener('keydown', handleListContinuation);
+            editor.addEventListener('keydown', handleTabKey);
+            editor.addEventListener('dblclick', handleCheckboxToggle);
+        }
+
+        // Handle double-click to toggle checkbox
+        function handleCheckboxToggle(e) {
+            const pos = editor.selectionStart;
+            const text = editor.value;
+
+            // Find if we clicked on a checkbox character
+            // Check a few characters around cursor position
+            for (let i = Math.max(0, pos - 2); i <= Math.min(text.length - 1, pos + 2); i++) {
+                const char = text[i];
+                if (char === '□') {
+                    // Toggle to checked
+                    editor.value = text.substring(0, i) + '■' + text.substring(i + 1);
+                    editor.selectionStart = editor.selectionEnd = pos;
+                    updateCharCount();
+                    return;
+                } else if (char === '■') {
+                    // Toggle to unchecked
+                    editor.value = text.substring(0, i) + '□' + text.substring(i + 1);
+                    editor.selectionStart = editor.selectionEnd = pos;
+                    updateCharCount();
+                    return;
+                }
+            }
+        }
+
+        // Handle Tab key - insert 4 spaces instead of default behavior
+        function handleTabKey(e) {
+            if (e.key !== 'Tab') return;
+
+            e.preventDefault();
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const text = editor.value;
+            const spaces = '    '; // 4 spaces
+
+            editor.value = text.substring(0, start) + spaces + text.substring(end);
+            editor.selectionStart = editor.selectionEnd = start + 4;
+            updateCharCount();
+            updateCursorPosition();
+        }
+
+        // Handle auto-formatting on input
+        function handleAutoFormat(e) {
+            const text = editor.value;
+            const pos = editor.selectionStart;
+
+            // Get current line
+            let lineStart = pos;
+            while (lineStart > 0 && text[lineStart - 1] !== '\n') {
+                lineStart--;
+            }
+            const currentLine = text.substring(lineStart, pos);
+
+            // Check for ----- (dotted divider)
+            if (currentLine === '-----') {
+                const before = text.substring(0, lineStart);
+                const after = text.substring(pos);
+                const divider = generateDivider('dotted');
+                editor.value = before + divider + after;
+                editor.selectionStart = editor.selectionEnd = lineStart + divider.length;
+                updateCharCount();
+                updateCursorPosition();
+                return;
+            }
+
+            // Check for _____ (solid line)
+            if (currentLine === '_____') {
+                const before = text.substring(0, lineStart);
+                const after = text.substring(pos);
+                const solidLine = generateDivider('solid');
+                editor.value = before + solidLine + after;
+                editor.selectionStart = editor.selectionEnd = lineStart + solidLine.length;
+                updateCharCount();
+                updateCursorPosition();
+                return;
+            }
+
+            // Check for "- " (bullet list)
+            if (currentLine === '- ') {
+                const before = text.substring(0, lineStart);
+                const after = text.substring(pos);
+                editor.value = before + '    • ' + after;
+                editor.selectionStart = editor.selectionEnd = lineStart + 6;
+                updateCharCount();
+                updateCursorPosition();
+                return;
+            }
+
+            // Check for "[] " (checkbox - unchecked)
+            if (currentLine === '[] ') {
+                const before = text.substring(0, lineStart);
+                const after = text.substring(pos);
+                editor.value = before + '    □ ' + after;
+                editor.selectionStart = editor.selectionEnd = lineStart + 6;
+                updateCharCount();
+                updateCursorPosition();
+                return;
+            }
+
+            // Check for "N. " (numbered list) - add 4 space indent
+            const numberedMatch = currentLine.match(/^(\d+)\. $/);
+            if (numberedMatch) {
+                const num = numberedMatch[1];
+                const before = text.substring(0, lineStart);
+                const after = text.substring(pos);
+                editor.value = before + '    ' + num + '. ' + after;
+                editor.selectionStart = editor.selectionEnd = lineStart + 4 + num.length + 2;
+                updateCharCount();
+                updateCursorPosition();
+                return;
+            }
+        }
+
+        // Handle Enter key for list continuation
+        function handleListContinuation(e) {
+            if (e.key !== 'Enter') return;
+
+            const text = editor.value;
+            const pos = editor.selectionStart;
+
+            // Get current line
+            let lineStart = pos;
+            while (lineStart > 0 && text[lineStart - 1] !== '\n') {
+                lineStart--;
+            }
+            const currentLine = text.substring(lineStart, pos);
+
+            // Check for bullet list (with 4 space indent)
+            const bulletMatch = currentLine.match(/^(\s*)(•\s*)(.*)$/);
+            if (bulletMatch) {
+                const indent = bulletMatch[1];
+                const bullet = bulletMatch[2];
+                const content = bulletMatch[3];
+
+                // If line is empty (just bullet), remove it and exit list
+                if (content.trim() === '') {
+                    e.preventDefault();
+                    const before = text.substring(0, lineStart);
+                    const after = text.substring(pos);
+                    editor.value = before + after;
+                    editor.selectionStart = editor.selectionEnd = lineStart;
+                    updateCharCount();
+                    updateCursorPosition();
+                    return;
+                }
+
+                // Continue list with same indent
+                e.preventDefault();
+                const before = text.substring(0, pos);
+                const after = text.substring(pos);
+                const newText = before + '\n' + indent + '• ' + after;
+                editor.value = newText;
+                editor.selectionStart = editor.selectionEnd = pos + 1 + indent.length + 2;
+                updateCharCount();
+                updateCursorPosition();
+                return;
+            }
+
+            // Check for checkbox list (with 4 space indent)
+            const checkboxMatch = currentLine.match(/^(\s*)([□■]\s*)(.*)$/);
+            if (checkboxMatch) {
+                const indent = checkboxMatch[1];
+                const checkbox = checkboxMatch[2];
+                const content = checkboxMatch[3];
+
+                // If line is empty (just checkbox), remove it and exit list
+                if (content.trim() === '') {
+                    e.preventDefault();
+                    const before = text.substring(0, lineStart);
+                    const after = text.substring(pos);
+                    editor.value = before + after;
+                    editor.selectionStart = editor.selectionEnd = lineStart;
+                    updateCharCount();
+                    updateCursorPosition();
+                    return;
+                }
+
+                // Continue list with same indent (always unchecked for new item)
+                e.preventDefault();
+                const before = text.substring(0, pos);
+                const after = text.substring(pos);
+                const newText = before + '\n' + indent + '□ ' + after;
+                editor.value = newText;
+                editor.selectionStart = editor.selectionEnd = pos + 1 + indent.length + 2;
+                updateCharCount();
+                updateCursorPosition();
+                return;
+            }
+
+            // Check for numbered list (with 4 space indent)
+            const numberedMatch = currentLine.match(/^(\s*)(\d+)\.\s(.*)$/);
+            if (numberedMatch) {
+                const indent = numberedMatch[1];
+                const num = parseInt(numberedMatch[2]);
+                const content = numberedMatch[3];
+
+                // If line is empty (just number), remove it and exit list
+                if (content.trim() === '') {
+                    e.preventDefault();
+                    const before = text.substring(0, lineStart);
+                    const after = text.substring(pos);
+                    editor.value = before + after;
+                    editor.selectionStart = editor.selectionEnd = lineStart;
+                    updateCharCount();
+                    updateCursorPosition();
+                    return;
+                }
+
+                // Continue list with next number
+                e.preventDefault();
+                const before = text.substring(0, pos);
+                const after = text.substring(pos);
+                const nextNum = num + 1;
+                const newText = before + '\n' + indent + nextNum + '. ' + after;
+                editor.value = newText;
+                editor.selectionStart = editor.selectionEnd = pos + 1 + indent.length + String(nextNum).length + 2;
+                updateCharCount();
+                updateCursorPosition();
+                return;
+            }
+        }
+
         // Initialize
-        function init() {
+        async function init() {
             createStars();
             createCreditsStars();
             createNYCSkyline();
             createCars();
-            loadEntries();
+
+            // Wait for IndexedDB to be ready and migrate from localStorage if needed
+            try {
+                await diaryDB.waitForReady();
+
+                // Check if migration is needed (localStorage has data but IndexedDB is empty)
+                const hasLocalStorageData = localStorage.getItem('doogie-diary') ||
+                                           localStorage.getItem('doogie-characters') ||
+                                           localStorage.getItem('doogie-language');
+
+                if (hasLocalStorageData) {
+                    console.log('Migrating data from localStorage to IndexedDB...');
+                    await diaryDB.migrateFromLocalStorage();
+                    console.log('Migration complete!');
+                }
+            } catch (e) {
+                console.error('IndexedDB initialization failed:', e);
+            }
+
+            await loadEntries();
             updateStatus();
             setupMenuListeners();
             setupTopMenuListeners();
@@ -2644,11 +4054,322 @@
             setupImportHandler();
             setupCharacterUpload();
             setupEditableText();
-            loadCharacterData();
+            await loadCharacterData();
             setupLanguageButtons();
-            loadLanguage();
+            await loadLanguage();
             setupSettingsButton();
             setupCalendar();
+            setupAutoFormatting();
+            setupMarkdownMode();
+
+            // Preload GIF for Christmas card download
+            preloadGifData();
+        }
+
+        // =====================================================
+        // MARKDOWN MODE FUNCTIONS
+        // =====================================================
+
+        // Initialize Mermaid with retro theme
+        function initMermaid() {
+            if (typeof mermaid !== 'undefined') {
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'dark',
+                    themeVariables: {
+                        primaryColor: '#003300',
+                        primaryTextColor: '#00ff00',
+                        primaryBorderColor: '#00aa00',
+                        lineColor: '#00aa00',
+                        secondaryColor: '#001a00',
+                        tertiaryColor: '#002200',
+                        background: '#000000',
+                        mainBkg: '#001a00',
+                        secondBkg: '#002200',
+                        border1: '#00aa00',
+                        border2: '#004400',
+                        arrowheadColor: '#00ff00',
+                        fontFamily: 'NeoDunggeunmo, monospace',
+                        fontSize: '14px',
+                        textColor: '#00ff00',
+                        nodeTextColor: '#00ff00'
+                    }
+                });
+            }
+        }
+
+        // Setup Markdown Mode
+        function setupMarkdownMode() {
+            initMermaid();
+
+            // Mode toggle button click
+            modeToggleBtn.addEventListener('click', toggleEditorMode);
+
+            // Markdown toolbar buttons
+            markdownToolbar.addEventListener('click', (e) => {
+                const btn = e.target.closest('.md-tool-btn');
+                if (!btn) return;
+
+                const action = btn.dataset.action;
+                handleMarkdownToolbarAction(action);
+            });
+
+            // Markdown editor input for live preview
+            markdownEditor.addEventListener('input', () => {
+                if (markdownPreviewVisible) {
+                    renderMarkdownPreview();
+                }
+                updateMarkdownCharCount();
+            });
+
+            // Auto-save for markdown editor
+            markdownEditor.addEventListener('input', () => {
+                if (autoSaveTimeout) clearTimeout(autoSaveTimeout);
+                autoSaveTimeout = setTimeout(() => {
+                    saveCurrentMarkdownEntry();
+                }, 2000);
+            });
+        }
+
+        // Toggle between Diary and Markdown mode
+        function toggleEditorMode() {
+            // Save current content before switching
+            if (editorMode === 'diary') {
+                saveCurrentEntry();
+            } else {
+                saveCurrentMarkdownEntry();
+            }
+
+            editorMode = editorMode === 'diary' ? 'markdown' : 'diary';
+
+            // Update UI
+            if (editorMode === 'markdown') {
+                modeToggleBtn.classList.add('markdown-active');
+                modeLabel.textContent = 'MARKDOWN';
+                modeLabel.classList.add('markdown-mode');
+                diaryEditorWrapper.style.display = 'none';
+                markdownEditorWrapper.style.display = 'flex';
+                loadCurrentMarkdownEntry();
+                markdownEditor.focus();
+                showStatus('Markdown Mode - Press Ctrl+P for Preview');
+            } else {
+                modeToggleBtn.classList.remove('markdown-active');
+                modeLabel.textContent = 'DIARY';
+                modeLabel.classList.remove('markdown-mode');
+                diaryEditorWrapper.style.display = 'flex';
+                markdownEditorWrapper.style.display = 'none';
+                loadCurrentEntry();
+                editor.focus();
+                showStatus('Diary Mode');
+            }
+
+            updateDateHeader();
+        }
+
+        // Get markdown entry key (prefixed with #)
+        function getMarkdownEntryKey(date, number) {
+            const baseKey = number === 1 ? date : `${date}_(${number})`;
+            return `#${baseKey}`;
+        }
+
+        // Get current markdown entry key
+        function getCurrentMarkdownEntryKey() {
+            return getMarkdownEntryKey(currentDate, currentEntryNumber);
+        }
+
+        // Load current markdown entry
+        function loadCurrentMarkdownEntry() {
+            const key = getCurrentMarkdownEntryKey();
+            const entry = entries[key];
+            if (!entry) {
+                markdownEditor.value = '';
+            } else if (typeof entry === 'string') {
+                markdownEditor.value = entry;
+            } else {
+                markdownEditor.value = entry.text || '';
+            }
+            lastSavedMarkdownContent = markdownEditor.value.trim();
+            updateMarkdownCharCount();
+
+            if (markdownPreviewVisible) {
+                renderMarkdownPreview();
+            }
+        }
+
+        // Save current markdown entry
+        async function saveCurrentMarkdownEntry() {
+            const content = markdownEditor.value.trim();
+            const key = getCurrentMarkdownEntryKey();
+
+            if (!content) {
+                if (entries[key]) {
+                    delete entries[key];
+                    await deleteEntrySingle(key);
+                    showStatus('Saved!', 2000);
+                }
+                return;
+            }
+
+            if (!entries[key]) {
+                entries[key] = { text: '', images: [] };
+            }
+
+            entries[key].text = content;
+            await saveEntrySingle(key, entries[key]);
+            showStatus('Saved!', 2000);
+            lastSavedMarkdownContent = content;
+            updateStatus();
+        }
+
+        // Update character count for markdown editor
+        function updateMarkdownCharCount() {
+            charCount.textContent = `${markdownEditor.value.length} chars`;
+        }
+
+        // Handle markdown toolbar actions
+        function handleMarkdownToolbarAction(action) {
+            const textarea = markdownEditor;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            const selectedText = text.substring(start, end);
+
+            let insertion = '';
+            let cursorOffset = 0;
+
+            switch (action) {
+                case 'heading':
+                    insertion = `# ${selectedText}`;
+                    cursorOffset = selectedText ? insertion.length : 2;
+                    break;
+                case 'bold':
+                    insertion = `**${selectedText}**`;
+                    cursorOffset = selectedText ? insertion.length : 2;
+                    break;
+                case 'italic':
+                    insertion = `*${selectedText}*`;
+                    cursorOffset = selectedText ? insertion.length : 1;
+                    break;
+                case 'code':
+                    if (selectedText.includes('\n')) {
+                        insertion = `\`\`\`\n${selectedText}\n\`\`\``;
+                        cursorOffset = 4;
+                    } else {
+                        insertion = `\`${selectedText}\``;
+                        cursorOffset = selectedText ? insertion.length : 1;
+                    }
+                    break;
+                case 'link':
+                    insertion = `[${selectedText || 'link text'}](url)`;
+                    cursorOffset = selectedText ? insertion.length : 1;
+                    break;
+                case 'list':
+                    insertion = `- ${selectedText}`;
+                    cursorOffset = 2;
+                    break;
+                case 'quote':
+                    insertion = `> ${selectedText}`;
+                    cursorOffset = 2;
+                    break;
+                case 'table':
+                    insertion = `| Header 1 | Header 2 | Header 3 |
+|----------|----------|----------|
+| Cell 1   | Cell 2   | Cell 3   |
+| Cell 4   | Cell 5   | Cell 6   |`;
+                    cursorOffset = insertion.length;
+                    break;
+                case 'mermaid':
+                    insertion = `\`\`\`mermaid
+flowchart LR
+    A[Start] --> B[Process]
+    B --> C[End]
+\`\`\``;
+                    cursorOffset = insertion.length;
+                    break;
+                case 'preview':
+                    toggleMarkdownPreview();
+                    return;
+            }
+
+            textarea.value = text.substring(0, start) + insertion + text.substring(end);
+            textarea.selectionStart = textarea.selectionEnd = start + cursorOffset;
+            textarea.focus();
+
+            if (markdownPreviewVisible) {
+                renderMarkdownPreview();
+            }
+        }
+
+        // Toggle markdown preview
+        function toggleMarkdownPreview() {
+            markdownPreviewVisible = !markdownPreviewVisible;
+
+            if (markdownPreviewVisible) {
+                markdownPreview.style.display = 'block';
+                previewToggleBtn.classList.add('active');
+                previewToggleBtn.textContent = '✎ Edit';
+                renderMarkdownPreview();
+            } else {
+                markdownPreview.style.display = 'none';
+                previewToggleBtn.classList.remove('active');
+                previewToggleBtn.textContent = '👁 Preview';
+            }
+        }
+
+        // Render markdown preview with Mermaid support
+        async function renderMarkdownPreview() {
+            const content = markdownEditor.value;
+
+            // Configure marked for GFM (GitHub Flavored Markdown)
+            if (typeof marked !== 'undefined') {
+                marked.setOptions({
+                    gfm: true,
+                    breaks: true,
+                    tables: true
+                });
+
+                // Custom renderer for mermaid code blocks
+                const renderer = new marked.Renderer();
+                const originalCodeRenderer = renderer.code;
+
+                renderer.code = function(code, language) {
+                    if (language === 'mermaid') {
+                        return `<div class="mermaid">${code}</div>`;
+                    }
+                    return `<pre><code class="language-${language || ''}">${escapeHtml(code)}</code></pre>`;
+                };
+
+                marked.setOptions({ renderer });
+
+                markdownPreview.innerHTML = marked.parse(content);
+
+                // Render Mermaid diagrams
+                if (typeof mermaid !== 'undefined') {
+                    try {
+                        const mermaidDivs = markdownPreview.querySelectorAll('.mermaid');
+                        for (let i = 0; i < mermaidDivs.length; i++) {
+                            const div = mermaidDivs[i];
+                            const code = div.textContent;
+                            const id = `mermaid-${Date.now()}-${i}`;
+                            try {
+                                const { svg } = await mermaid.render(id, code);
+                                div.innerHTML = svg;
+                            } catch (e) {
+                                div.innerHTML = `<pre style="color: #ff5555;">Mermaid Error: ${e.message}</pre>`;
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Mermaid rendering error:', e);
+                    }
+                }
+            }
+        }
+
+        // Escape HTML for code blocks
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         // Calendar functions
@@ -2713,10 +4434,12 @@
             const isCurrentMonth = today.getFullYear() === currentCalendarYear && today.getMonth() === currentCalendarMonth;
             const todayDate = today.getDate();
 
-            // Count entries per date
+            // Count entries per date (handle both diary and markdown entries)
             const entryCounts = {};
             Object.keys(entries).forEach(key => {
-                const parsed = parseEntryKey(key);
+                const isMarkdown = key.startsWith('#');
+                const actualKey = isMarkdown ? key.substring(1) : key;
+                const parsed = parseEntryKey(actualKey);
                 const date = parsed.date;
                 entryCounts[date] = (entryCounts[date] || 0) + 1;
             });
@@ -2780,9 +4503,11 @@
         function renderCalendarEntryList() {
             calendarEntryList.innerHTML = '';
 
-            // Filter entries for current month
+            // Filter entries for current month (handle both diary and markdown entries)
             const monthEntries = Object.keys(entries).filter(key => {
-                const parsed = parseEntryKey(key);
+                const isMarkdown = key.startsWith('#');
+                const actualKey = isMarkdown ? key.substring(1) : key;
+                const parsed = parseEntryKey(actualKey);
                 const date = new Date(parsed.date + 'T00:00:00');
                 return date.getFullYear() === currentCalendarYear && date.getMonth() === currentCalendarMonth;
             }).sort().reverse();
@@ -2802,12 +4527,18 @@
                 item.className = 'entry-item';
                 item.dataset.entryKey = key;
 
-                const parsed = parseEntryKey(key);
+                const isMarkdown = key.startsWith('#');
+                const actualKey = isMarkdown ? key.substring(1) : key;
+                const parsed = parseEntryKey(actualKey);
                 const dateDiv = document.createElement('div');
                 dateDiv.className = 'entry-date';
                 const d = new Date(parsed.date + 'T00:00:00');
                 const entryNumText = parsed.number > 1 ? ` (${parsed.number})` : '';
-                dateDiv.textContent = `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}${entryNumText}`;
+
+                // Add indicator for markdown entries
+                dateDiv.innerHTML = isMarkdown
+                    ? `<span style="color: #55ff55;">[MD]</span> ${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}${entryNumText}`
+                    : `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}${entryNumText}`;
 
                 const preview = document.createElement('div');
                 preview.className = 'entry-preview';
@@ -2829,9 +4560,11 @@
         }
 
         function loadEntryByDate(dateStr) {
-            // Find all entries for this date
+            // Find all entries for this date (handle both diary and markdown entries)
             const dateEntries = Object.keys(entries).filter(key => {
-                const parsed = parseEntryKey(key);
+                const isMarkdown = key.startsWith('#');
+                const actualKey = isMarkdown ? key.substring(1) : key;
+                const parsed = parseEntryKey(actualKey);
                 return parsed.date === dateStr;
             }).sort();
 
@@ -2934,6 +4667,7 @@
             editor.addEventListener('click', updateCursorPosition);
             editor.addEventListener('keyup', updateCursorPosition);
             editor.addEventListener('keydown', updateCursorPosition);
+            editor.addEventListener('scroll', updateCursorPosition);
             editor.addEventListener('focus', () => {
                 cursor.style.display = 'block';
                 updateCursorPosition();
@@ -2955,8 +4689,17 @@
             // Calculate line height based on CSS
             const lineHeight = 32; // 20px font-size * 1.6 line-height
 
-            cursor.style.top = (currentLine * lineHeight + lineHeight - 4) + 'px';
+            // Position block cursor at current character position (accounting for scroll)
+            const topPosition = currentLine * lineHeight + 4 - editor.scrollTop;
+            cursor.style.top = topPosition + 'px';
             cursor.style.left = textWidth + 'px';
+
+            // Hide cursor if it's outside visible area
+            if (topPosition < 0 || topPosition > editor.clientHeight) {
+                cursor.style.display = 'none';
+            } else if (document.activeElement === editor) {
+                cursor.style.display = 'block';
+            }
         }
 
         // Image handling
@@ -2972,15 +4715,23 @@
             fileInput.click();
         }
 
-        function handleFiles(files) {
+        async function handleFiles(files) {
             for (let file of files) {
                 if (!file.type.startsWith('image/')) continue;
 
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    pixelateImage(e.target.result);
-                };
-                reader.readAsDataURL(file);
+                let imageSrc;
+                if (isGifFile(file)) {
+                    // Extract first frame from GIF
+                    imageSrc = await extractGifFrame(file);
+                } else {
+                    // Regular image processing
+                    imageSrc = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => resolve(e.target.result);
+                        reader.readAsDataURL(file);
+                    });
+                }
+                pixelateImage(imageSrc);
             }
         }
 
@@ -3201,6 +4952,8 @@
                 importDiary();
             } else if (action === 'help') {
                 switchMode('help');
+            } else if (action === 'xmascard') {
+                switchMode('xmascard');
             } else if (action === 'fullscreen') {
                 toggleFullscreen();
             }
@@ -3422,17 +5175,41 @@
             selectMenuItem(0);
         }
 
-        // Storage functions
-        function loadEntries() {
-            const saved = localStorage.getItem('doogie-diary');
-            if (saved) {
-                entries = JSON.parse(saved);
+        // Storage functions (now using IndexedDB)
+        async function loadEntries() {
+            try {
+                entries = await diaryDB.getAllEntries();
+                console.log('Loaded entries from IndexedDB:', Object.keys(entries).length);
+            } catch (error) {
+                console.error('Failed to load entries:', error);
+                entries = {};
             }
         }
 
-        function saveEntries() {
-            localStorage.setItem('doogie-diary', JSON.stringify(entries));
-            showStatus('Saved!', 2000);
+        async function saveEntries() {
+            try {
+                await diaryDB.saveAllEntries(entries);
+                showStatus('Saved!', 2000);
+            } catch (error) {
+                console.error('Failed to save entries:', error);
+                showStatus('Save failed!', 3000);
+            }
+        }
+
+        async function saveEntrySingle(key, data) {
+            try {
+                await diaryDB.saveEntry(key, data);
+            } catch (error) {
+                console.error('Failed to save entry:', error);
+            }
+        }
+
+        async function deleteEntrySingle(key) {
+            try {
+                await diaryDB.deleteEntry(key);
+            } catch (error) {
+                console.error('Failed to delete entry:', error);
+            }
         }
 
         // Export diary to JSON file
@@ -3456,17 +5233,17 @@
 
         // Setup import file handler
         function setupImportHandler() {
-            importInput.addEventListener('change', (e) => {
+            importInput.addEventListener('change', async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
 
                 const reader = new FileReader();
-                reader.onload = (event) => {
+                reader.onload = async (event) => {
                     try {
                         const importedData = JSON.parse(event.target.result);
                         // Merge with existing entries
                         entries = { ...entries, ...importedData };
-                        saveEntries();
+                        await saveEntries();
                         loadCurrentEntry();
                         displayImages();
                         showStatus('Imported successfully!', 2000);
@@ -3495,7 +5272,7 @@
             displayImages();
         }
 
-        function saveCurrentEntry() {
+        async function saveCurrentEntry() {
             const content = editor.value.trim();
             const key = getCurrentEntryKey();
             const entry = entries[key];
@@ -3510,7 +5287,8 @@
                 if (entries[key]) {
                     console.log('Deleting empty entry:', key);
                     delete entries[key];
-                    saveEntries();
+                    await deleteEntrySingle(key);
+                    showStatus('Saved!', 2000);
                 }
                 // Don't update lastSavedContent if there's nothing to save
                 return;
@@ -3532,7 +5310,8 @@
 
             console.log('Saved entry:', key);
             console.log('All keys after save:', Object.keys(entries));
-            saveEntries();
+            await saveEntrySingle(key, entries[key]);
+            showStatus('Saved!', 2000);
             lastSavedContent = content;
         }
 
@@ -3546,7 +5325,13 @@
             const dayOfWeek = daysOfWeek[date.getDay()];
             // Don't show entry number in diary view - only in list views
             const formatted = `${month}/${day}/${year} ${dayOfWeek}`;
-            dateHeader.textContent = formatted;
+
+            // Add mode indicator for markdown mode
+            if (editorMode === 'markdown') {
+                dateHeader.innerHTML = `<span style="color: #55ff55;">[MD]</span> ${formatted}`;
+            } else {
+                dateHeader.textContent = formatted;
+            }
         }
 
         function updateCharCount() {
@@ -3567,6 +5352,8 @@
         }
 
         // Mode switching
+        const xmasCardScreen = document.getElementById('xmasCardScreen');
+
         function switchMode(mode) {
             currentMode = mode;
 
@@ -3576,6 +5363,7 @@
             helpScreen.style.display = 'none';
             settingsScreen.style.display = 'none';
             creditsScreen.style.display = 'none';
+            xmasCardScreen.style.display = 'none';
 
             if (mode === 'view') {
                 contentView.style.display = 'flex';
@@ -3599,6 +5387,10 @@
             } else if (mode === 'credits') {
                 creditsScreen.style.display = 'flex';
                 showStatus('💾 DOOGIE DISKETTE - Press ESC to return');
+            } else if (mode === 'xmascard') {
+                xmasCardScreen.style.display = 'flex';
+                initXmasCardScreen();
+                showStatus('🎄 Christmas Card - Press ESC to return');
             }
         }
 
@@ -3623,12 +5415,21 @@
                 item.className = 'entry-item';
                 item.dataset.entryKey = key;
 
-                const parsed = parseEntryKey(key);
+                // Check if this is a markdown entry (starts with #)
+                const isMarkdown = key.startsWith('#');
+                const actualKey = isMarkdown ? key.substring(1) : key;
+
+                const parsed = parseEntryKey(actualKey);
                 const dateDiv = document.createElement('div');
                 dateDiv.className = 'entry-date';
                 const d = new Date(parsed.date + 'T00:00:00');
                 const entryNumText = parsed.number > 1 ? ` (${parsed.number})` : '';
-                dateDiv.textContent = `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}${entryNumText}`;
+
+                // Add indicator for markdown entries
+                const modeIndicator = isMarkdown ? '[MD] ' : '';
+                dateDiv.innerHTML = isMarkdown
+                    ? `<span style="color: #55ff55;">[MD]</span> ${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}${entryNumText}`
+                    : `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}${entryNumText}`;
 
                 const preview = document.createElement('div');
                 preview.className = 'entry-preview';
@@ -3664,20 +5465,54 @@
 
         function loadEntry(key) {
             // Save current entry BEFORE changing currentDate and currentEntryNumber
-            const oldKey = getCurrentEntryKey();
+            const oldKey = editorMode === 'markdown' ? getCurrentMarkdownEntryKey() : getCurrentEntryKey();
             console.log('Switching from', oldKey, 'to', key);
 
-            saveCurrentEntry();
+            // Save based on current mode
+            if (editorMode === 'markdown') {
+                saveCurrentMarkdownEntry();
+            } else {
+                saveCurrentEntry();
+            }
 
-            // Now switch to the new entry
-            const parsed = parseEntryKey(key);
-            currentDate = parsed.date;
-            currentEntryNumber = parsed.number;
+            // Check if this is a markdown entry (starts with #)
+            if (key.startsWith('#')) {
+                const actualKey = key.substring(1); // Remove # prefix
+                const parsed = parseEntryKey(actualKey);
+                currentDate = parsed.date;
+                currentEntryNumber = parsed.number;
+
+                // Switch to markdown mode if not already
+                if (editorMode !== 'markdown') {
+                    editorMode = 'markdown';
+                    modeToggleBtn.classList.add('markdown-active');
+                    modeLabel.textContent = 'MARKDOWN';
+                    modeLabel.classList.add('markdown-mode');
+                    diaryEditorWrapper.style.display = 'none';
+                    markdownEditorWrapper.style.display = 'flex';
+                }
+                loadCurrentMarkdownEntry();
+            } else {
+                // Now switch to the new entry
+                const parsed = parseEntryKey(key);
+                currentDate = parsed.date;
+                currentEntryNumber = parsed.number;
+
+                // Switch to diary mode if not already
+                if (editorMode !== 'diary') {
+                    editorMode = 'diary';
+                    modeToggleBtn.classList.remove('markdown-active');
+                    modeLabel.textContent = 'DIARY';
+                    modeLabel.classList.remove('markdown-mode');
+                    diaryEditorWrapper.style.display = 'flex';
+                    markdownEditorWrapper.style.display = 'none';
+                }
+                loadCurrentEntry();
+            }
 
             console.log('New key is', getCurrentEntryKey());
 
             updateDateHeader();
-            loadCurrentEntry();
             switchMode('view');
         }
 
@@ -3731,7 +5566,11 @@
             // F2 - Save
             if (e.key === 'F2') {
                 e.preventDefault();
-                saveCurrentEntry();
+                if (editorMode === 'markdown') {
+                    saveCurrentMarkdownEntry();
+                } else {
+                    saveCurrentEntry();
+                }
                 updateStatus();
             }
 
@@ -3741,9 +5580,25 @@
                 if (currentMode === 'list') {
                     switchMode('view');
                 } else {
-                    saveCurrentEntry();
+                    if (editorMode === 'markdown') {
+                        saveCurrentMarkdownEntry();
+                    } else {
+                        saveCurrentEntry();
+                    }
                     switchMode('list');
                 }
+            }
+
+            // Ctrl+P or Cmd+P - Toggle markdown preview (only in markdown mode)
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p' && editorMode === 'markdown' && currentMode === 'view') {
+                e.preventDefault();
+                toggleMarkdownPreview();
+            }
+
+            // Ctrl+M or Cmd+M - Toggle editor mode
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'm' && currentMode === 'view') {
+                e.preventDefault();
+                toggleEditorMode();
             }
 
             // F4 - New entry
@@ -3766,6 +5621,8 @@
                     returnToMenu();
                 } else if (currentMode === 'credits') {
                     returnToMenu();
+                } else if (currentMode === 'xmascard') {
+                    switchMode('view');
                 } else if (currentMode !== 'title') {
                     switchMode('view');
                 }
@@ -3774,11 +5631,755 @@
 
         // Prevent accidental page close
         window.addEventListener('beforeunload', (e) => {
-            saveCurrentEntry();
+            if (editorMode === 'markdown') {
+                saveCurrentMarkdownEntry();
+            } else {
+                saveCurrentEntry();
+            }
         });
 
         // Start
         init();
+
+        // ========== CHRISTMAS SPECIAL FEATURES ==========
+
+        // Christmas State
+        let christmasMode = localStorage.getItem('doogie_christmas_mode') === 'true';
+        let bgmPlaying = false;
+        let audioContext = null;
+        let bgmOscillator = null;
+        let bgmGain = null;
+
+        // Initialize Christmas Features
+        function initChristmas() {
+            const xmasToggleBtn = document.getElementById('xmasToggleBtn');
+            const bgmToggleBtn = document.getElementById('bgmToggleBtn');
+            const xmasBgmSetting = document.getElementById('xmasBgmSetting');
+            const easterEggModal = document.getElementById('easterEggModal');
+
+            // Check if it's Christmas season (Dec 1-31)
+            const today = new Date();
+            const month = today.getMonth();
+            const day = today.getDate();
+            const isChristmasSeason = (month === 11); // December
+
+            // Auto-enable during Christmas season
+            if (isChristmasSeason && localStorage.getItem('doogie_christmas_mode') === null) {
+                christmasMode = true;
+                localStorage.setItem('doogie_christmas_mode', 'true');
+            }
+
+            // Apply Christmas mode if enabled
+            if (christmasMode) {
+                enableChristmasMode();
+            }
+
+            // Update button states on init
+            updateXmasButtons();
+
+            // Christmas toggle button in settings
+            xmasToggleBtn.addEventListener('click', () => {
+                christmasMode = !christmasMode;
+                localStorage.setItem('doogie_christmas_mode', christmasMode.toString());
+                if (christmasMode) {
+                    enableChristmasMode();
+                } else {
+                    disableChristmasMode();
+                }
+                updateXmasButtons();
+            });
+
+            // BGM toggle button in settings
+            bgmToggleBtn.addEventListener('click', () => {
+                if (bgmPlaying) {
+                    stopBGM();
+                } else {
+                    playBGM();
+                }
+                updateXmasButtons();
+            });
+
+            // Easter egg check for Christmas dates
+            if (isChristmasSeason && (day === 24 || day === 25)) {
+                showChristmasEasterEgg(day);
+            }
+
+            // Close easter egg modal
+            document.addEventListener('keydown', (e) => {
+                if (easterEggModal.classList.contains('show')) {
+                    easterEggModal.classList.remove('show');
+                }
+            });
+
+            easterEggModal.addEventListener('click', () => {
+                easterEggModal.classList.remove('show');
+            });
+        }
+
+        // Update Christmas button states
+        function updateXmasButtons() {
+            const xmasToggleBtn = document.getElementById('xmasToggleBtn');
+            const bgmToggleBtn = document.getElementById('bgmToggleBtn');
+            const xmasBgmSetting = document.getElementById('xmasBgmSetting');
+
+            if (christmasMode) {
+                xmasToggleBtn.textContent = 'ON';
+                xmasToggleBtn.classList.add('active');
+                xmasBgmSetting.style.display = 'flex';
+            } else {
+                xmasToggleBtn.textContent = 'OFF';
+                xmasToggleBtn.classList.remove('active');
+                xmasBgmSetting.style.display = 'none';
+            }
+
+            if (bgmPlaying) {
+                bgmToggleBtn.textContent = 'ON';
+                bgmToggleBtn.classList.add('active');
+            } else {
+                bgmToggleBtn.textContent = 'OFF';
+                bgmToggleBtn.classList.remove('active');
+            }
+        }
+
+        // Enable Christmas Mode
+        function enableChristmasMode() {
+            document.body.classList.add('christmas-theme');
+            createSnowflakes();
+            updateXmasButtons();
+        }
+
+        // Disable Christmas Mode
+        function disableChristmasMode() {
+            document.body.classList.remove('christmas-theme');
+            clearSnowflakes();
+            stopBGM();
+            updateXmasButtons();
+        }
+
+        // Create Snowflakes
+        function createSnowflakes() {
+            const container = document.getElementById('snowContainer');
+            container.innerHTML = '';
+
+            const snowflakeChars = ['*', '❄', '❅', '❆', '•', '°'];
+
+            for (let i = 0; i < 50; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.textContent = snowflakeChars[Math.floor(Math.random() * snowflakeChars.length)];
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                snowflake.style.fontSize = (Math.random() * 10 + 6) + 'px';
+                snowflake.style.opacity = Math.random() * 0.5 + 0.3;
+                container.appendChild(snowflake);
+            }
+        }
+
+        // Clear Snowflakes
+        function clearSnowflakes() {
+            const container = document.getElementById('snowContainer');
+            container.innerHTML = '';
+        }
+
+        // 8-bit Christmas BGM - Rudolph the Red-Nosed Reindeer (루돌프 사슴코)
+        let bgmInterval = null;
+
+        function playBGM() {
+            if (bgmPlaying) return;
+
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                bgmGain = audioContext.createGain();
+                bgmGain.gain.value = 0.15;
+                bgmGain.connect(audioContext.destination);
+
+                // Rudolph the Red-Nosed Reindeer melody (루돌프 사슴코는 매우 반짝이는 코)
+                const melody = [
+                    // 루-돌-프 사-슴-코-는
+                    { note: 'G4', duration: 1 },
+                    { note: 'A4', duration: 0.5 },
+                    { note: 'G4', duration: 0.5 },
+                    { note: 'E4', duration: 1 },
+                    { note: 'C5', duration: 1 },
+                    { note: 'A4', duration: 1 },
+                    { note: 'G4', duration: 2 },
+                    // 매-우 반-짝-이-는 코
+                    { note: 'G4', duration: 0.5 },
+                    { note: 'A4', duration: 0.5 },
+                    { note: 'G4', duration: 0.5 },
+                    { note: 'A4', duration: 0.5 },
+                    { note: 'G4', duration: 1 },
+                    { note: 'C5', duration: 1 },
+                    { note: 'B4', duration: 2 },
+                    { note: null, duration: 0.5 },
+                    // 만-일 네-가 봤-다-면
+                    { note: 'F4', duration: 1 },
+                    { note: 'G4', duration: 0.5 },
+                    { note: 'F4', duration: 0.5 },
+                    { note: 'D4', duration: 1 },
+                    { note: 'B4', duration: 1 },
+                    { note: 'A4', duration: 1 },
+                    { note: 'G4', duration: 2 },
+                    // 불-이 켜-진 다-고 했-겠-지
+                    { note: 'G4', duration: 0.5 },
+                    { note: 'A4', duration: 0.5 },
+                    { note: 'G4', duration: 0.5 },
+                    { note: 'A4', duration: 0.5 },
+                    { note: 'G4', duration: 1 },
+                    { note: 'A4', duration: 1 },
+                    { note: 'E4', duration: 2 },
+                    { note: null, duration: 1 },
+                ];
+
+                const noteFrequencies = {
+                    'C4': 261.63, 'D4': 293.66, 'E4': 329.63, 'F4': 349.23,
+                    'G4': 392.00, 'A4': 440.00, 'B4': 493.88, 'C5': 523.25
+                };
+
+                let time = audioContext.currentTime;
+                const tempo = 0.35; // calm tempo
+
+                function playMelody() {
+                    melody.forEach(({ note, duration }) => {
+                        if (note === null) {
+                            time += duration * tempo;
+                            return;
+                        }
+
+                        const osc = audioContext.createOscillator();
+                        const noteGain = audioContext.createGain();
+
+                        osc.type = 'triangle';
+                        osc.frequency.value = noteFrequencies[note];
+
+                        const noteDuration = duration * tempo;
+                        noteGain.gain.setValueAtTime(0.15, time);
+                        noteGain.gain.setValueAtTime(0.15, time + noteDuration * 0.7);
+                        noteGain.gain.linearRampToValueAtTime(0, time + noteDuration);
+
+                        osc.connect(noteGain);
+                        noteGain.connect(bgmGain);
+
+                        osc.start(time);
+                        osc.stop(time + noteDuration);
+
+                        time += noteDuration;
+                    });
+                }
+
+                playMelody();
+
+                const melodyDuration = melody.reduce((sum, n) => sum + n.duration, 0) * tempo;
+                bgmInterval = setInterval(() => {
+                    time = audioContext.currentTime;
+                    playMelody();
+                }, melodyDuration * 1000);
+
+                bgmPlaying = true;
+                updateXmasButtons();
+
+            } catch (e) {
+                console.error('BGM Error:', e);
+            }
+        }
+
+        // Stop BGM
+        function stopBGM() {
+            if (bgmInterval) {
+                clearInterval(bgmInterval);
+                bgmInterval = null;
+            }
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+            }
+            bgmPlaying = false;
+            updateXmasButtons();
+        }
+
+        // Show Christmas Easter Egg
+        function showChristmasEasterEgg(day) {
+            const modal = document.getElementById('easterEggModal');
+            const message = document.getElementById('easterEggMessage');
+
+            if (day === 24) {
+                message.innerHTML = `
+                    <span class="gold">🌟 CHRISTMAS EVE 🌟</span><br><br>
+                    <span class="white">내일은 크리스마스!</span><br>
+                    <span style="font-size: 12px;">산타가 오늘 밤 출발한대요 🛷</span><br><br>
+                    <span style="font-size: 10px; color: #888888;">- POPUP-STUDIO -</span>
+                `;
+            } else if (day === 25) {
+                message.innerHTML = `
+                    <span class="red">🎅 MERRY CHRISTMAS! 🎅</span><br><br>
+                    <span class="gold">메리 크리스마스!</span><br>
+                    <span class="white">행복한 하루 보내세요 ✨</span><br><br>
+                    <span style="font-size: 12px;">🎁 선물 많이 받으세요! 🎁</span><br>
+                    <span style="font-size: 10px; color: #888888;">- POPUP-STUDIO with ❤️ -</span>
+                `;
+            }
+
+            // Show after a short delay
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 2000);
+        }
+
+        // Initialize Christmas on load
+        initChristmas();
+
+        // ========== CHRISTMAS CARD FEATURES ==========
+
+        let xmasCards = JSON.parse(localStorage.getItem('doogie_xmas_cards') || '[]');
+        let currentCardId = null;
+
+        function initXmasCardScreen() {
+            const toInput = document.getElementById('cardToInput');
+            const messageInput = document.getElementById('cardMessageInput');
+            const fromInput = document.getElementById('cardFromInput');
+            const toPreview = document.getElementById('cardToPreview');
+            const messagePreview = document.getElementById('cardMessagePreview');
+            const fromPreview = document.getElementById('cardFromPreview');
+
+            // Real-time preview updates
+            toInput.oninput = () => {
+                toPreview.textContent = toInput.value || '_____';
+            };
+            messageInput.oninput = () => {
+                messagePreview.textContent = messageInput.value || 'Write your message...';
+            };
+            fromInput.oninput = () => {
+                fromPreview.textContent = fromInput.value || '_____';
+            };
+
+            // Button handlers
+            document.getElementById('saveCardBtn').onclick = saveXmasCard;
+            document.getElementById('downloadCardBtn').onclick = downloadXmasCard;
+            document.getElementById('newCardBtn').onclick = newXmasCard;
+
+            // Reset form
+            newXmasCard();
+
+            // Render saved cards list
+            renderXmasCardList();
+        }
+
+        function newXmasCard() {
+            currentCardId = null;
+            document.getElementById('cardToInput').value = '';
+            document.getElementById('cardMessageInput').value = '';
+            document.getElementById('cardFromInput').value = '';
+            document.getElementById('cardToPreview').textContent = '_____';
+            document.getElementById('cardMessagePreview').textContent = 'Write your message...';
+            document.getElementById('cardFromPreview').textContent = '_____';
+        }
+
+        function saveXmasCard() {
+            const to = document.getElementById('cardToInput').value.trim();
+            const message = document.getElementById('cardMessageInput').value.trim();
+            const from = document.getElementById('cardFromInput').value.trim();
+
+            if (!to || !message || !from) {
+                showStatus('Please fill in all fields!', 3000);
+                return;
+            }
+
+            const card = {
+                id: currentCardId || Date.now().toString(),
+                to,
+                message,
+                from,
+                createdAt: new Date().toISOString()
+            };
+
+            if (currentCardId) {
+                // Update existing
+                const index = xmasCards.findIndex(c => c.id === currentCardId);
+                if (index !== -1) {
+                    xmasCards[index] = card;
+                }
+            } else {
+                // Add new
+                xmasCards.push(card);
+                currentCardId = card.id;
+            }
+
+            localStorage.setItem('doogie_xmas_cards', JSON.stringify(xmasCards));
+            renderXmasCardList();
+            showStatus('🎄 Card saved!', 2000);
+        }
+
+        function loadXmasCard(id) {
+            const card = xmasCards.find(c => c.id === id);
+            if (!card) return;
+
+            currentCardId = card.id;
+            document.getElementById('cardToInput').value = card.to;
+            document.getElementById('cardMessageInput').value = card.message;
+            document.getElementById('cardFromInput').value = card.from;
+            document.getElementById('cardToPreview').textContent = card.to;
+            document.getElementById('cardMessagePreview').textContent = card.message;
+            document.getElementById('cardFromPreview').textContent = card.from;
+        }
+
+        function deleteXmasCard(id) {
+            xmasCards = xmasCards.filter(c => c.id !== id);
+            localStorage.setItem('doogie_xmas_cards', JSON.stringify(xmasCards));
+            if (currentCardId === id) {
+                newXmasCard();
+            }
+            renderXmasCardList();
+            showStatus('Card deleted', 2000);
+        }
+
+        function renderXmasCardList() {
+            const listEl = document.getElementById('xmasCardList');
+            listEl.innerHTML = '';
+
+            if (xmasCards.length === 0) {
+                listEl.innerHTML = '<div style="color: #555; text-align: center; padding: 20px;">No saved cards</div>';
+                return;
+            }
+
+            xmasCards.forEach(card => {
+                const item = document.createElement('div');
+                item.className = 'xmas-card-list-item';
+                item.innerHTML = `
+                    <div class="xmas-card-list-item-info" data-id="${card.id}">
+                        To: ${card.to} | From: ${card.from}
+                    </div>
+                    <span class="xmas-card-list-item-delete" data-id="${card.id}">✕</span>
+                `;
+                item.querySelector('.xmas-card-list-item-info').onclick = () => loadXmasCard(card.id);
+                item.querySelector('.xmas-card-list-item-delete').onclick = (e) => {
+                    e.stopPropagation();
+                    deleteXmasCard(card.id);
+                };
+                listEl.appendChild(item);
+            });
+        }
+
+        async function downloadXmasCard() {
+            const to = document.getElementById('cardToInput').value.trim() || 'Friend';
+            const from = document.getElementById('cardFromInput').value.trim() || 'Me';
+            const cardFolder = document.querySelector('.xmas-card-folder');
+            const gifImg = document.querySelector('.xmas-card-gif');
+
+            if (!cardFolder) {
+                showStatus('❌ Card not found', 2000);
+                return;
+            }
+
+            showStatus('🎬 Creating GIF... (0%)', 10000);
+
+            try {
+                console.log('Starting GIF download...');
+                console.log('GIF image src:', gifImg.src);
+                console.log('Cached GIF buffer:', cachedGifArrayBuffer ? 'YES' : 'NO');
+
+                // Load the original GIF and extract frames
+                const gifFrames = await extractGifFramesFromUrl(gifImg.src);
+
+                console.log('Extracted frames:', gifFrames.length);
+
+                if (gifFrames.length === 0) {
+                    console.log('No frames extracted, falling back to PNG');
+                    // Fallback to PNG if GIF extraction fails
+                    downloadXmasCardAsPng(to, from, cardFolder);
+                    return;
+                }
+
+                // Create GIF encoder
+                const gif = new GIF({
+                    workers: 2,
+                    quality: 10,
+                    workerScript: 'gif.worker.js'
+                });
+
+                // Temporarily hide the GIF image for html2canvas
+                const originalGifSrc = gifImg.src;
+
+                // Capture each frame
+                for (let i = 0; i < gifFrames.length; i++) {
+                    // Replace GIF with current frame
+                    gifImg.src = gifFrames[i].dataUrl;
+
+                    // Wait for image to load
+                    await new Promise(resolve => {
+                        if (gifImg.complete) resolve();
+                        else gifImg.onload = resolve;
+                    });
+
+                    // Capture the card
+                    const canvas = await html2canvas(cardFolder, {
+                        backgroundColor: '#000000',
+                        scale: 1.5,
+                        useCORS: true
+                    });
+
+                    gif.addFrame(canvas, { delay: gifFrames[i].delay || 100 });
+
+                    const progress = Math.round(((i + 1) / gifFrames.length) * 100);
+                    showStatus(`🎬 Creating GIF... (${progress}%)`, 10000);
+                }
+
+                // Restore original GIF
+                gifImg.src = originalGifSrc;
+
+                // Render and download
+                gif.on('finished', function(blob) {
+                    const link = document.createElement('a');
+                    link.download = `christmas-card-to-${to}-from-${from}.gif`;
+                    link.href = URL.createObjectURL(blob);
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                    showStatus('📥 GIF downloaded!', 2000);
+                });
+
+                gif.render();
+
+            } catch (err) {
+                console.error('GIF download error:', err);
+                // Fallback to PNG
+                downloadXmasCardAsPng(to, from, cardFolder);
+            }
+        }
+
+        // Cache for preloaded GIF data
+        let cachedGifArrayBuffer = null;
+        let cachedGifDimensions = { width: 0, height: 0 };
+
+        // Preload GIF data on page load (handles CORS for local files)
+        async function preloadGifData() {
+            const gifImg = document.querySelector('.xmas-card-gif');
+            if (!gifImg) return;
+
+            try {
+                // Try XMLHttpRequest for local file access
+                const arrayBuffer = await new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', gifImg.src, true);
+                    xhr.responseType = 'arraybuffer';
+                    xhr.onload = () => {
+                        if (xhr.status === 200 || xhr.status === 0) {
+                            resolve(xhr.response);
+                        } else {
+                            reject(new Error('XHR failed'));
+                        }
+                    };
+                    xhr.onerror = () => reject(new Error('XHR error'));
+                    xhr.send();
+                });
+
+                cachedGifArrayBuffer = arrayBuffer;
+                cachedGifDimensions = { width: gifImg.naturalWidth || 300, height: gifImg.naturalHeight || 300 };
+                console.log('GIF preloaded successfully');
+            } catch (e) {
+                console.log('GIF preload failed (will use file input fallback):', e.message);
+            }
+        }
+
+        // Extract frames from GIF - uses cached data or prompts for file
+        async function extractGifFramesFromUrl(url) {
+            // If we have cached data, use it
+            if (cachedGifArrayBuffer) {
+                try {
+                    const frames = await parseGifFrames(cachedGifArrayBuffer, cachedGifDimensions.width, cachedGifDimensions.height);
+                    return frames;
+                } catch (e) {
+                    console.error('Failed to parse cached GIF:', e);
+                }
+            }
+
+            // Fallback: prompt user to select the GIF file
+            return new Promise((resolve) => {
+                showStatus('📂 Please select card_dos.gif file', 5000);
+
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/gif';
+
+                input.onchange = async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) {
+                        resolve([]);
+                        return;
+                    }
+
+                    try {
+                        const arrayBuffer = await file.arrayBuffer();
+
+                        // Get dimensions
+                        const img = new Image();
+                        const blob = new Blob([arrayBuffer], { type: 'image/gif' });
+                        img.src = URL.createObjectURL(blob);
+
+                        await new Promise(r => img.onload = r);
+
+                        const frames = await parseGifFrames(arrayBuffer, img.naturalWidth, img.naturalHeight);
+                        URL.revokeObjectURL(img.src);
+
+                        // Cache for future use
+                        cachedGifArrayBuffer = arrayBuffer;
+                        cachedGifDimensions = { width: img.naturalWidth, height: img.naturalHeight };
+
+                        resolve(frames);
+                    } catch (err) {
+                        console.error('Failed to process GIF file:', err);
+                        resolve([]);
+                    }
+                };
+
+                input.click();
+            });
+        }
+
+        // Parse GIF frames using omggif
+        async function parseGifFrames(arrayBuffer, width, height) {
+            const frames = [];
+
+            try {
+                // Use omggif to parse GIF
+                const uint8 = new Uint8Array(arrayBuffer);
+                const gr = new GifReader(uint8);
+
+                const numFrames = gr.numFrames();
+                if (numFrames === 0) {
+                    throw new Error('No frames found in GIF');
+                }
+
+                const gifWidth = gr.width;
+                const gifHeight = gr.height;
+
+                // Create a canvas to accumulate frames (for proper disposal handling)
+                const accCanvas = document.createElement('canvas');
+                accCanvas.width = gifWidth;
+                accCanvas.height = gifHeight;
+                const accCtx = accCanvas.getContext('2d', { willReadFrequently: true });
+
+                // Process each frame
+                for (let i = 0; i < numFrames; i++) {
+                    const frameInfo = gr.frameInfo(i);
+
+                    // Create pixel buffer for this frame
+                    const frameCanvas = document.createElement('canvas');
+                    frameCanvas.width = gifWidth;
+                    frameCanvas.height = gifHeight;
+                    const frameCtx = frameCanvas.getContext('2d', { willReadFrequently: true });
+
+                    // Copy accumulated canvas first
+                    frameCtx.drawImage(accCanvas, 0, 0);
+
+                    // Decode frame pixels
+                    const pixels = new Uint8Array(gifWidth * gifHeight * 4);
+                    gr.decodeAndBlitFrameRGBA(i, pixels);
+
+                    // Create ImageData and draw
+                    const imageData = new ImageData(new Uint8ClampedArray(pixels), gifWidth, gifHeight);
+
+                    // Create temp canvas for the frame data
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = gifWidth;
+                    tempCanvas.height = gifHeight;
+                    const tempCtx = tempCanvas.getContext('2d');
+                    tempCtx.putImageData(imageData, 0, 0);
+
+                    // Draw frame onto frameCanvas (handles transparency)
+                    frameCtx.drawImage(tempCanvas, 0, 0);
+
+                    // Update accumulated canvas based on disposal method
+                    if (frameInfo.disposal === 0 || frameInfo.disposal === 1) {
+                        // Keep current frame
+                        accCtx.drawImage(frameCanvas, 0, 0);
+                    } else if (frameInfo.disposal === 2) {
+                        // Restore to background (clear the frame area)
+                        accCtx.clearRect(frameInfo.x, frameInfo.y, frameInfo.width, frameInfo.height);
+                    }
+                    // disposal === 3 means restore to previous - we skip that for simplicity
+
+                    // Output canvas (scaled to target dimensions)
+                    const outputCanvas = document.createElement('canvas');
+                    outputCanvas.width = width;
+                    outputCanvas.height = height;
+                    const outputCtx = outputCanvas.getContext('2d');
+                    outputCtx.drawImage(frameCanvas, 0, 0, width, height);
+
+                    frames.push({
+                        dataUrl: outputCanvas.toDataURL('image/png'),
+                        delay: frameInfo.delay * 10 || 100 // GIF delay is in centiseconds
+                    });
+                }
+
+                console.log(`Extracted ${frames.length} frames from GIF`);
+                return frames;
+
+            } catch (e) {
+                console.error('omggif parsing failed:', e);
+
+                // Fallback: single frame from image
+                const img = new Image();
+                img.src = URL.createObjectURL(new Blob([arrayBuffer], { type: 'image/gif' }));
+
+                await new Promise(resolve => {
+                    img.onload = resolve;
+                });
+
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                URL.revokeObjectURL(img.src);
+
+                return [{ dataUrl: canvas.toDataURL('image/png'), delay: 100 }];
+            }
+        }
+
+        // Fallback PNG download (captures only message area to avoid CORS issues)
+        function downloadXmasCardAsPng(to, from, element) {
+            showStatus('📸 Capturing as PNG...', 2000);
+
+            // Capture only the top panel (message area) to avoid GIF CORS issue
+            const topPanel = document.querySelector('.xmas-card-top-panel');
+            const targetElement = topPanel || element;
+
+            html2canvas(targetElement, {
+                backgroundColor: '#000000',
+                scale: 2,
+                useCORS: false,
+                allowTaint: false
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `christmas-card-to-${to}-from-${from}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                showStatus('📥 Card downloaded as PNG!', 2000);
+            }).catch(err => {
+                console.error('PNG download error:', err);
+                showStatus('❌ Download failed - try running on a local server', 3000);
+            });
+        }
+
+        function wrapText(ctx, text, maxWidth) {
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = '';
+
+            words.forEach(word => {
+                const testLine = currentLine + word + ' ';
+                const metrics = ctx.measureText(testLine);
+                if (metrics.width > maxWidth && currentLine !== '') {
+                    lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine = testLine;
+                }
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        }
     </script>
 </body>
 </html>
