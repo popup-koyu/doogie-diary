@@ -50,10 +50,11 @@
    - Add Picture: 이미지 추가
    - View Images (N): 이미지 모달로 보기
 5. **List**: 저장된 일기 목록 (드롭다운, position: fixed)
-6. **Export**: 데이터 내보내기
-7. **Import**: 데이터 가져오기
-8. **Help**: 도움말 화면
-9. **Fullscreen**: 전체화면 모드 전환
+6. **Help**: 도움말 화면
+7. **Fullscreen**: 전체화면 모드 전환
+8. **DIARY/MARKDOWN 모드 토글**: 일반 일기/마크다운 모드 전환
+9. **사용자 닉네임 표시**: 로그인된 사용자 닉네임
+10. **Logout**: 로그아웃 버튼
 
 **드롭다운 동작**:
 - 하나의 드롭다운이 열리면 다른 드롭다운 자동 닫힘
@@ -82,14 +83,54 @@ MM/DD/YYYY DAYOFWEEK
 **자동 저장**:
 - 입력 후 2초 후 자동 저장
 - 페이지 이탈 시 자동 저장
-- localStorage 사용
+- Bkend 서버에 저장 (온라인 필수)
+
+**중복 저장 방지**:
+- 내용이 변경되지 않았으면 저장하지 않음
+- "이미 저장되었습니다!" 메시지 표시
 
 **저장 확인 다이얼로그**:
 - 저장하지 않은 내용이 있을 시 확인 다이얼로그 표시
 - DOS 스타일 박스 (이중 테두리 + 그림자)
 - Yes/No 버튼
 
-#### 3.4 이미지 처리 시스템
+#### 3.4 마크다운 모드 (Markdown Mode)
+
+**모드 전환**:
+- 상단 메뉴 바 우측의 토글 버튼으로 전환
+- `Ctrl+M` 단축키로 전환
+- 모드 표시: "DIARY" ↔ "MARKDOWN"
+
+**마크다운 에디터**:
+- 전용 툴바 제공:
+  - `#` 제목 (Heading)
+  - `B` 굵게 (Bold)
+  - `I` 기울임 (Italic)
+  - `>` 인용 (Quote)
+  - `</>` 코드 (Code)
+  - `-` 목록 (List)
+  - `[M]` Mermaid 다이어그램
+  - `👁 Preview` 미리보기 토글
+
+**마크다운 미리보기**:
+- `Ctrl+P` 또는 Preview 버튼으로 토글
+- GitHub Flavored Markdown (GFM) 지원
+- DOS 녹색 톤 스타일링:
+  - 제목, 본문, 링크: 녹색 계열
+  - 코드 블록: 주황색 (#ff8800)
+  - 인용: 어두운 녹색 배경
+  - 테이블: DOS 스타일 테두리
+
+**Mermaid 다이어그램 지원**:
+- 코드 블록에 `mermaid` 언어 지정
+- 플로우차트, 시퀀스 다이어그램 등 지원
+- 녹색 테마 자동 적용
+
+**마크다운 항목 저장**:
+- 키 형식: `#YYYY-MM-DD` (일반 일기와 구분)
+- 목록에서 `[MD]` 표시로 마크다운 항목 구분
+
+#### 3.5 이미지 처리 시스템
 
 **이미지 변환**:
 - **픽셀화**: 3px 단위로 다운스케일
@@ -117,7 +158,7 @@ MM/DD/YYYY DAYOFWEEK
 - 녹색 그라데이션 스캔 바 (3px)
 - ESC 또는 X 버튼으로 닫기
 
-#### 3.5 달력 뷰 (Calendar View)
+#### 3.6 달력 뷰 (Calendar View)
 
 **위치**: 타이틀 화면 → 나의 일기장 (Memory) 메뉴
 
@@ -139,6 +180,7 @@ MM/DD/YYYY DAYOFWEEK
 
 **일기 표시**:
 - 일기가 있는 날짜: 하단에 **녹색 점(dot)** 표시 (4px 원형)
+- 일반 일기와 마크다운 일기 모두 카운트
 - 호버 효과: 배경 어두운 녹색 (#003300)
 - 클릭 시: 해당 날짜의 첫 번째 일기로 이동
 
@@ -146,21 +188,31 @@ MM/DD/YYYY DAYOFWEEK
 - 현재 보고 있는 월의 일기만 필터링
 - 최신순 정렬
 - 날짜 + 항목 번호 + 미리보기 텍스트
+- 마크다운 항목: `[MD]` 표시
 - 이미지 개수 표시: [사진 N장]
 - Settings 버튼 하단 배치
 
-#### 3.6 설정 (Settings)
+#### 3.7 설정 (Settings)
 
 **위치**: 나의 일기장/달력 화면 → 하단 "⚙ Settings" 버튼
 
 **언어 설정**:
 - 한국어/English 전환
-- localStorage에 저장 (재방문 시 유지)
+- IndexedDB에 저장 (재방문 시 유지)
 - 메뉴 텍스트 번역:
   - 한국어: 일기쓰기, 나의 일기장, 디스켓
   - English: Diary, Memory, Diskette
 
-#### 3.7 전체화면 모드 (Fullscreen)
+**크리스마스 모드**:
+- ON/OFF 토글
+- 12월에 자동 활성화
+
+**크리스마스 BGM**:
+- 크리스마스 모드 활성화 시 표시
+- 8-bit 스타일 "루돌프 사슴코" 멜로디
+- Web Audio API 사용
+
+#### 3.8 전체화면 모드 (Fullscreen)
 
 **활성화 방법**:
 - 상단 메뉴 바 "Fullscreen" 버튼 클릭
@@ -180,39 +232,66 @@ MM/DD/YYYY DAYOFWEEK
 - Safari: `webkitRequestFullscreen()`
 - IE11: `msRequestFullscreen()`
 
-#### 3.8 데이터 관리
+#### 3.9 데이터 관리
 
-**Export (내보내기)**:
-- JSON 파일로 모든 일기 데이터 백업
-- 파일명: `doogie-diary-backup-YYYY-MM-DD.json`
-- 텍스트 + 이미지(Base64) 포함
+**저장 방식**: Bkend 서버 Only (로컬 저장소 미사용)
 
-**Import (가져오기)**:
-- JSON 파일 업로드
-- 기존 데이터와 병합 (덮어쓰기)
-- 유효성 검사 포함
+**온라인 필수**:
+- 모든 일기 데이터는 Bkend 서버에만 저장
+- 오프라인 작성 미지원
+- 네트워크 오류 시 에러 메시지 표시
 
-**저장 구조** (localStorage):
-```javascript
-{
-  "doogie-diary": {
-    "YYYY-MM-DD": {
-      text: "일기 내용",
-      images: [
-        { thumbnail: "data:image/png;base64,...", full: "data:image/png;base64,..." }
-      ]
-    }
-  },
-  "doogie-language": "ko" | "en",
-  "doogie-characters": [
-    { name: "캐릭터명", role: "역할", image: "data:image/png;base64,..." }
-  ]
-}
-```
+**로컬 설정 저장** (localStorage):
+- 언어 설정 (ko/en)
+- 크리스마스 모드 상태
+- JWT 토큰 (Access Token)
 
-### 4. 크레딧 화면 (디스켓)
+### 4. 크리스마스 특별 기능
 
-#### 4.1 레이아웃
+#### 4.1 크리스마스 모드
+
+**자동 활성화**:
+- 12월에 첫 방문 시 자동 활성화
+- Settings에서 수동 ON/OFF 가능
+
+**시각 효과**:
+- 눈 내리기 애니메이션 (Snowflakes)
+- 별 깜빡임 색상 변경 (빨강/초록/금색)
+- 메뉴 바 그라데이션 (빨강/초록)
+
+**BGM**:
+- 8-bit 스타일 "루돌프 사슴코" 멜로디
+- Web Audio API로 생성 (외부 파일 불필요)
+- 오실레이터 기반 사운드 합성
+
+**이스터에그**:
+- 12월 24일 (크리스마스 이브): 특별 메시지 팝업
+- 12월 25일 (크리스마스): 축하 메시지 팝업
+
+#### 4.2 크리스마스 카드 기능
+
+**접근**:
+- 타이틀 화면에 "🎄" 메뉴 (12월에만 표시)
+- 또는 Settings에서 크리스마스 모드 활성화 후 표시
+
+**카드 구성**:
+- 상단 패널: 메시지 영역
+  - "Merry Christmas" 타이틀
+  - "from POPUP-STUDIO"
+  - 커스텀 To/From 입력 필드
+- 하단 패널: 애니메이션 GIF
+
+**다운로드 옵션**:
+- **GIF 다운로드**: 애니메이션 포함
+  - gif.js 라이브러리 사용
+  - 파일명: `christmas-card-to-{to}-from-{from}.gif`
+- **PNG 다운로드**: 정적 이미지
+  - html2canvas 라이브러리 사용
+  - 파일명: `christmas-card-to-{to}-from-{from}.png`
+
+### 5. 크레딧 화면 (디스켓)
+
+#### 5.1 레이아웃
 - **타이틀**: "DOOGIE" (Press Start 2P 폰트, 대형)
 - **서브타이틀**: "An Interactive Diary Experience"
 - **NYC 스카이라인**: 픽셀 아트 빌딩들
@@ -221,14 +300,14 @@ MM/DD/YYYY DAYOFWEEK
 - **캐릭터 섹션**: 6개 캐릭터 슬롯 (3x2 그리드)
 - **푸터**: 저작권 + 위트 있는 연도 표시
 
-#### 4.2 NYC 스카이라인
+#### 5.2 NYC 스카이라인
 - **빌딩 개수**: 15개
 - **디자인**: 3가지 옥상 스타일 (antenna, crown, flat)
 - **창문 타입**: 4가지 (small, wide, tall, square)
 - **창문 애니메이션**: 8-12개 창문이 250ms마다 랜덤 깜빡임
 - **색상**: 다양한 녹색 톤 랜덤 적용
 
-#### 4.3 도로 + 자동차
+#### 5.3 도로 + 자동차
 - **도로**: 30px 높이, 중앙 점선
 - **자동차 종류**: 승용차(70%), 트럭(30%)
 - **양방향 이동**:
@@ -238,7 +317,7 @@ MM/DD/YYYY DAYOFWEEK
 - **속도**: 6-10초 (랜덤)
 - **디자인**: Canvas 기반 픽셀 아트
 
-#### 4.4 캐릭터 슬롯
+#### 5.4 캐릭터 슬롯
 - **개수**: 6개 (3열 x 2행)
 - **크기**: 180x180px (정사각형)
 - **업로드 방식**: 클릭 or 드래그앤드롭
@@ -251,9 +330,9 @@ MM/DD/YYYY DAYOFWEEK
   - 이름 (char-name): 클릭하여 수정
   - 역할 (char-role): 클릭하여 수정
   - 간격: 이름과 역할 사이 -12px margin
-- **저장**: localStorage에 자동 저장
+- **저장**: IndexedDB에 자동 저장
 
-#### 4.5 회사명 디자인
+#### 5.5 회사명 디자인
 ```
 ** << POPUP STUDIO >> **
 ```
@@ -262,7 +341,7 @@ MM/DD/YYYY DAYOFWEEK
 - 간격: 균등 12px
 - 애니메이션: 2초 주기 펄스 글로우
 
-#### 4.6 푸터 위트
+#### 5.6 푸터 위트
 ```
 © ̶1̶9̶8̶5̶ POPUP-STUDIO - Made with 💚 in DOS Era
    2025
@@ -271,13 +350,14 @@ MM/DD/YYYY DAYOFWEEK
 - 2025: 상단 표시 (밝은 녹색, 굵게)
 - "타임머신 버그 수정" 콘셉트
 
-### 5. 애니메이션 및 효과
+### 6. 애니메이션 및 효과
 
 #### 타이틀 화면
 - 로고: 5초 fade-in 애니메이션
 - 메뉴 항목: 순차적 fade-in (0.5초 간격)
 - 선택 효과: ▶ 아이콘 + 텍스트 확대
 - 배경 별: 30개, 랜덤 위치, 깜빡임 애니메이션
+- 크리스마스 모드: 눈 내리기 효과
 
 #### CRT 스캔 효과
 ```css
@@ -309,7 +389,7 @@ MM/DD/YYYY DAYOFWEEK
 }
 ```
 
-### 6. 키보드 단축키
+### 7. 키보드 단축키
 
 | 키 | 동작 |
 |----|------|
@@ -320,8 +400,10 @@ MM/DD/YYYY DAYOFWEEK
 | `F2` | 현재 일기 저장 |
 | `F3` | 일기 목록 보기 |
 | `F4` | 새 일기 작성 |
+| `Ctrl+M` | Diary/Markdown 모드 전환 |
+| `Ctrl+P` | 마크다운 미리보기 토글 (마크다운 모드에서) |
 
-### 7. 기술 스택
+### 8. 기술 스택
 
 - **HTML5**: Semantic markup
 - **CSS3**:
@@ -332,19 +414,29 @@ MM/DD/YYYY DAYOFWEEK
   - text-decoration-thickness
 - **Vanilla JavaScript**: ES6+
   - Canvas API (이미지 처리, 픽셀 아트)
-  - localStorage API
+  - Web Audio API (BGM 생성)
   - FileReader API (CORS-free 이미지 업로드)
-  - Blob API (JSON 다운로드)
-- **외부 의존성**: 없음 (Single HTML File)
+  - Fullscreen API
+  - Fetch API (Bkend 서버 통신)
+- **Backend**: Bkend (BaaS)
+  - MongoDB 기반 데이터 저장
+  - JWT 인증
+  - RESTful API
+- **외부 라이브러리**:
+  - Marked.js (마크다운 파싱)
+  - Mermaid.js (다이어그램 렌더링)
+  - gif.js (GIF 생성)
+  - html2canvas (PNG 캡처)
+- **Single HTML File**: 메인 로직은 단일 파일에 포함
 
-### 8. 브라우저 호환성
+### 9. 브라우저 호환성
 
 **필수 기능**:
 - CSS Grid
 - CSS aspect-ratio
 - Canvas API
-- localStorage
-- ES6 (const, let, arrow functions, template literals)
+- Fetch API
+- ES6 (const, let, arrow functions, template literals, async/await)
 
 **권장 브라우저**:
 - Chrome 88+
@@ -352,12 +444,12 @@ MM/DD/YYYY DAYOFWEEK
 - Safari 15+
 - Edge 88+
 
-### 9. 성능 고려사항
+### 10. 성능 고려사항
 
 **이미지 최적화**:
 - Thumbnail과 Full 버전 분리 저장
 - 픽셀화로 파일 크기 감소 (3px 단위)
-- Base64 인코딩 (localStorage 5MB 제한 고려)
+- Base64 인코딩 (IndexedDB 용량 고려)
 
 **렌더링 최적화**:
 - position: sticky로 메뉴바 고정
@@ -370,23 +462,17 @@ MM/DD/YYYY DAYOFWEEK
 - 불필요한 이벤트 리스너 제거
 - New 버튼 클릭 시 이미지 섹션 초기화
 
-### 10. 향후 개선 가능 항목
-
-1. **검색 기능**: 일기 내용 전체 검색
-2. **태그 시스템**: 일기에 태그 추가
-3. **테마 변경**: Amber, White 모니터 색상 추가
-4. **비밀번호 보호**: localStorage 암호화
-5. **이미지 편집**: 회전, 필터 추가
-6. **음성 녹음**: 음성 메모 첨부
-7. **통계**: 작성 빈도, 단어 수 통계
-8. **클라우드 동기화**: 브라우저 간 데이터 공유
-9. **PWA**: 오프라인 지원, 앱 설치
+**네트워크 최적화**:
+- API 요청 debounce 적용 (자동 저장)
+- 로딩 상태 표시로 UX 개선
+- 에러 시 재시도 로직
 
 ### 11. 파일 구조
 
 ```
-test_project/
-├── doogie-diary.html    # 메인 애플리케이션 (Single File)
+doogie-diary/
+├── index.html           # 메인 애플리케이션 (Single File)
+├── card_dos.gif         # 크리스마스 카드용 GIF
 ├── DOOGIE_SPEC.md       # 본 기획문서
 └── README.md            # 프로젝트 설명서 (선택)
 ```
@@ -434,7 +520,7 @@ test_project/
 **Phase 7: 설정 및 다국어** (완료)
 - Settings 화면 추가 (나의 일기장 내부)
 - 한국어/English 전환 기능
-- localStorage 언어 설정 저장
+- localStorage → IndexedDB 언어 설정 저장
 - 메뉴 텍스트 번역
 
 **Phase 8: 버그 수정 및 최적화** (완료)
@@ -459,22 +545,256 @@ test_project/
   - 리스트/달력: 항목 번호 표시
 - List 드롭다운 position 수정 (fixed, z-index 9999)
 
+**Phase 10: 마크다운 모드** (완료)
+- Diary/Markdown 모드 토글 기능
+- 마크다운 전용 툴바 (제목, 굵게, 기울임, 인용, 코드, 목록)
+- 실시간 마크다운 미리보기
+- Marked.js 통합 (GFM 지원)
+- Mermaid.js 통합 (다이어그램 지원)
+- DOS 녹색 톤 마크다운 스타일링
+- 마크다운 항목 별도 저장 (# prefix)
+- 목록에서 [MD] 표시로 마크다운 항목 구분
+
+**Phase 11: 크리스마스 특별 기능** (완료)
+- 크리스마스 모드 (12월 자동 활성화)
+- 눈 내리기 애니메이션
+- 8-bit BGM (루돌프 사슴코)
+- 크리스마스 이브/당일 이스터에그
+- 크리스마스 카드 생성 기능
+  - 커스텀 To/From 입력
+  - GIF 다운로드 (gif.js)
+  - PNG 다운로드 (html2canvas)
+
+**Phase 12: 저장소 업그레이드** (완료)
+- localStorage에서 IndexedDB로 마이그레이션
+- DiaryDB 클래스 구현
+- 비동기 저장/불러오기
+- 자동 마이그레이션 지원
+- 중복 저장 방지 기능
+
+**Phase 13: 백엔드 연동** (예정)
+- Bkend 서버 연동
+- 닉네임 + PIN 인증 시스템
+- 서버 기반 일기 저장
+- 하루 100개 제한
+- Export/Import 기능 제거
+
 ---
 
-**문서 버전**: 3.0
-**최종 수정일**: 2025-11-19
+### 13. 백엔드 연동 (Bkend)
+
+#### 13.1 인증 시스템
+
+**로그인 방식: 닉네임 + 4자리 PIN**
+
+| 항목 | 정책 |
+|------|------|
+| 닉네임 | 2-12자, 한글/영문/숫자 허용, 중복 불가 |
+| PIN | 숫자 4자리 (0000-9999) |
+| 회원가입 | 닉네임 + PIN 입력 → 즉시 계정 생성 |
+| 로그인 | 닉네임 + PIN 일치 시 JWT 토큰 발급 |
+| 세션 유지 | Access Token (24시간) |
+| 로그인 실패 제한 | 없음 |
+| 비밀번호 찾기 | 미지원 (간단한 서비스 컨셉) |
+
+**닉네임 중복 체크**:
+- 회원가입 시 실시간 체크 (입력 중 debounce 적용)
+- 사용 가능 여부 즉시 표시 (✓ / ✗)
+
+**인증 화면 UI**:
+- 타이틀 화면에 "Login / Sign Up" 버튼 추가
+- DOS 스타일 입력 폼:
+  - 닉네임 입력 필드 (실시간 중복 체크)
+  - PIN 입력 필드 (4자리 숫자, 마스킹)
+  - Login / Sign Up 버튼
+
+**로그인 상태 표시**:
+- 상단 메뉴 바 우측에 닉네임 표시
+- Logout 버튼
+
+#### 13.2 일기 저장 정책
+
+**저장소 변경: 로컬 → Bkend 서버 Only**
+
+| 항목 | 이전 (로컬) | 변경 후 (Bkend) |
+|------|------------|----------------|
+| 저장 위치 | IndexedDB | Bkend MongoDB |
+| 오프라인 | 지원 | 미지원 (온라인 필수) |
+| 동기화 | 불필요 | 불필요 (단일 소스) |
+| 백업 | Export/Import | 서버 자동 보관 |
+
+**일기 데이터 스키마** (Bkend Table: `entries`):
+```javascript
+{
+  _id: ObjectId,              // Bkend 자동 생성
+  createdBy: ObjectId,        // 작성자 (Bkend 자동)
+  dateKey: "2025-12-18",      // 날짜 키 (YYYY-MM-DD)
+  entryNumber: 1,             // 같은 날 몇 번째 (1-100)
+  type: "diary" | "markdown", // 일기 타입
+  text: "일기 내용...",        // 본문
+  images: [                   // 이미지 배열
+    { thumbnail: "base64...", full: "base64..." }
+  ],
+  createdAt: Date,            // Bkend 자동
+  updatedAt: Date             // Bkend 자동
+}
+```
+
+**인덱스**:
+- `idx_user_date`: { createdBy: 1, dateKey: 1 } - 사용자별 날짜 조회
+- `idx_user_date_entry`: { createdBy: 1, dateKey: 1, entryNumber: 1 } - unique
+
+#### 13.3 하루 100개 제한
+
+| 항목 | 정책 |
+|------|------|
+| 제한 단위 | 사용자별 + 날짜별 |
+| 최대 개수 | 100개/일 |
+| 카운트 기준 | diary + markdown 합산 |
+| 초과 시 | "오늘은 더 이상 일기를 쓸 수 없습니다 (100/100)" 메시지 |
+| 삭제 후 | 카운트 복구 (삭제된 건 제외) |
+
+**체크 시점**:
+- New 버튼 클릭 시 (프론트엔드)
+- 저장 요청 시 (백엔드 최종 검증)
+
+**카운트 조회 API**:
+- 일기 목록 로드 시 해당 날짜 개수 함께 반환
+- 상태 바에 "오늘 N/100" 표시
+
+#### 13.4 일기 수정/삭제 정책
+
+**수정 정책**:
+
+| 항목 | 정책 |
+|------|------|
+| 수정 가능 범위 | 본인 일기만 (createdBy 검증) |
+| 수정 가능 항목 | 텍스트, 이미지 (추가/삭제/변경) |
+| 수정 불가 항목 | 날짜(dateKey), 작성자, 항목번호(entryNumber) |
+| 타입 변경 | 불가 (diary ↔ markdown 전환 불가) |
+| 수정 이력 | updatedAt 자동 갱신 |
+| 수정 횟수 제한 | 없음 |
+
+**삭제 정책**:
+
+| 항목 | 정책 |
+|------|------|
+| 삭제 방식 | 즉시 삭제 (Soft Delete) |
+| 복구 | 불가 |
+| 삭제 확인 | DOS 스타일 확인 다이얼로그 |
+| 삭제 후 | 해당 날짜 카운트 감소 |
+
+#### 13.5 권한 (Roles)
+
+**Bkend Table Roles 설정**:
+```javascript
+{
+  "admin": { "create": true, "read": true, "update": true, "delete": true },
+  "user": { "create": true, "read": true, "update": true, "delete": true },
+  "self": { "read": true, "update": true, "delete": true },
+  "guest": { "read": false }
+}
+```
+
+- **self**: 본인이 작성한 일기만 조회/수정/삭제 가능
+- **guest**: 비로그인 사용자는 일기 접근 불가
+
+#### 13.6 API 엔드포인트
+
+**Base URL**: `https://api-enduser-dev.bkend.ai`
+
+**필수 헤더**:
+```
+Authorization: Bearer {access_token}
+X-Project-Id: {project_id}
+X-Environment: dev
+```
+
+**인증 API**:
+| Method | Endpoint | 설명 |
+|--------|----------|------|
+| POST | `/auth/signup/password` | 회원가입 (email, password) |
+| POST | `/auth/signin/password` | 로그인 (email, password) |
+| GET | `/auth/me` | 내 정보 조회 |
+
+**닉네임 → 이메일 변환**:
+- Bkend는 이메일 기반 인증만 지원
+- 닉네임을 이메일 형식으로 변환: `{nickname}@doogie.app`
+- PIN은 password로 전달
+- 예: 닉네임 "홍길동", PIN "1234" → email: "홍길동@doogie.app", password: "1234"
+
+**일기 API**:
+| Method | Endpoint | 설명 |
+|--------|----------|------|
+| GET | `/data/entries` | 내 일기 목록 (필터/정렬/페이지네이션) |
+| GET | `/data/entries/{id}` | 일기 상세 조회 |
+| POST | `/data/entries` | 일기 생성 (100개 제한 체크) |
+| PUT | `/data/entries/{id}` | 일기 수정 |
+| DELETE | `/data/entries/{id}` | 일기 삭제 |
+
+**필터링 예시**:
+```javascript
+// 특정 날짜 일기 조회
+GET /data/entries?andFilters={"dateKey":"2025-12-18"}
+
+// 특정 월 일기 조회
+GET /data/entries?andFilters={"dateKey":{"$regex":"^2025-12"}}
+
+// 마크다운만 조회
+GET /data/entries?andFilters={"type":"markdown"}
+```
+
+#### 13.7 프론트엔드 변경 사항
+
+**타이틀 화면 변경**:
+- 로그인/회원가입 버튼 추가
+- 비로그인 시 일기쓰기 메뉴 비활성화
+
+**인증 화면 추가**:
+- 닉네임 입력 (실시간 중복 체크)
+- PIN 입력 (4자리 숫자)
+- Login / Sign Up 탭 전환
+- DOS 스타일 UI 유지
+
+**상단 메뉴 변경**:
+- Export/Import 버튼 제거
+- 사용자 닉네임 표시 추가
+- Logout 버튼 추가
+
+**저장 로직 변경**:
+- IndexedDB → Bkend API 호출
+- 저장 중 로딩 인디케이터 표시
+- 네트워크 오류 처리
+
+**에러 처리**:
+- 네트워크 오류: "서버에 연결할 수 없습니다"
+- 인증 만료: 자동 로그아웃 → 로그인 화면
+- 100개 초과: "오늘은 더 이상 일기를 쓸 수 없습니다"
+- 권한 오류: "접근 권한이 없습니다"
+
+**로딩 상태**:
+- API 호출 중 DOS 스타일 로딩 표시
+- "Loading..." 텍스트 깜빡임 애니메이션
+
+---
+
+**문서 버전**: 5.0
+**최종 수정일**: 2025-12-18
 **작성자**: POPUP-STUDIO
 **프로젝트 코드명**: DOOGIE
 
 ## 프로젝트 특징 요약
 
-1. **완전한 Single HTML File**: 외부 의존성 없음
+1. **Single HTML File**: 메인 로직은 단일 파일에 포함
 2. **DOS 감성**: 1990년대 복고풍 디자인
 3. **픽셀 아트**: Canvas 기반 이미지 처리
 4. **다국어 지원**: 한국어/English
-5. **데이터 백업**: Export/Import 기능
-6. **인터랙티브 크레딧**: 편집 가능한 캐릭터, 애니메이션
-7. **반응형**: 4:3 비율 유지하며 다양한 화면 크기 지원
-8. **오프라인 작동**: localStorage 기반, 인터넷 연결 불필요
+5. **클라우드 저장**: Bkend 서버 기반, 어디서든 접근
+6. **간편 인증**: 닉네임 + 4자리 PIN 로그인
+7. **인터랙티브 크레딧**: 편집 가능한 캐릭터, 애니메이션
+8. **반응형**: 4:3 비율 유지하며 다양한 화면 크기 지원
 9. **달력 뷰**: 월간 달력으로 일기 관리, 점으로 일기 표시
 10. **전체화면 모드**: 브라우저 UI 완전 숨김, 몰입형 경험
+11. **마크다운 모드**: GFM 지원, Mermaid 다이어그램, 실시간 미리보기
+12. **크리스마스 특별 기능**: 눈 효과, BGM, 카드 생성 (12월 한정)
+13. **하루 100개 제한**: 적절한 사용량 관리

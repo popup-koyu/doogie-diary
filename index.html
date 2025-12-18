@@ -1850,6 +1850,269 @@
             }
         }
 
+        /* ============================================
+           AUTH SCREEN STYLES
+           ============================================ */
+        .auth-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-screen.active {
+            display: flex;
+        }
+
+        .auth-container {
+            border: 2px solid #00ff00;
+            padding: 30px 40px;
+            background: #000000;
+            box-shadow:
+                0 0 0 2px #000000,
+                0 0 0 4px #00ff00,
+                4px 4px 0 0 #003300;
+            position: relative;
+            z-index: 1;
+            min-width: 320px;
+        }
+
+        .auth-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 16px;
+            color: #00ff00;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 0 #003300;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 20px;
+            border: 1px solid #00ff00;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            background: #001100;
+            color: #00aa00;
+            border: none;
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .auth-tab:first-child {
+            border-right: 1px solid #00ff00;
+        }
+
+        .auth-tab:hover {
+            background: #002200;
+        }
+
+        .auth-tab.active {
+            background: #00ff00;
+            color: #000000;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .auth-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .auth-label {
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 14px;
+            color: #00ff00;
+        }
+
+        .auth-input {
+            background: #001100;
+            border: 1px solid #00aa00;
+            color: #00ff00;
+            padding: 10px 12px;
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .auth-input:focus {
+            border-color: #00ff00;
+            box-shadow: 0 0 5px #00ff00;
+        }
+
+        .auth-input::placeholder {
+            color: #005500;
+        }
+
+        .auth-input.error {
+            border-color: #ff4444;
+            box-shadow: 0 0 5px #ff4444;
+        }
+
+        .auth-input.success {
+            border-color: #00ff00;
+        }
+
+        .nickname-status {
+            font-size: 12px;
+            height: 16px;
+            margin-top: 2px;
+        }
+
+        .nickname-status.checking {
+            color: #aaaa00;
+        }
+
+        .nickname-status.available {
+            color: #00ff00;
+        }
+
+        .nickname-status.taken {
+            color: #ff4444;
+        }
+
+        .auth-button {
+            margin-top: 10px;
+            padding: 12px;
+            background: #003300;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .auth-button:hover:not(:disabled) {
+            background: #00ff00;
+            color: #000000;
+        }
+
+        .auth-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .auth-error {
+            color: #ff4444;
+            font-size: 12px;
+            text-align: center;
+            min-height: 20px;
+        }
+
+        .auth-back {
+            margin-top: 20px;
+            color: #00aa00;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+            font-family: 'NeoDunggeunmo', monospace;
+        }
+
+        .auth-back:hover {
+            color: #00ff00;
+            text-decoration: underline;
+        }
+
+        /* User Info in Menu Bar */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+            padding-right: 10px;
+        }
+
+        .user-nickname {
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 14px;
+            color: #55ff55;
+        }
+
+        .logout-btn {
+            color: #00aa00;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 2px 8px;
+            border: 1px solid #00aa00;
+            background: transparent;
+            font-family: 'NeoDunggeunmo', monospace;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            color: #ff4444;
+            border-color: #ff4444;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-text {
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 24px;
+            color: #00ff00;
+            animation: loadingBlink 0.5s infinite;
+        }
+
+        @keyframes loadingBlink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        /* Today Count Display */
+        .today-count {
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 12px;
+            color: #00aa00;
+            margin-left: 10px;
+        }
+
+        .today-count.warning {
+            color: #ffaa00;
+        }
+
+        .today-count.limit {
+            color: #ff4444;
+        }
+
+        /* Menu item disabled state */
+        .menu-item.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
         /* Christmas Theme Colors */
         body.christmas-theme {
             --xmas-red: #ff0000;
@@ -2265,6 +2528,11 @@
         </div>
     </div>
 
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-text">Loading...</div>
+    </div>
+
     <div class="screen">
         <!-- Title Screen -->
         <div class="main-container title-screen" id="titleScreen">
@@ -2274,6 +2542,36 @@
                 <div class="menu-item" data-action="write">일기쓰기</div>
                 <div class="menu-item" data-action="list">나의 일기장</div>
                 <div class="menu-item" data-action="credits">디스켓</div>
+                <div class="menu-item" data-action="auth" id="authMenuItem">로그인</div>
+            </div>
+        </div>
+
+        <!-- Auth Screen -->
+        <div class="main-container auth-screen" id="authScreen">
+            <div class="stars" id="authStars"></div>
+            <div class="auth-container">
+                <div class="auth-title">DOOGIE</div>
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">로그인</button>
+                    <button class="auth-tab" data-tab="signup">회원가입</button>
+                </div>
+                <form class="auth-form" id="authForm">
+                    <div class="auth-field">
+                        <label class="auth-label">닉네임</label>
+                        <input type="text" class="auth-input" id="authNickname"
+                               placeholder="2-12자" minlength="2" maxlength="12" required>
+                        <div class="nickname-status" id="nicknameStatus"></div>
+                    </div>
+                    <div class="auth-field">
+                        <label class="auth-label">PIN (숫자 4자리)</label>
+                        <input type="password" class="auth-input" id="authPin"
+                               placeholder="****" pattern="[0-9]{4}" maxlength="4"
+                               inputmode="numeric" required>
+                    </div>
+                    <div class="auth-error" id="authError"></div>
+                    <button type="submit" class="auth-button" id="authSubmitBtn">로그인</button>
+                </form>
+                <div class="auth-back" id="authBack">← 돌아가기</div>
             </div>
         </div>
 
@@ -2296,16 +2594,19 @@
                         <!-- Diary list will be populated here -->
                     </div>
                 </div>
-                <span class="menu-item-top" data-action="export">Export</span>
-                <span class="menu-item-top" data-action="import">Import</span>
                 <span class="menu-item-top" data-action="help">Help</span>
                 <span class="menu-item-top xmas-menu-item" data-action="xmascard" id="xmasCardMenu">🎄 Card</span>
                 <span class="menu-item-top" data-action="fullscreen" id="fullscreenBtn">Fullscreen</span>
+                <span class="today-count" id="todayCount"></span>
                 <div class="mode-toggle-container">
                     <span class="mode-toggle-label" id="modeLabel">DIARY</span>
                     <button class="mode-toggle-btn" id="modeToggleBtn" title="Toggle Diary/Markdown Mode">
                         <span class="mode-toggle-indicator" id="modeIndicator"></span>
                     </button>
+                </div>
+                <div class="user-info" id="userInfo">
+                    <span class="user-nickname" id="userNickname"></span>
+                    <button class="logout-btn" id="logoutBtn">Logout</button>
                 </div>
             </div>
 
@@ -2609,7 +2910,240 @@
 
     <script>
         // ============================================
-        // IndexedDB Storage Class
+        // Bkend API Client Class
+        // ============================================
+        class BkendAPI {
+            constructor() {
+                this.baseUrl = 'https://api-enduser-dev.bkend.ai';
+                this.projectId = 'rg1svbajwl4dp3g5b0aw';
+                this.environment = 'dev';
+                this.accessToken = localStorage.getItem('doogie_access_token') || null;
+                this.currentUser = null;
+            }
+
+            // Helper to make API requests
+            async request(endpoint, options = {}) {
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'X-Project-Id': this.projectId,
+                    'X-Environment': this.environment,
+                    ...options.headers
+                };
+
+                if (this.accessToken) {
+                    headers['Authorization'] = `Bearer ${this.accessToken}`;
+                }
+
+                const response = await fetch(`${this.baseUrl}${endpoint}`, {
+                    ...options,
+                    headers
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || data.error || 'API request failed');
+                }
+
+                return data;
+            }
+
+            // Convert nickname to email format
+            nicknameToEmail(nickname) {
+                return `${nickname}@doogie.app`;
+            }
+
+            // Extract nickname from email
+            emailToNickname(email) {
+                return email.replace('@doogie.app', '');
+            }
+
+            // Check if user is logged in
+            isLoggedIn() {
+                return !!this.accessToken && !!this.currentUser;
+            }
+
+            // Get current user nickname
+            getNickname() {
+                if (this.currentUser && this.currentUser.email) {
+                    return this.emailToNickname(this.currentUser.email);
+                }
+                return null;
+            }
+
+            // Sign up new user
+            async signup(nickname, pin) {
+                const email = this.nicknameToEmail(nickname);
+                const data = await this.request('/auth/signup/password', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        email: email,
+                        password: pin
+                    })
+                });
+
+                if (data.data && data.data.accessToken) {
+                    this.accessToken = data.data.accessToken;
+                    localStorage.setItem('doogie_access_token', this.accessToken);
+                    await this.fetchCurrentUser();
+                }
+
+                return data;
+            }
+
+            // Sign in existing user
+            async signin(nickname, pin) {
+                const email = this.nicknameToEmail(nickname);
+                const data = await this.request('/auth/signin/password', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        email: email,
+                        password: pin
+                    })
+                });
+
+                if (data.data && data.data.accessToken) {
+                    this.accessToken = data.data.accessToken;
+                    localStorage.setItem('doogie_access_token', this.accessToken);
+                    await this.fetchCurrentUser();
+                }
+
+                return data;
+            }
+
+            // Get current user info
+            async fetchCurrentUser() {
+                try {
+                    const data = await this.request('/auth/me');
+                    this.currentUser = data.data;
+                    return this.currentUser;
+                } catch (error) {
+                    this.logout();
+                    throw error;
+                }
+            }
+
+            // Check if nickname is available (try to sign in with wrong password)
+            async checkNicknameAvailable(nickname) {
+                try {
+                    // Try to sign in with a dummy password - if user exists, it will fail with "Invalid credentials"
+                    // If user doesn't exist, it will fail with "User not found"
+                    const email = this.nicknameToEmail(nickname);
+                    await this.request('/auth/signin/password', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            email: email,
+                            password: '0000' // dummy password
+                        })
+                    });
+                    // If somehow succeeds (very unlikely), user exists
+                    return false;
+                } catch (error) {
+                    const message = error.message.toLowerCase();
+                    // If error contains "not found" or "doesn't exist", nickname is available
+                    if (message.includes('not found') || message.includes('not exist') || message.includes('no user')) {
+                        return true;
+                    }
+                    // If error is about invalid credentials, user exists
+                    if (message.includes('invalid') || message.includes('incorrect') || message.includes('wrong')) {
+                        return false;
+                    }
+                    // For other errors, assume unavailable
+                    return false;
+                }
+            }
+
+            // Logout
+            logout() {
+                this.accessToken = null;
+                this.currentUser = null;
+                localStorage.removeItem('doogie_access_token');
+            }
+
+            // ============================================
+            // Entry (Diary) CRUD Operations
+            // ============================================
+
+            // Get all entries for current user
+            async getAllEntries() {
+                const data = await this.request('/data/entries?limit=1000&sortBy=dateKey&sortDirection=desc');
+                return data.data.items || [];
+            }
+
+            // Get entries for a specific date
+            async getEntriesByDate(dateKey) {
+                const filter = encodeURIComponent(JSON.stringify({ dateKey }));
+                const data = await this.request(`/data/entries?andFilters=${filter}&sortBy=entryNumber&sortDirection=asc`);
+                return data.data.items || [];
+            }
+
+            // Get entries for a specific month (for calendar)
+            async getEntriesByMonth(year, month) {
+                const monthStr = String(month + 1).padStart(2, '0');
+                const pattern = `^${year}-${monthStr}`;
+                const filter = encodeURIComponent(JSON.stringify({ dateKey: { $regex: pattern } }));
+                const data = await this.request(`/data/entries?andFilters=${filter}&limit=1000&sortBy=dateKey&sortDirection=desc`);
+                return data.data.items || [];
+            }
+
+            // Get count of entries for today
+            async getTodayCount() {
+                const today = new Date().toISOString().split('T')[0];
+                const entries = await this.getEntriesByDate(today);
+                return entries.length;
+            }
+
+            // Create new entry
+            async createEntry(dateKey, entryNumber, type, text, images = []) {
+                const data = await this.request('/data/entries', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        dateKey,
+                        entryNumber,
+                        type,
+                        text,
+                        images
+                    })
+                });
+                return data.data;
+            }
+
+            // Update existing entry
+            async updateEntry(entryId, updates) {
+                const data = await this.request(`/data/entries/${entryId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(updates)
+                });
+                return data.data;
+            }
+
+            // Delete entry
+            async deleteEntry(entryId) {
+                await this.request(`/data/entries/${entryId}`, {
+                    method: 'DELETE'
+                });
+            }
+
+            // Get next entry number for a date
+            async getNextEntryNumber(dateKey) {
+                const entries = await this.getEntriesByDate(dateKey);
+                if (entries.length === 0) return 1;
+                const maxNumber = Math.max(...entries.map(e => e.entryNumber || 1));
+                return maxNumber + 1;
+            }
+
+            // Check if can create more entries today (100 limit)
+            async canCreateEntryToday() {
+                const count = await this.getTodayCount();
+                return count < 100;
+            }
+        }
+
+        // Initialize Bkend API client
+        const bkendAPI = new BkendAPI();
+
+        // ============================================
+        // IndexedDB Storage Class (for settings only)
         // ============================================
         class DiaryDB {
             constructor(dbName = 'doogie-diary-db', version = 1) {
@@ -2837,8 +3371,14 @@
         let markdownPreviewVisible = false;
         let lastSavedMarkdownContent = '';
 
+        // Auth State
+        let isAuthMode = 'login'; // 'login' or 'signup'
+        let nicknameCheckTimeout = null;
+        let currentEntryId = null; // Bkend entry ID for updates
+
         // DOM Elements
         const titleScreen = document.getElementById('titleScreen');
+        const authScreen = document.getElementById('authScreen');
         const appContainer = document.getElementById('appContainer');
         const editor = document.getElementById('editor');
         const dateHeader = document.getElementById('dateHeader');
@@ -2887,6 +3427,21 @@
         const markdownPreview = document.getElementById('markdownPreview');
         const markdownToolbar = document.getElementById('markdownToolbar');
         const previewToggleBtn = document.getElementById('previewToggleBtn');
+
+        // Auth DOM Elements
+        const authForm = document.getElementById('authForm');
+        const authNickname = document.getElementById('authNickname');
+        const authPin = document.getElementById('authPin');
+        const authError = document.getElementById('authError');
+        const authSubmitBtn = document.getElementById('authSubmitBtn');
+        const authBack = document.getElementById('authBack');
+        const authMenuItem = document.getElementById('authMenuItem');
+        const nicknameStatus = document.getElementById('nicknameStatus');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const userInfo = document.getElementById('userInfo');
+        const userNickname = document.getElementById('userNickname');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const todayCount = document.getElementById('todayCount');
 
         // Calendar state
         let currentCalendarYear = new Date().getFullYear();
@@ -3273,12 +3828,14 @@
                     menuWrite: '일기쓰기',
                     menuList: '나의 일기장',
                     menuCredits: '디스켓',
+                    menuLogin: '로그인',
                     settingsButton: '⚙ Settings'
                 },
                 en: {
                     menuWrite: 'Diary',
                     menuList: 'Memory',
                     menuCredits: 'Diskette',
+                    menuLogin: 'Login',
                     settingsButton: '⚙ Settings'
                 }
             };
@@ -3290,6 +3847,11 @@
             menuItems[0].textContent = texts.menuWrite;
             menuItems[1].textContent = texts.menuList;
             menuItems[2].textContent = texts.menuCredits;
+
+            // Update auth menu item (only if not logged in)
+            if (!bkendAPI.isLoggedIn()) {
+                menuItems[3].textContent = texts.menuLogin;
+            }
 
             // Update settings button
             const settingsButton = document.getElementById('settingsLinkButton');
@@ -4023,25 +4585,27 @@
             createNYCSkyline();
             createCars();
 
-            // Wait for IndexedDB to be ready and migrate from localStorage if needed
+            // Wait for IndexedDB to be ready (for settings only)
             try {
                 await diaryDB.waitForReady();
-
-                // Check if migration is needed (localStorage has data but IndexedDB is empty)
-                const hasLocalStorageData = localStorage.getItem('doogie-diary') ||
-                                           localStorage.getItem('doogie-characters') ||
-                                           localStorage.getItem('doogie-language');
-
-                if (hasLocalStorageData) {
-                    console.log('Migrating data from localStorage to IndexedDB...');
-                    await diaryDB.migrateFromLocalStorage();
-                    console.log('Migration complete!');
-                }
             } catch (e) {
                 console.error('IndexedDB initialization failed:', e);
             }
 
-            await loadEntries();
+            // Setup auth listeners first
+            setupAuthListeners();
+
+            // Try to restore session
+            const sessionRestored = await tryRestoreSession();
+
+            // Update auth UI regardless
+            updateAuthUI();
+
+            // Only load entries if logged in
+            if (sessionRestored) {
+                await updateTodayCount();
+            }
+
             updateStatus();
             setupMenuListeners();
             setupTopMenuListeners();
@@ -4095,6 +4659,276 @@
                         nodeTextColor: '#00ff00'
                     }
                 });
+            }
+        }
+
+        // =====================================================
+        // AUTH FUNCTIONS
+        // =====================================================
+
+        // Show loading overlay
+        function showLoading(text = 'Loading...') {
+            loadingOverlay.querySelector('.loading-text').textContent = text;
+            loadingOverlay.classList.add('active');
+        }
+
+        // Hide loading overlay
+        function hideLoading() {
+            loadingOverlay.classList.remove('active');
+        }
+
+        // Update UI based on auth state
+        function updateAuthUI() {
+            const isLoggedIn = bkendAPI.isLoggedIn();
+            const writeMenuItem = document.querySelector('.menu-item[data-action="write"]');
+            const listMenuItem = document.querySelector('.menu-item[data-action="list"]');
+
+            if (isLoggedIn) {
+                // Show user info in menu bar
+                userNickname.textContent = bkendAPI.getNickname();
+
+                // Update title screen auth menu item
+                authMenuItem.textContent = bkendAPI.getNickname();
+                authMenuItem.dataset.action = 'logout';
+
+                // Enable menu items
+                if (writeMenuItem) writeMenuItem.classList.remove('disabled');
+                if (listMenuItem) listMenuItem.classList.remove('disabled');
+            } else {
+                // Hide user info
+                userNickname.textContent = '';
+
+                // Update title screen auth menu item
+                authMenuItem.textContent = '로그인';
+                authMenuItem.dataset.action = 'auth';
+
+                // Disable menu items
+                if (writeMenuItem) writeMenuItem.classList.add('disabled');
+                if (listMenuItem) listMenuItem.classList.add('disabled');
+            }
+        }
+
+        // Update today's entry count display
+        async function updateTodayCount() {
+            if (!bkendAPI.isLoggedIn()) {
+                todayCount.textContent = '';
+                return;
+            }
+
+            try {
+                const count = await bkendAPI.getTodayCount();
+                todayCount.textContent = `오늘 ${count}/100`;
+                todayCount.classList.remove('warning', 'limit');
+                if (count >= 100) {
+                    todayCount.classList.add('limit');
+                } else if (count >= 80) {
+                    todayCount.classList.add('warning');
+                }
+            } catch (error) {
+                console.error('Failed to get today count:', error);
+            }
+        }
+
+        // Show auth screen
+        function showAuthScreen() {
+            titleScreen.style.display = 'none';
+            authScreen.classList.add('active');
+            authScreen.style.display = 'flex';
+            appContainer.style.display = 'none';
+
+            // Create stars for auth screen
+            const authStars = document.getElementById('authStars');
+            if (authStars) {
+                authStars.innerHTML = '';
+                for (let i = 0; i < 30; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    star.style.animationDelay = Math.random() * 3 + 's';
+                    star.style.animationDuration = (2 + Math.random() * 2) + 's';
+                    authStars.appendChild(star);
+                }
+            }
+
+            // Reset form
+            authNickname.value = '';
+            authPin.value = '';
+            authError.textContent = '';
+            nicknameStatus.textContent = '';
+            nicknameStatus.className = 'nickname-status';
+        }
+
+        // Hide auth screen
+        function hideAuthScreen() {
+            authScreen.classList.remove('active');
+            authScreen.style.display = 'none';
+            titleScreen.style.display = 'flex';
+        }
+
+        // Switch auth tab
+        function switchAuthTab(tab) {
+            isAuthMode = tab;
+            const tabs = document.querySelectorAll('.auth-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            document.querySelector(`.auth-tab[data-tab="${tab}"]`).classList.add('active');
+
+            authSubmitBtn.textContent = tab === 'login' ? '로그인' : '회원가입';
+            authError.textContent = '';
+            nicknameStatus.textContent = '';
+            nicknameStatus.className = 'nickname-status';
+
+            // Clear inputs
+            authNickname.value = '';
+            authPin.value = '';
+        }
+
+        // Check nickname availability (debounced)
+        async function checkNickname(nickname) {
+            if (isAuthMode !== 'signup') return;
+
+            if (nickname.length < 2) {
+                nicknameStatus.textContent = '';
+                nicknameStatus.className = 'nickname-status';
+                return;
+            }
+
+            nicknameStatus.textContent = '확인 중...';
+            nicknameStatus.className = 'nickname-status checking';
+
+            try {
+                const isAvailable = await bkendAPI.checkNicknameAvailable(nickname);
+                if (isAvailable) {
+                    nicknameStatus.textContent = '✓ 사용 가능';
+                    nicknameStatus.className = 'nickname-status available';
+                } else {
+                    nicknameStatus.textContent = '✗ 이미 사용 중';
+                    nicknameStatus.className = 'nickname-status taken';
+                }
+            } catch (error) {
+                nicknameStatus.textContent = '';
+                nicknameStatus.className = 'nickname-status';
+            }
+        }
+
+        // Handle auth form submit
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+
+            const nickname = authNickname.value.trim();
+            const pin = authPin.value.trim();
+
+            // Validate
+            if (nickname.length < 2 || nickname.length > 12) {
+                authError.textContent = '닉네임은 2-12자여야 합니다';
+                return;
+            }
+
+            if (!/^\d{4}$/.test(pin)) {
+                authError.textContent = 'PIN은 숫자 4자리여야 합니다';
+                return;
+            }
+
+            showLoading(isAuthMode === 'login' ? '로그인 중...' : '회원가입 중...');
+            authError.textContent = '';
+
+            try {
+                if (isAuthMode === 'login') {
+                    await bkendAPI.signin(nickname, pin);
+                } else {
+                    await bkendAPI.signup(nickname, pin);
+                }
+
+                hideLoading();
+                hideAuthScreen();
+                updateAuthUI();
+
+                // Load entries after login
+                await loadEntries();
+                await updateTodayCount();
+
+            } catch (error) {
+                hideLoading();
+                console.error('Auth error:', error);
+
+                const message = error.message.toLowerCase();
+                if (message.includes('invalid') || message.includes('incorrect') || message.includes('wrong')) {
+                    authError.textContent = '닉네임 또는 PIN이 올바르지 않습니다';
+                } else if (message.includes('exist') || message.includes('duplicate')) {
+                    authError.textContent = '이미 존재하는 닉네임입니다';
+                } else if (message.includes('not found')) {
+                    authError.textContent = '존재하지 않는 사용자입니다';
+                } else {
+                    authError.textContent = error.message || '오류가 발생했습니다';
+                }
+            }
+        }
+
+        // Handle logout
+        function handleLogout() {
+            bkendAPI.logout();
+            entries = {};
+            updateAuthUI();
+
+            // Go back to title screen
+            titleScreen.style.display = 'flex';
+            appContainer.style.display = 'none';
+            authScreen.style.display = 'none';
+
+            showStatus('로그아웃 되었습니다', 2000);
+        }
+
+        // Setup auth event listeners
+        function setupAuthListeners() {
+            // Auth tabs
+            document.querySelectorAll('.auth-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchAuthTab(tab.dataset.tab);
+                });
+            });
+
+            // Form submit
+            authForm.addEventListener('submit', handleAuthSubmit);
+
+            // Back button
+            authBack.addEventListener('click', hideAuthScreen);
+
+            // Nickname check with debounce
+            authNickname.addEventListener('input', () => {
+                if (nicknameCheckTimeout) {
+                    clearTimeout(nicknameCheckTimeout);
+                }
+                nicknameCheckTimeout = setTimeout(() => {
+                    checkNickname(authNickname.value.trim());
+                }, 500);
+            });
+
+            // PIN input - only allow numbers
+            authPin.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+            });
+
+            // Logout button
+            logoutBtn.addEventListener('click', handleLogout);
+        }
+
+        // Try to restore session on load
+        async function tryRestoreSession() {
+            if (!bkendAPI.accessToken) return false;
+
+            showLoading('세션 복원 중...');
+
+            try {
+                await bkendAPI.fetchCurrentUser();
+                updateAuthUI();
+                await loadEntries();
+                await updateTodayCount();
+                hideLoading();
+                return true;
+            } catch (error) {
+                console.error('Session restore failed:', error);
+                hideLoading();
+                return false;
             }
         }
 
@@ -4200,6 +5034,12 @@
         async function saveCurrentMarkdownEntry() {
             const content = markdownEditor.value.trim();
             const key = getCurrentMarkdownEntryKey();
+
+            // 중복 저장 방지
+            if (content === lastSavedMarkdownContent && content !== '') {
+                showStatus('이미 저장되었습니다!', 2000);
+                return;
+            }
 
             if (!content) {
                 if (entries[key]) {
@@ -4946,10 +5786,6 @@ flowchart LR
                 toggleDiaryList();
             } else if (action === 'picture') {
                 togglePictureMenu();
-            } else if (action === 'export') {
-                exportDiary();
-            } else if (action === 'import') {
-                importDiary();
             } else if (action === 'help') {
                 switchMode('help');
             } else if (action === 'xmascard') {
@@ -5142,11 +5978,23 @@ flowchart LR
 
         function handleMenuAction(action) {
             if (action === 'write') {
+                if (!bkendAPI.isLoggedIn()) {
+                    showAuthScreen();
+                    return;
+                }
                 startApp('write');
             } else if (action === 'list') {
+                if (!bkendAPI.isLoggedIn()) {
+                    showAuthScreen();
+                    return;
+                }
                 startApp('calendar');
             } else if (action === 'credits') {
                 startApp('credits');
+            } else if (action === 'auth') {
+                showAuthScreen();
+            } else if (action === 'logout') {
+                handleLogout();
             }
         }
 
@@ -5170,91 +6018,146 @@ flowchart LR
         function returnToMenu() {
             saveCurrentEntry();
             appContainer.style.display = 'none';
+            authScreen.style.display = 'none';
             titleScreen.style.display = 'flex';
             currentMode = 'title';
             selectMenuItem(0);
         }
 
-        // Storage functions (now using IndexedDB)
+        // Storage functions (now using Bkend API)
         async function loadEntries() {
+            if (!bkendAPI.isLoggedIn()) {
+                entries = {};
+                return;
+            }
+
             try {
-                entries = await diaryDB.getAllEntries();
-                console.log('Loaded entries from IndexedDB:', Object.keys(entries).length);
+                showLoading('일기 불러오는 중...');
+                const serverEntries = await bkendAPI.getAllEntries();
+                entries = {};
+
+                // Convert server entries to local format
+                serverEntries.forEach(entry => {
+                    const key = generateLocalKey(entry.dateKey, entry.entryNumber, entry.type);
+                    entries[key] = {
+                        text: entry.text || '',
+                        images: entry.images || [],
+                        _id: entry._id, // Store Bkend ID for updates
+                        dateKey: entry.dateKey,
+                        entryNumber: entry.entryNumber,
+                        type: entry.type
+                    };
+                });
+
+                console.log('Loaded entries from Bkend:', Object.keys(entries).length);
+                hideLoading();
             } catch (error) {
                 console.error('Failed to load entries:', error);
+                hideLoading();
+                showStatus('일기 불러오기 실패!', 3000);
                 entries = {};
             }
         }
 
-        async function saveEntries() {
-            try {
-                await diaryDB.saveAllEntries(entries);
-                showStatus('Saved!', 2000);
-            } catch (error) {
-                console.error('Failed to save entries:', error);
-                showStatus('Save failed!', 3000);
+        // Generate local key from Bkend entry data
+        function generateLocalKey(dateKey, entryNumber, type) {
+            if (type === 'markdown') {
+                if (entryNumber === 1) {
+                    return `#${dateKey}`;
+                } else {
+                    return `#${dateKey}_(${entryNumber})`;
+                }
+            } else {
+                if (entryNumber === 1) {
+                    return dateKey;
+                } else {
+                    return `${dateKey}_(${entryNumber})`;
+                }
             }
         }
 
+        // Parse local key to get date information
+        function parseLocalKey(key) {
+            const isMarkdown = key.startsWith('#');
+            const cleanKey = isMarkdown ? key.substring(1) : key;
+
+            const match = cleanKey.match(/^(\d{4}-\d{2}-\d{2})(?:_\((\d+)\))?$/);
+            if (match) {
+                return {
+                    dateKey: match[1],
+                    entryNumber: match[2] ? parseInt(match[2]) : 1,
+                    type: isMarkdown ? 'markdown' : 'diary'
+                };
+            }
+            return null;
+        }
+
+        async function saveEntries() {
+            // Not used with Bkend - entries are saved individually
+            showStatus('Saved!', 2000);
+        }
+
         async function saveEntrySingle(key, data) {
+            if (!bkendAPI.isLoggedIn()) {
+                showStatus('로그인이 필요합니다', 3000);
+                return;
+            }
+
             try {
-                await diaryDB.saveEntry(key, data);
+                const parsed = parseLocalKey(key);
+                if (!parsed) {
+                    console.error('Invalid key format:', key);
+                    return;
+                }
+
+                if (data._id) {
+                    // Update existing entry
+                    await bkendAPI.updateEntry(data._id, {
+                        text: data.text,
+                        images: data.images || []
+                    });
+                } else {
+                    // Create new entry
+                    const newEntry = await bkendAPI.createEntry(
+                        parsed.dateKey,
+                        parsed.entryNumber,
+                        parsed.type,
+                        data.text,
+                        data.images || []
+                    );
+                    // Store the new ID
+                    if (newEntry && newEntry._id) {
+                        entries[key]._id = newEntry._id;
+                        entries[key].dateKey = parsed.dateKey;
+                        entries[key].entryNumber = parsed.entryNumber;
+                        entries[key].type = parsed.type;
+                    }
+                    await updateTodayCount();
+                }
             } catch (error) {
                 console.error('Failed to save entry:', error);
+                showStatus('저장 실패!', 3000);
             }
         }
 
         async function deleteEntrySingle(key) {
+            if (!bkendAPI.isLoggedIn()) return;
+
             try {
-                await diaryDB.deleteEntry(key);
+                const entry = entries[key];
+                if (entry && entry._id) {
+                    await bkendAPI.deleteEntry(entry._id);
+                    await updateTodayCount();
+                }
             } catch (error) {
                 console.error('Failed to delete entry:', error);
             }
         }
 
-        // Export diary to JSON file
-        function exportDiary() {
-            const dataStr = JSON.stringify(entries, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            const timestamp = new Date().toISOString().split('T')[0];
-            link.download = `doogie-diary-backup-${timestamp}.json`;
-            link.click();
-            URL.revokeObjectURL(url);
-            showStatus('Exported!', 2000);
-        }
-
-        // Import diary from JSON file
-        function importDiary() {
-            importInput.click();
-        }
-
-        // Setup import file handler
+        // Setup import file handler (disabled for Bkend version)
         function setupImportHandler() {
-            importInput.addEventListener('change', async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-
-                const reader = new FileReader();
-                reader.onload = async (event) => {
-                    try {
-                        const importedData = JSON.parse(event.target.result);
-                        // Merge with existing entries
-                        entries = { ...entries, ...importedData };
-                        await saveEntries();
-                        loadCurrentEntry();
-                        displayImages();
-                        showStatus('Imported successfully!', 2000);
-                    } catch (error) {
-                        showStatus('Import failed! Invalid file.', 3000);
-                    }
-                };
-                reader.readAsText(file);
-                // Reset input
-                importInput.value = '';
-            });
+            // Import is disabled - data is stored on server
+            console.log('Import is disabled in server mode');
         }
 
         function loadCurrentEntry() {
@@ -5276,6 +6179,12 @@ flowchart LR
             const content = editor.value.trim();
             const key = getCurrentEntryKey();
             const entry = entries[key];
+
+            // 중복 저장 방지: 내용이 변경되지 않았으면 저장하지 않음
+            if (content === lastSavedContent && content !== '') {
+                showStatus('이미 저장되었습니다!', 2000);
+                return;
+            }
 
             console.log('saveCurrentEntry - key:', key, 'content length:', content.length);
 
@@ -5516,7 +6425,20 @@ flowchart LR
             switchMode('view');
         }
 
-        function newEntry() {
+        async function newEntry() {
+            // Check 100 entries limit for today
+            if (bkendAPI.isLoggedIn()) {
+                try {
+                    const canCreate = await bkendAPI.canCreateEntryToday();
+                    if (!canCreate) {
+                        showStatus('오늘은 더 이상 일기를 쓸 수 없습니다 (100/100)', 3000);
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Failed to check entry limit:', error);
+                }
+            }
+
             // Check if there are unsaved changes
             if (checkUnsavedChanges()) {
                 showConfirmDialog();
