@@ -3024,33 +3024,11 @@
             }
 
             // Check if nickname is available (try to sign in with wrong password)
+            // Note: Real-time nickname check removed due to API limitations
+            // Duplicate check happens at signup time via server response
             async checkNicknameAvailable(nickname) {
-                try {
-                    // Try to sign in with a dummy password - if user exists, it will fail with "Invalid credentials"
-                    // If user doesn't exist, it will fail with "User not found"
-                    const email = this.nicknameToEmail(nickname);
-                    await this.request('/auth/signin/password', {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            email: email,
-                            password: '0000' // dummy password
-                        })
-                    });
-                    // If somehow succeeds (very unlikely), user exists
-                    return false;
-                } catch (error) {
-                    const message = error.message.toLowerCase();
-                    // If error contains "not found" or "doesn't exist", nickname is available
-                    if (message.includes('not found') || message.includes('not exist') || message.includes('no user')) {
-                        return true;
-                    }
-                    // If error is about invalid credentials, user exists
-                    if (message.includes('invalid') || message.includes('incorrect') || message.includes('wrong')) {
-                        return false;
-                    }
-                    // For other errors, assume unavailable
-                    return false;
-                }
+                // Always return true - actual check happens during signup
+                return true;
             }
 
             // Logout
@@ -4788,27 +4766,21 @@
             if (isAuthMode !== 'signup') return;
 
             if (nickname.length < 2) {
-                nicknameStatus.textContent = '';
+                nicknameStatus.textContent = nickname.length > 0 ? '2자 이상 입력해주세요' : '';
                 nicknameStatus.className = 'nickname-status';
                 return;
             }
 
-            nicknameStatus.textContent = '확인 중...';
-            nicknameStatus.className = 'nickname-status checking';
-
-            try {
-                const isAvailable = await bkendAPI.checkNicknameAvailable(nickname);
-                if (isAvailable) {
-                    nicknameStatus.textContent = '✓ 사용 가능';
-                    nicknameStatus.className = 'nickname-status available';
-                } else {
-                    nicknameStatus.textContent = '✗ 이미 사용 중';
-                    nicknameStatus.className = 'nickname-status taken';
-                }
-            } catch (error) {
-                nicknameStatus.textContent = '';
-                nicknameStatus.className = 'nickname-status';
+            if (nickname.length > 12) {
+                nicknameStatus.textContent = '12자 이하로 입력해주세요';
+                nicknameStatus.className = 'nickname-status taken';
+                return;
             }
+
+            // Show valid format (actual duplicate check happens at signup)
+            nicknameStatus.textContent = '✓ 형식 확인됨';
+            nicknameStatus.className = 'nickname-status available';
+
         }
 
         // Handle auth form submit
