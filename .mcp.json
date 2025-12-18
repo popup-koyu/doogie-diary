@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "mcp-bkend": {
+      "type": "http",
+      "url": "https://api.bkend.ai/mcp",
+      "headers": {
+        "X-Organization-Id": "org_ef7dd500-90cb-4795-a7d3-5d2f7221075b",
+        "X-Api-Key": "ak_1b61066cd1cf85f1baacb9c23d6d76580eb367586374ea5e95fbd2b9c7cef168"
+      }
+    }
+  }
+}
