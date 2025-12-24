@@ -2923,6 +2923,11 @@
 
             // Helper to make API requests
             async request(endpoint, options = {}) {
+                // Check online status
+                if (!navigator.onLine) {
+                    throw new Error('OFFLINE');
+                }
+
                 const headers = {
                     'Content-Type': 'application/json',
                     'X-Project-Id': this.projectId,
@@ -2934,10 +2939,22 @@
                     headers['Authorization'] = `Bearer ${this.accessToken}`;
                 }
 
-                const response = await fetch(`${this.baseUrl}${endpoint}`, {
-                    ...options,
-                    headers
-                });
+                let response;
+                try {
+                    response = await fetch(`${this.baseUrl}${endpoint}`, {
+                        ...options,
+                        headers
+                    });
+                } catch (fetchError) {
+                    // Network error (CORS, connection failed, etc.)
+                    throw new Error('NETWORK_ERROR');
+                }
+
+                // Handle 401 Unauthorized - token expired
+                if (response.status === 401) {
+                    this.logout();
+                    throw new Error('SESSION_EXPIRED');
+                }
 
                 const data = await response.json();
 
@@ -4823,15 +4840,25 @@
                 hideLoading();
                 console.error('Auth error:', error);
 
-                const message = error.message.toLowerCase();
-                if (message.includes('invalid') || message.includes('incorrect') || message.includes('wrong')) {
-                    authError.textContent = '닉네임 또는 PIN이 올바르지 않습니다';
-                } else if (message.includes('exist') || message.includes('duplicate')) {
-                    authError.textContent = '이미 존재하는 닉네임입니다';
-                } else if (message.includes('not found')) {
-                    authError.textContent = '존재하지 않는 사용자입니다';
+                const message = error.message;
+
+                // Handle network errors
+                if (message === 'OFFLINE') {
+                    authError.textContent = '인터넷 연결을 확인해주세요';
+                } else if (message === 'NETWORK_ERROR') {
+                    authError.textContent = '서버에 연결할 수 없습니다';
                 } else {
-                    authError.textContent = error.message || '오류가 발생했습니다';
+                    // Handle auth-specific errors
+                    const lowerMessage = message.toLowerCase();
+                    if (lowerMessage.includes('invalid') || lowerMessage.includes('incorrect') || lowerMessage.includes('wrong')) {
+                        authError.textContent = '닉네임 또는 PIN이 올바르지 않습니다';
+                    } else if (lowerMessage.includes('exist') || lowerMessage.includes('duplicate')) {
+                        authError.textContent = '이미 존재하는 닉네임입니다';
+                    } else if (lowerMessage.includes('not found')) {
+                        authError.textContent = '존재하지 않는 사용자입니다';
+                    } else {
+                        authError.textContent = message || '오류가 발생했습니다';
+                    }
                 }
             }
         }
@@ -4900,6 +4927,13 @@
             } catch (error) {
                 console.error('Session restore failed:', error);
                 hideLoading();
+                // Clear invalid session
+                bkendAPI.logout();
+                updateAuthUI();
+                // Show error for network issues only
+                if (error.message === 'OFFLINE' || error.message === 'NETWORK_ERROR') {
+                    handleApiError(error);
+                }
                 return false;
             }
         }
@@ -6026,7 +6060,7 @@ flowchart LR
             } catch (error) {
                 console.error('Failed to load entries:', error);
                 hideLoading();
-                showStatus('일기 불러오기 실패!', 3000);
+                handleApiError(error);
                 entries = {};
             }
         }
@@ -6082,6 +6116,8 @@ flowchart LR
                     return;
                 }
 
+                showStatus('Saving...', 0);
+
                 if (data._id) {
                     // Update existing entry
                     await bkendAPI.updateEntry(data._id, {
@@ -6106,10 +6142,11 @@ flowchart LR
                     }
                     await updateTodayCount();
                 }
+
+                showStatus('Saved!', 2000);
             } catch (error) {
                 console.error('Failed to save entry:', error);
-                showStatus('저장 실패!', 3000);
-            }
+                handleApiError(error);
         }
 
         async function deleteEntrySingle(key) {
@@ -6118,11 +6155,14 @@ flowchart LR
             try {
                 const entry = entries[key];
                 if (entry && entry._id) {
+                    showStatus('Deleting...', 0);
                     await bkendAPI.deleteEntry(entry._id);
                     await updateTodayCount();
+                    showStatus('Deleted!', 2000);
                 }
             } catch (error) {
                 console.error('Failed to delete entry:', error);
+                handleApiError(error);
             }
         }
 
@@ -6230,6 +6270,33 @@ flowchart LR
                     statusLeft.textContent = 'Ready';
                 }, duration);
             }
+        }
+
+        // Handle API errors with user-friendly messages
+        function handleApiError(error) {
+            const message = error.message;
+
+            if (message === 'OFFLINE') {
+                showStatus('인터넷 연결을 확인해주세요', 5000);
+                return;
+            }
+
+            if (message === 'NETWORK_ERROR') {
+                showStatus('서버에 연결할 수 없습니다', 5000);
+                return;
+            }
+
+            if (message === 'SESSION_EXPIRED') {
+                showStatus('세션이 만료되었습니다', 3000);
+                // Show auth screen after delay
+                setTimeout(() => {
+                    showAuthScreen();
+                }, 1000);
+                return;
+            }
+
+            // Default error message
+            showStatus(message || '오류가 발생했습니다', 3000);
         }
 
         // Mode switching
