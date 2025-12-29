@@ -1,0 +1,26 @@
+{
+  "name": "doogie-diary",
+  "version": "1.0.0",
+  "description": "**레트로 게임 스타일의 인터랙티브 다이어리**",
+  "main": "gif.worker.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/popup-koyu/doogie-diary.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/popup-koyu/doogie-diary/issues"
+  },
+  "homepage": "https://github.com/popup-koyu/doogie-diary#readme",
+  "devDependencies": {
+    "vite": "^7.3.0"
+  }
+}

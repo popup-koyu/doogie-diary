@@ -2629,7 +2629,7 @@
                             <button class="md-tool-btn" data-action="heading" title="Heading (Ctrl+H)">#</button>
                             <button class="md-tool-btn" data-action="bold" title="Bold (Ctrl+B)">B</button>
                             <button class="md-tool-btn" data-action="italic" title="Italic (Ctrl+I)">I</button>
-                            <button class="md-tool-btn" data-action="code" title="Code (Ctrl+`)"><></button>
+                            <button class="md-tool-btn" data-action="code" title="Code (Ctrl+`)">&lt;/&gt;</button>
                             <button class="md-tool-btn" data-action="link" title="Link (Ctrl+K)">🔗</button>
                             <button class="md-tool-btn" data-action="list" title="List">•</button>
                             <button class="md-tool-btn" data-action="quote" title="Quote">❝</button>
@@ -2742,9 +2742,9 @@
                 <div class="credits-company">
                     <div class="company-box">
                         <span class="asterisk">**</span>
-                        <span class="bracket"><<</span>
+                        <span class="bracket">&lt;&lt;</span>
                         <span class="company-text">POPUP STUDIO</span>
-                        <span class="bracket">>></span>
+                        <span class="bracket">&gt;&gt;</span>
                         <span class="asterisk">**</span>
                     </div>
                 </div>
@@ -2816,8 +2816,8 @@
                                 <div class="xmas-card-message-area">
                                     <div class="xmas-card-header">
                                         <span class="xmas-title">Merry Christmas</span>
-                                        <span class="xmas-card-subtitle">from</span>
-                                        <span class="xmas-card-subtitle">POPUP-STUDIO</span>
+                                        <span class="xmas-card-subtitle">to</span>
+                                        <span class="xmas-card-subtitle">My Special Someone</span>
                                         <span class="xmas-card-tagline">"Commit to Joy, Push the Vibes."</span>
                                     </div>
                                     <div class="xmas-card-to">Dear <span id="cardToPreview">_____</span>,</div>
@@ -2910,12 +2910,19 @@
 
     <script>
         // ============================================
+        // App Configuration
+        // ============================================
+        // Set to false to use local-only mode (IndexedDB only, no server)
+        // Server mode enabled - using https://api-enduser.bkend.ai
+        const USE_SERVER_MODE = true;
+
+        // ============================================
         // Bkend API Client Class
         // ============================================
         class BkendAPI {
             constructor() {
                 this.baseUrl = '/api';
-                this.projectId = 'rg1svbajwl4dp3g5b0aw';
+                this.projectId = 'xmw50no31alhxozn08ex';
                 this.environment = 'dev';
                 this.accessToken = localStorage.getItem('doogie_access_token') || null;
                 this.currentUser = null;
@@ -2959,7 +2966,17 @@
                 const data = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(data.message || data.error || 'API request failed');
+                    // Bkend API error structure: { success: false, error: { message: "..." } }
+                    // or { message: "..." } or { error: "..." }
+                    let errorMessage = 'API request failed';
+                    if (data.error && typeof data.error === 'object' && data.error.message) {
+                        errorMessage = data.error.message;
+                    } else if (data.error && typeof data.error === 'string') {
+                        errorMessage = data.error;
+                    } else if (data.message && typeof data.message === 'string') {
+                        errorMessage = data.message;
+                    }
+                    throw new Error(errorMessage);
                 }
 
                 return data;
@@ -2973,6 +2990,12 @@
             // Extract nickname from email
             emailToNickname(email) {
                 return email.replace('@doogie.app', '');
+            }
+
+            // Convert 4-digit PIN to password format (meets Bkend password policy)
+            // Requirements: min 8 chars, uppercase, lowercase, number, special char
+            pinToPassword(pin) {
+                return `Doo@gie${pin}#Pwd`;
             }
 
             // Check if user is logged in
@@ -2991,16 +3014,20 @@
             // Sign up new user
             async signup(nickname, pin) {
                 const email = this.nicknameToEmail(nickname);
+                const password = this.pinToPassword(pin);
                 const data = await this.request('/auth/signup/password', {
                     method: 'POST',
                     body: JSON.stringify({
                         email: email,
-                        password: pin
+                        password: password,
+                        name: nickname,
+                        callbackUrl: window.location.origin
                     })
                 });
 
-                if (data.data && data.data.accessToken) {
-                    this.accessToken = data.data.accessToken;
+                // Response uses access_token (snake_case)
+                if (data.data && data.data.access_token) {
+                    this.accessToken = data.data.access_token;
                     localStorage.setItem('doogie_access_token', this.accessToken);
                     await this.fetchCurrentUser();
                 }
@@ -3011,16 +3038,19 @@
             // Sign in existing user
             async signin(nickname, pin) {
                 const email = this.nicknameToEmail(nickname);
+                const password = this.pinToPassword(pin);
                 const data = await this.request('/auth/signin/password', {
                     method: 'POST',
                     body: JSON.stringify({
                         email: email,
-                        password: pin
+                        password: password,
+                        callbackUrl: window.location.origin
                     })
                 });
 
-                if (data.data && data.data.accessToken) {
-                    this.accessToken = data.data.accessToken;
+                // Response uses access_token (snake_case)
+                if (data.data && data.data.access_token) {
+                    this.accessToken = data.data.access_token;
                     localStorage.setItem('doogie_access_token', this.accessToken);
                     await this.fetchCurrentUser();
                 }
@@ -4590,15 +4620,22 @@
             // Setup auth listeners first
             setupAuthListeners();
 
-            // Try to restore session
-            const sessionRestored = await tryRestoreSession();
-
-            // Update auth UI regardless
-            updateAuthUI();
-
-            // Only load entries if logged in
-            if (sessionRestored) {
+            // In local mode, skip auth and load entries directly
+            if (!USE_SERVER_MODE) {
+                updateAuthUI();
+                await loadEntries();
                 await updateTodayCount();
+            } else {
+                // Server mode: Try to restore session
+                const sessionRestored = await tryRestoreSession();
+
+                // Update auth UI regardless
+                updateAuthUI();
+
+                // Only load entries if logged in
+                if (sessionRestored) {
+                    await updateTodayCount();
+                }
             }
 
             updateStatus();
@@ -4674,9 +4711,20 @@
 
         // Update UI based on auth state
         function updateAuthUI() {
-            const isLoggedIn = bkendAPI.isLoggedIn();
             const writeMenuItem = document.querySelector('.menu-item[data-action="write"]');
             const listMenuItem = document.querySelector('.menu-item[data-action="list"]');
+
+            // In local mode, always enable everything
+            if (!USE_SERVER_MODE) {
+                userNickname.textContent = '로컬모드';
+                authMenuItem.textContent = '로컬모드';
+                authMenuItem.dataset.action = 'auth';
+                if (writeMenuItem) writeMenuItem.classList.remove('disabled');
+                if (listMenuItem) listMenuItem.classList.remove('disabled');
+                return;
+            }
+
+            const isLoggedIn = bkendAPI.isLoggedIn();
 
             if (isLoggedIn) {
                 // Show user info in menu bar
@@ -4705,6 +4753,24 @@
 
         // Update today's entry count display
         async function updateTodayCount() {
+            // In local mode, count from local entries
+            if (!USE_SERVER_MODE) {
+                const today = new Date().toISOString().slice(0, 10);
+                let count = 0;
+                for (const key in entries) {
+                    if (key.includes(today)) count++;
+                }
+                todayCount.textContent = `오늘 ${count}/100`;
+                todayCount.classList.remove('warning', 'limit');
+                if (count >= 100) {
+                    todayCount.classList.add('limit');
+                } else if (count >= 80) {
+                    todayCount.classList.add('warning');
+                }
+                return;
+            }
+
+            // Server mode
             if (!bkendAPI.isLoggedIn()) {
                 todayCount.textContent = '';
                 return;
@@ -4840,22 +4906,32 @@
                 hideLoading();
                 console.error('Auth error:', error);
 
-                const message = error.message;
+                // Safely extract error message as string
+                let message = '';
+                if (error && error.message) {
+                    message = typeof error.message === 'string' ? error.message : JSON.stringify(error.message);
+                } else if (typeof error === 'string') {
+                    message = error;
+                }
 
                 // Handle network errors
                 if (message === 'OFFLINE') {
                     authError.textContent = '인터넷 연결을 확인해주세요';
                 } else if (message === 'NETWORK_ERROR') {
                     authError.textContent = '서버에 연결할 수 없습니다';
+                } else if (message === 'SESSION_EXPIRED') {
+                    authError.textContent = '세션이 만료되었습니다. 다시 로그인해주세요';
                 } else {
                     // Handle auth-specific errors
                     const lowerMessage = message.toLowerCase();
                     if (lowerMessage.includes('invalid') || lowerMessage.includes('incorrect') || lowerMessage.includes('wrong')) {
                         authError.textContent = '닉네임 또는 PIN이 올바르지 않습니다';
-                    } else if (lowerMessage.includes('exist') || lowerMessage.includes('duplicate')) {
+                    } else if (lowerMessage.includes('exist') || lowerMessage.includes('duplicate') || lowerMessage.includes('already')) {
                         authError.textContent = '이미 존재하는 닉네임입니다';
-                    } else if (lowerMessage.includes('not found')) {
+                    } else if (lowerMessage.includes('not found') || lowerMessage.includes('user not')) {
                         authError.textContent = '존재하지 않는 사용자입니다';
+                    } else if (lowerMessage.includes('password') || lowerMessage.includes('credentials')) {
+                        authError.textContent = '닉네임 또는 PIN이 올바르지 않습니다';
                     } else {
                         authError.textContent = message || '오류가 발생했습니다';
                     }
@@ -5984,13 +6060,15 @@ flowchart LR
 
         function handleMenuAction(action) {
             if (action === 'write') {
-                if (!bkendAPI.isLoggedIn()) {
+                // In local mode, skip login check
+                if (USE_SERVER_MODE && !bkendAPI.isLoggedIn()) {
                     showAuthScreen();
                     return;
                 }
                 startApp('write');
             } else if (action === 'list') {
-                if (!bkendAPI.isLoggedIn()) {
+                // In local mode, skip login check
+                if (USE_SERVER_MODE && !bkendAPI.isLoggedIn()) {
                     showAuthScreen();
                     return;
                 }
@@ -5998,9 +6076,15 @@ flowchart LR
             } else if (action === 'credits') {
                 startApp('credits');
             } else if (action === 'auth') {
-                showAuthScreen();
+                if (USE_SERVER_MODE) {
+                    showAuthScreen();
+                } else {
+                    showStatus('로컬 모드에서는 로그인이 필요 없습니다', 2000);
+                }
             } else if (action === 'logout') {
-                handleLogout();
+                if (USE_SERVER_MODE) {
+                    handleLogout();
+                }
             }
         }
 
@@ -6030,8 +6114,25 @@ flowchart LR
             selectMenuItem(0);
         }
 
-        // Storage functions (now using Bkend API)
+        // Storage functions (using Bkend API in server mode, IndexedDB in local mode)
         async function loadEntries() {
+            // In local mode, load from IndexedDB
+            if (!USE_SERVER_MODE) {
+                try {
+                    showLoading('일기 불러오는 중...');
+                    const storedEntries = await diaryDB.getAllEntries();
+                    entries = storedEntries || {};
+                    console.log('Loaded entries from IndexedDB:', Object.keys(entries).length);
+                    hideLoading();
+                } catch (error) {
+                    console.error('Failed to load entries from IndexedDB:', error);
+                    hideLoading();
+                    entries = {};
+                }
+                return;
+            }
+
+            // Server mode - require login
             if (!bkendAPI.isLoggedIn()) {
                 entries = {};
                 return;
@@ -6099,11 +6200,37 @@ flowchart LR
         }
 
         async function saveEntries() {
+            // In local mode, save to IndexedDB
+            if (!USE_SERVER_MODE) {
+                try {
+                    await diaryDB.saveAllEntries(entries);
+                    showStatus('Saved!', 2000);
+                } catch (error) {
+                    console.error('Failed to save entries to IndexedDB:', error);
+                    showStatus('저장 실패', 3000);
+                }
+                return;
+            }
             // Not used with Bkend - entries are saved individually
             showStatus('Saved!', 2000);
         }
 
         async function saveEntrySingle(key, data) {
+            // In local mode, save to IndexedDB
+            if (!USE_SERVER_MODE) {
+                try {
+                    showStatus('Saving...', 0);
+                    entries[key] = data;
+                    await diaryDB.saveEntry(key, data);
+                    showStatus('Saved!', 2000);
+                } catch (error) {
+                    console.error('Failed to save entry to IndexedDB:', error);
+                    showStatus('저장 실패', 3000);
+                }
+                return;
+            }
+
+            // Server mode - require login
             if (!bkendAPI.isLoggedIn()) {
                 showStatus('로그인이 필요합니다', 3000);
                 return;
@@ -6147,9 +6274,25 @@ flowchart LR
             } catch (error) {
                 console.error('Failed to save entry:', error);
                 handleApiError(error);
+            }
         }
 
         async function deleteEntrySingle(key) {
+            // In local mode, delete from IndexedDB
+            if (!USE_SERVER_MODE) {
+                try {
+                    showStatus('Deleting...', 0);
+                    delete entries[key];
+                    await diaryDB.deleteEntry(key);
+                    showStatus('Deleted!', 2000);
+                } catch (error) {
+                    console.error('Failed to delete entry from IndexedDB:', error);
+                    showStatus('삭제 실패', 3000);
+                }
+                return;
+            }
+
+            // Server mode - require login
             if (!bkendAPI.isLoggedIn()) return;
 
             try {
@@ -6166,10 +6309,33 @@ flowchart LR
             }
         }
 
-        // Setup import file handler (disabled for Bkend version)
+        // Setup import file handler
         function setupImportHandler() {
-            // Import is disabled - data is stored on server
-            console.log('Import is disabled in server mode');
+            // In server mode, import is disabled
+            if (USE_SERVER_MODE) {
+                console.log('Import is disabled in server mode');
+                return;
+            }
+
+            // In local mode, enable import from file
+            const importInput = document.getElementById('importInput');
+            if (importInput) {
+                importInput.addEventListener('change', async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    try {
+                        const text = await file.text();
+                        const importedEntries = JSON.parse(text);
+                        entries = { ...entries, ...importedEntries };
+                        await diaryDB.saveAllEntries(entries);
+                        showStatus('가져오기 완료!', 2000);
+                    } catch (error) {
+                        console.error('Import error:', error);
+                        showStatus('가져오기 실패', 3000);
+                    }
+                });
+            }
         }
 
         function loadCurrentEntry() {
