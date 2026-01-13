@@ -2498,6 +2498,181 @@
         .xmas-card-list-item-delete:hover {
             color: #ff0000;
         }
+
+        /* ============================================
+           Mobile Responsive Styles
+           ============================================ */
+
+        /* Tablet and below */
+        @media screen and (max-width: 768px) {
+            .screen {
+                padding: 10px;
+            }
+
+            .menu-bar {
+                flex-wrap: wrap;
+                gap: 5px;
+                padding: 8px;
+            }
+
+            .menu-bar .menu-item-top {
+                padding: 8px 6px;
+                font-size: 10px;
+            }
+
+            .mode-toggle-container {
+                display: none;
+            }
+
+            .user-info {
+                font-size: 10px;
+            }
+
+            .diary-title {
+                font-size: 14px !important;
+            }
+
+            .text-input {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .title-logo {
+                font-size: 24px !important;
+            }
+
+            .title-menu {
+                gap: 15px;
+            }
+
+            .title-menu-item {
+                font-size: 12px;
+                padding: 10px 15px;
+            }
+        }
+
+        /* Mobile phones */
+        @media screen and (max-width: 480px) {
+            .screen {
+                padding: 5px;
+            }
+
+            .menu-bar {
+                gap: 3px;
+                padding: 5px;
+                justify-content: center;
+            }
+
+            .menu-bar .menu-item-top {
+                padding: 10px 8px;
+                font-size: 11px;
+            }
+
+            .menu-item-wrapper:nth-child(n+5) {
+                display: none;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .diary-title {
+                font-size: 12px !important;
+            }
+
+            .text-input {
+                font-size: 16px;
+                padding: 8px;
+                min-height: 200px;
+            }
+
+            .title-logo {
+                font-size: 18px !important;
+                letter-spacing: 2px;
+            }
+
+            .title-menu {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+                padding: 0 20px;
+            }
+
+            .title-menu-item {
+                font-size: 14px;
+                padding: 15px 20px;
+                width: 100%;
+                text-align: center;
+            }
+
+            /* Auth screen mobile */
+            .auth-container {
+                width: 95%;
+                padding: 15px;
+            }
+
+            .auth-input {
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            .auth-submit-btn {
+                padding: 15px;
+                font-size: 14px;
+            }
+
+            /* Modal mobile */
+            .image-modal-content {
+                width: 95vw;
+                max-height: 85vh;
+            }
+
+            /* Help modal mobile */
+            .help-modal-content {
+                width: 95vw;
+                padding: 15px;
+            }
+
+            /* List dropdown mobile */
+            .dropdown.list-dropdown {
+                max-height: 50vh;
+            }
+
+            /* Christmas card mobile */
+            .xmas-card-container {
+                padding: 10px;
+            }
+
+            .xmas-card-preview {
+                transform: scale(0.8);
+            }
+
+            .xmas-title {
+                font-size: 14px !important;
+            }
+
+            .xmas-card-subtitle {
+                font-size: 10px !important;
+            }
+        }
+
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .menu-bar .menu-item-top,
+            .title-menu-item,
+            .auth-submit-btn,
+            .auth-tab {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .dropdown-item {
+                padding: 12px 15px;
+                min-height: 44px;
+            }
+        }
     </style>
     <!-- Marked.js for Markdown parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
