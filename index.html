@@ -2648,6 +2648,7 @@
             .images-container {
                 display: flex !important;
                 flex-direction: row !important;
+                justify-content: center;
                 gap: 10px;
                 overflow-x: auto !important;
                 overflow-y: hidden !important;
@@ -2656,6 +2657,18 @@
                 height: 180px;
                 max-height: 180px;
                 padding-bottom: 10px;
+            }
+
+            /* When multiple images, align to start for scrolling */
+            .images-container[data-image-count="2"],
+            .images-container[data-image-count="3"],
+            .images-container[data-image-count="4"],
+            .images-container[data-image-count="5"],
+            .images-container[data-image-count="6"],
+            .images-container[data-image-count="7"],
+            .images-container[data-image-count="8"],
+            .images-container[data-image-count="9"] {
+                justify-content: flex-start;
             }
 
             .images-container .image-item {
