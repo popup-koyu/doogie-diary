@@ -5938,7 +5938,9 @@ flowchart LR
         }
 
         async function handleFiles(files) {
+            console.log('Selected files:', files.length);
             for (let file of files) {
+                console.log('Processing file:', file.name);
                 if (!file.type.startsWith('image/')) continue;
 
                 let imageSrc;
