@@ -2617,6 +2617,30 @@
                 padding: 10px 15px !important;
             }
 
+            /* Editor layout - vertical on mobile */
+            .editor-wrapper {
+                flex-direction: column !important;
+                overflow-y: auto !important;
+            }
+
+            .editor-section {
+                min-height: 200px;
+                flex: none !important;
+            }
+
+            .images-section.has-images {
+                border-left: none !important;
+                border-top: 1px solid #00ff00;
+                padding-left: 0 !important;
+                padding-top: 15px;
+                flex: none !important;
+                max-height: 300px;
+            }
+
+            .images-container {
+                max-height: 280px;
+            }
+
             /* Auth screen mobile */
             .auth-container {
                 width: 95%;
