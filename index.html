@@ -5953,74 +5953,77 @@ flowchart LR
                         reader.readAsDataURL(file);
                     });
                 }
-                pixelateImage(imageSrc);
+                await pixelateImage(imageSrc);
             }
         }
 
         function pixelateImage(dataUrl) {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
 
-                // Pixelate by scaling down then up
-                const pixelSize = 3; // Lower = more pixels, higher = more pixelated
-                const w = Math.floor(img.width / pixelSize);
-                const h = Math.floor(img.height / pixelSize);
+                    // Pixelate by scaling down then up
+                    const pixelSize = 3; // Lower = more pixels, higher = more pixelated
+                    const w = Math.floor(img.width / pixelSize);
+                    const h = Math.floor(img.height / pixelSize);
 
-                // Draw small (pixelated base)
-                canvas.width = w;
-                canvas.height = h;
-                ctx.imageSmoothingEnabled = false;
-                ctx.drawImage(img, 0, 0, w, h);
+                    // Draw small (pixelated base)
+                    canvas.width = w;
+                    canvas.height = h;
+                    ctx.imageSmoothingEnabled = false;
+                    ctx.drawImage(img, 0, 0, w, h);
 
-                // Get pixel data and reduce colors
-                const imageData = ctx.getImageData(0, 0, w, h);
-                const data = imageData.data;
+                    // Get pixel data and reduce colors
+                    const imageData = ctx.getImageData(0, 0, w, h);
+                    const data = imageData.data;
 
-                // Reduce to green palette
-                for (let i = 0; i < data.length; i += 4) {
-                    const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
-                    const greenLevel = Math.floor(brightness / 64) * 64; // 4 levels
+                    // Reduce to green palette
+                    for (let i = 0; i < data.length; i += 4) {
+                        const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                        const greenLevel = Math.floor(brightness / 64) * 64; // 4 levels
 
-                    data[i] = 0;           // R
-                    data[i + 1] = greenLevel; // G
-                    data[i + 2] = 0;           // B
-                }
+                        data[i] = 0;           // R
+                        data[i + 1] = greenLevel; // G
+                        data[i + 2] = 0;           // B
+                    }
 
-                ctx.putImageData(imageData, 0, 0);
+                    ctx.putImageData(imageData, 0, 0);
 
-                // Create thumbnail (scale to 600px max for display)
-                const thumbMaxSize = 600;
-                const thumbScale = Math.min(thumbMaxSize / img.width, thumbMaxSize / img.height);
-                const thumbW = Math.floor(img.width * thumbScale);
-                const thumbH = Math.floor(img.height * thumbScale);
+                    // Create thumbnail (scale to 600px max for display)
+                    const thumbMaxSize = 600;
+                    const thumbScale = Math.min(thumbMaxSize / img.width, thumbMaxSize / img.height);
+                    const thumbW = Math.floor(img.width * thumbScale);
+                    const thumbH = Math.floor(img.height * thumbScale);
 
-                const displayCanvas = document.createElement('canvas');
-                displayCanvas.width = thumbW;
-                displayCanvas.height = thumbH;
-                const displayCtx = displayCanvas.getContext('2d');
-                displayCtx.imageSmoothingEnabled = false;
-                displayCtx.drawImage(canvas, 0, 0, thumbW, thumbH);
+                    const displayCanvas = document.createElement('canvas');
+                    displayCanvas.width = thumbW;
+                    displayCanvas.height = thumbH;
+                    const displayCtx = displayCanvas.getContext('2d');
+                    displayCtx.imageSmoothingEnabled = false;
+                    displayCtx.drawImage(canvas, 0, 0, thumbW, thumbH);
 
-                // Create modal image (10x larger than original 150px = 1500px max)
-                const modalMaxSize = 1500;
-                const modalScale = Math.min(modalMaxSize / img.width, modalMaxSize / img.height);
-                const modalW = Math.floor(img.width * modalScale);
-                const modalH = Math.floor(img.height * modalScale);
+                    // Create modal image (10x larger than original 150px = 1500px max)
+                    const modalMaxSize = 1500;
+                    const modalScale = Math.min(modalMaxSize / img.width, modalMaxSize / img.height);
+                    const modalW = Math.floor(img.width * modalScale);
+                    const modalH = Math.floor(img.height * modalScale);
 
-                const modalCanvas = document.createElement('canvas');
-                modalCanvas.width = modalW;
-                modalCanvas.height = modalH;
-                const modalCtx = modalCanvas.getContext('2d');
-                modalCtx.imageSmoothingEnabled = false;
-                modalCtx.drawImage(canvas, 0, 0, modalCanvas.width, modalCanvas.height);
+                    const modalCanvas = document.createElement('canvas');
+                    modalCanvas.width = modalW;
+                    modalCanvas.height = modalH;
+                    const modalCtx = modalCanvas.getContext('2d');
+                    modalCtx.imageSmoothingEnabled = false;
+                    modalCtx.drawImage(canvas, 0, 0, modalCanvas.width, modalCanvas.height);
 
-                const thumbnailData = displayCanvas.toDataURL();
-                const modalData = modalCanvas.toDataURL();
-                addImageToEntry(thumbnailData, modalData);
-            };
-            img.src = dataUrl;
+                    const thumbnailData = displayCanvas.toDataURL();
+                    const modalData = modalCanvas.toDataURL();
+                    addImageToEntry(thumbnailData, modalData);
+                    resolve();
+                };
+                img.src = dataUrl;
+            });
         }
 
         function addImageToEntry(thumbnailData, modalData) {
