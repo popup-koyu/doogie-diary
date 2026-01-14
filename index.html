@@ -2638,12 +2638,38 @@
                 padding-left: 0 !important;
                 padding-bottom: 15px;
                 flex: none !important;
-                max-height: 250px;
+                height: 200px;
+                max-height: 200px;
                 margin-bottom: 10px;
+                overflow: visible;
             }
 
+            /* Horizontal swipe gallery on mobile */
             .images-container {
-                max-height: 230px;
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 10px;
+                overflow-x: auto !important;
+                overflow-y: hidden !important;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                height: 180px;
+                max-height: 180px;
+                padding-bottom: 10px;
+            }
+
+            .images-container .image-item {
+                flex: 0 0 auto;
+                width: 180px;
+                height: 170px;
+                min-height: 170px;
+                scroll-snap-align: start;
+            }
+
+            .images-container .image-item img {
+                width: 180px;
+                height: 170px;
+                object-fit: cover;
             }
 
             /* Auth screen mobile */
