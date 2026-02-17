@@ -9,6 +9,7 @@
 도메인 모델 및 화면 흐름은 `docs/01-plan/domain-model.md`를 참조하세요.
 화면 명세(목업)는 `docs/03-mockup/mockup-spec.md`를 참조하세요.
 API 설계서는 `docs/04-api/api-spec.md`를 참조하세요.
+디자인 시스템은 `docs/05-design-system/design-system.md`를 참조하세요.
 
 ## 기술 스택
 - Frontend: Vanilla JS (ES6+), Single HTML File (index.html)
