@@ -429,7 +429,28 @@ MM/DD/YYYY DAYOFWEEK
   - html2canvas (PNG 캡처)
 - **Single HTML File**: 메인 로직은 단일 파일에 포함
 
-### 9. 브라우저 호환성
+### 9. 모바일 반응형
+
+#### 9.1 브레이크포인트
+
+| 브레이크포인트 | 타겟 | 주요 변경 |
+|---------------|------|----------|
+| > 768px | 데스크톱 | 4:3 비율, 좌우 분할 레이아웃 |
+| ≤ 768px | 태블릿 | 메뉴 축소, 모드 토글 숨김 |
+| ≤ 480px | 모바일 | 세로 레이아웃, 로고 축소, 스와이프 갤러리 |
+| hover:none + pointer:coarse | 터치 기기 | 최소 터치 영역 44px |
+
+#### 9.2 모바일 레이아웃 (480px 이하)
+- **로고**: 82px → 48px, letter-spacing 6px
+- **메뉴바**: 5개 이후 메뉴 숨김, 사용자 정보 숨김
+- **에디터**: 세로 배치 (이미지 상단 order:1, 텍스트 하단 order:2)
+- **이미지 갤러리**: 가로 스크롤, scroll-snap, 180x170px
+  - 1장: 중앙 정렬 (justify-content: center)
+  - 2장+: 좌측 시작 (justify-content: flex-start) + 좌우 스와이프
+- **캘린더**: 세로 스택 (달력 위, 리스트 아래)
+- **인증 화면**: 너비 95%, 패딩 15px
+
+### 10. 브라우저 호환성
 
 **필수 기능**:
 - CSS Grid
@@ -444,7 +465,7 @@ MM/DD/YYYY DAYOFWEEK
 - Safari 15+
 - Edge 88+
 
-### 10. 성능 고려사항
+### 11. 성능 고려사항
 
 **이미지 최적화**:
 - Thumbnail과 Full 버전 분리 저장
@@ -467,17 +488,35 @@ MM/DD/YYYY DAYOFWEEK
 - 로딩 상태 표시로 UX 개선
 - 에러 시 재시도 로직
 
-### 11. 파일 구조
+### 12. 파일 구조
 
 ```
 doogie-diary/
-├── index.html           # 메인 애플리케이션 (Single File)
+├── index.html           # 메인 애플리케이션 (CSS + HTML + JS)
 ├── card_dos.gif         # 크리스마스 카드용 GIF
+├── gif.worker.js        # GIF 생성 웹 워커
+├── image/               # 정적 이미지 에셋
+│   ├── doogie.png
+│   └── Doogie_diary2.png
+├── vite.config.js       # Vite 빌드 설정
+├── vercel.json          # Vercel 배포 설정 (API 프록시)
+├── package.json         # 의존성 관리
 ├── DOOGIE_SPEC.md       # 본 기획문서
-└── README.md            # 프로젝트 설명서 (선택)
+├── README.md            # 프로젝트 설명서
+├── BLOG_POST.md         # 개발기 블로그 포스트
+└── docs/                # bkit 기반 문서
+    ├── 01-schema/       # 스키마 정의서
+    ├── 02-convention/   # 코딩 컨벤션
+    ├── 03-design-system/# 디자인 시스템
+    ├── 04-api/          # API 설계서
+    ├── 05-ui-integration/# UI-API 통합
+    ├── 06-seo-security/ # SEO/보안 점검
+    ├── 07-review/       # 코드 리뷰
+    ├── 08-deployment/   # 배포 설정
+    └── 09-pdca/         # PDCA 보고서
 ```
 
-### 12. 개발 히스토리
+### 13. 개발 히스토리
 
 **Phase 1: 기본 구조** (완료)
 - 타이틀 화면 및 메뉴 시스템
@@ -572,16 +611,28 @@ doogie-diary/
 - 자동 마이그레이션 지원
 - 중복 저장 방지 기능
 
-**Phase 13: 백엔드 연동** (예정)
+**Phase 13: 백엔드 연동** (완료)
 - Bkend 서버 연동
 - 닉네임 + PIN 인증 시스템
 - 서버 기반 일기 저장
 - 하루 100개 제한
 - Export/Import 기능 제거
 
+**Phase 14: 모바일 반응형** (완료)
+- 768px / 480px 미디어 쿼리 적용
+- 모바일: 로고 48px 축소, 메뉴 간소화
+- 에디터 세로 레이아웃 (이미지 상단, 텍스트 하단)
+- 이미지 가로 스와이프 갤러리 (scroll-snap)
+- 터치 친화적 버튼 크기 (44px 최소)
+
+**Phase 15: 중복 저장 방지** (완료)
+- Bkend entries 테이블에 유니크 인덱스 추가 (createdBy + dateKey + entryNumber)
+- 저장 시 중복 에러 발생 시 자동 재시도 (최대 3회)
+- 서버에서 최신 entryNumber 조회 후 재저장
+
 ---
 
-### 13. 백엔드 연동 (Bkend)
+### 14. 백엔드 연동 (Bkend)
 
 #### 13.1 인증 시스템
 
@@ -641,8 +692,9 @@ doogie-diary/
 ```
 
 **인덱스**:
-- `idx_user_date`: { createdBy: 1, dateKey: 1 } - 사용자별 날짜 조회
-- `idx_user_date_entry`: { createdBy: 1, dateKey: 1, entryNumber: 1 } - unique
+- `dateKey_entryNumber_unique`: { createdBy: 1, dateKey: 1, entryNumber: 1 } - **unique** (중복 저장 방지)
+- `dateKey_idx`: { dateKey: 1 } - 날짜별 조회
+- `createdBy_idx`: { createdBy: 1 } - 사용자별 조회
 
 #### 13.3 하루 100개 제한
 
@@ -701,7 +753,7 @@ doogie-diary/
 
 #### 13.6 API 엔드포인트
 
-**Base URL**: `https://api-enduser-dev.bkend.ai`
+**Base URL**: `https://api-enduser.bkend.ai`
 
 **필수 헤더**:
 ```
@@ -721,7 +773,8 @@ X-Environment: dev
 - Bkend는 이메일 기반 인증만 지원
 - 닉네임을 이메일 형식으로 변환: `{nickname}@doogie.app`
 - PIN은 password로 전달
-- 예: 닉네임 "홍길동", PIN "1234" → email: "홍길동@doogie.app", password: "1234"
+- PIN은 password 패턴으로 변환: `Doo@gie{pin}#Pwd`
+- 예: 닉네임 "홍길동", PIN "1234" → email: "홍길동@doogie.app", password: "Doo@gie1234#Pwd"
 
 **일기 API**:
 | Method | Endpoint | 설명 |
@@ -778,8 +831,8 @@ GET /data/entries?andFilters={"type":"markdown"}
 
 ---
 
-**문서 버전**: 5.0
-**최종 수정일**: 2025-12-18
+**문서 버전**: 6.0
+**최종 수정일**: 2026-02-17
 **작성자**: POPUP-STUDIO
 **프로젝트 코드명**: DOOGIE
 
