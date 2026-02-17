@@ -61,8 +61,10 @@ input.addEventListener('input', () => checkNickname(input.value));
 
 | 대상 | 규칙 | 예시 |
 |------|------|------|
-| 화면 컨테이너 | `{기능}-screen` | `.title-screen`, `.diary-screen`, `.auth-screen` |
-| 영역 | `{기능}-{역할}` | `.menu-bar`, `.editor-container`, `.image-section` |
+| HTML ID | camelCase | `titleScreen`, `authScreen`, `contentView`, `calendarContainer` |
+| CSS 클래스 | kebab-case | `.menu-bar`, `.editor-container`, `.image-section` |
+| 영역 클래스 | `{기능}-{역할}` | `.menu-bar`, `.editor-container`, `.image-section` |
+| 모드 클래스 | `mode-{이름}` | `.mode-view`, `.mode-list`, `.mode-calendar` |
 | 컴포넌트 | `{컴포넌트}-{변형}` | `.btn-save`, `.modal-content`, `.dropdown-menu` |
 | 상태 | `is-{상태}` 또는 `{컴포넌트}-active` | `.is-hidden`, `.tab-active` |
 | 유틸리티 | 기능 설명 | `.text-center`, `.hidden` |

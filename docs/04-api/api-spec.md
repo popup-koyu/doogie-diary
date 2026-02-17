@@ -373,18 +373,29 @@ Authorization: Bearer {access_token}
 }
 ```
 
-**중복 저장 재시도 로직**:
+**중복 저장 재시도 로직** (기능 함수에 위치, BkendAPI 클래스 외부):
 ```javascript
-// 최대 3회 재시도
-for (let retry = 0; retry < 3; retry++) {
+// 최대 3회 재시도 (saveEntry 핸들러 내부)
+let retryCount = 0;
+const maxRetries = 3;
+let entryNumber = parsed.entryNumber;
+
+while (retryCount < maxRetries) {
     try {
-        return await api.createEntry(dateKey, entryNumber, type, text, images);
-    } catch (error) {
-        if (error.message.includes('Duplicate') && retry < 2) {
-            entryNumber = await api.getNextEntryNumber(dateKey);
-            continue;
+        const newEntry = await bkendAPI.createEntry(dateKey, entryNumber, type, text, images);
+        break; // 성공
+    } catch (createError) {
+        const isDuplicateError = createError.message &&
+            (createError.message.includes('duplicate') ||
+             createError.message.includes('E11000') ||
+             createError.code === 'duplicate_key');
+
+        if (isDuplicateError && retryCount < maxRetries - 1) {
+            entryNumber = await bkendAPI.getNextEntryNumber(parsed.dateKey);
+            retryCount++;
+        } else {
+            throw createError;
         }
-        throw error;
     }
 }
 ```
@@ -575,19 +586,66 @@ Bkend 에러 응답은 여러 형식이 가능:
 
 ---
 
-## 7. 로컬 저장소 (IndexedDB + localStorage)
+## 7. 유틸리티 API 메서드 (BkendAPI 클래스)
+
+> entries 데이터를 기반으로 계산하는 헬퍼 메서드들. 별도의 서버 엔드포인트는 없으며, 기존 목록 조회 API를 활용합니다.
+
+### 7.1 닉네임 사용 가능 여부 확인
+
+```javascript
+async checkNicknameAvailable(nickname)
+```
+
+- **로직**: 더미 패스워드로 로그인 시도 → `auth/invalid-credentials` 에러 = 계정 존재 (사용 불가), 기타 에러 = 사용 가능
+- **반환**: `{ available: Boolean, message: String }`
+
+### 7.2 오늘 일기 수 조회
+
+```javascript
+async getTodayCount(dateKey)
+```
+
+- **로직**: `GET /data/entries?andFilters={"dateKey":"{dateKey}"}` → items.length
+- **반환**: `Number` (0~100)
+- **용도**: 메뉴바 "오늘 N/100" 표시, 100개 제한 체크
+
+### 7.3 다음 항목 번호 조회
+
+```javascript
+async getNextEntryNumber(dateKey)
+```
+
+- **로직**: 해당 날짜 entries 조회 → 최대 entryNumber + 1
+- **반환**: `Number` (1~100)
+- **용도**: 새 일기 생성 시 자동 번호 할당, 중복 재시도 시 재조회
+
+### 7.4 오늘 일기 작성 가능 여부
+
+```javascript
+async canCreateEntryToday(dateKey)
+```
+
+- **로직**: `getTodayCount(dateKey) < 100`
+- **반환**: `Boolean`
+- **용도**: New 버튼 클릭 시 100개 제한 체크
+
+---
+
+## 8. 로컬 저장소 (IndexedDB + localStorage)
 
 > 서버 API가 아닌 브라우저 로컬 저장 영역
 
-### 7.1 localStorage
+### 8.1 localStorage
 
 | 키 | 타입 | 용도 | API 관련 |
 |----|------|------|---------|
 | `doogie_access_token` | String | JWT 토큰 | Authorization 헤더에 사용 |
-| `doogie_language` | String | 언어 설정 | API 무관 (로컬) |
-| `doogie_christmas` | String | 크리스마스 모드 | API 무관 (로컬) |
+| `doogie_christmas_mode` | String | 크리스마스 모드 ("true"/"false") | API 무관 (로컬) |
+| `doogie_xmas_cards` | String | 크리스마스 카드 (JSON 배열) | API 무관 (로컬) |
 
-### 7.2 IndexedDB (doogie-diary-db)
+> **참고**: 언어 설정은 IndexedDB `settings` 스토어에 저장됩니다.
+
+### 8.2 IndexedDB (doogie-diary-db)
 
 | Store | Key | 용도 | API 관련 |
 |-------|-----|------|---------|
@@ -597,7 +655,7 @@ Bkend 에러 응답은 여러 형식이 가능:
 
 ---
 
-## 8. Zero Script QA 체크리스트
+## 9. Zero Script QA 체크리스트
 
 ### 인증 QA
 

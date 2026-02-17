@@ -111,14 +111,14 @@ PIN: "1234" → password: "Doo@gie1234#Pwd"
 
 **이미지 처리 파이프라인**:
 ```
-원본 이미지 → Canvas 로드 → 3px 단위 다운스케일 → 녹색 5단계 팔레트 적용
+원본 이미지 → Canvas 로드 → 3px 단위 다운스케일 → 녹색 6단계 팔레트 적용
                                 ↓                         ↓
                          Thumbnail (600px)          Full (1200px)
                                 ↓                         ↓
                           Base64 인코딩            Base64 인코딩
 ```
 
-**녹색 팔레트**:
+**녹색 팔레트 (6단계)**:
 | 단계 | 밝기 범위 | 색상값 |
 |------|----------|--------|
 | 0 | 0~42 | `rgb(0, 0, 0)` |
@@ -158,9 +158,19 @@ PIN: "1234" → password: "Doo@gie1234#Pwd"
 
 | 키 | 타입 | 기본값 | 설명 |
 |----|------|--------|------|
-| `doogie_language` | String | "en" | 언어 설정 ("ko" \| "en") |
-| `doogie_christmas` | Boolean | auto | 크리스마스 모드 (12월 자동 활성화) |
-| `doogie_token` | String | null | JWT Access Token (24시간 유효) |
+| `doogie_access_token` | String | null | JWT Access Token (24시간 유효) |
+| `doogie_christmas_mode` | String | "false" | 크리스마스 모드 (12월 자동 활성화, 문자열 "true"/"false") |
+| `doogie_xmas_cards` | String | null | 크리스마스 카드 데이터 (JSON 직렬화 배열) |
+
+#### 레거시 키 (IndexedDB 마이그레이션 후 삭제됨)
+
+| 키 | 타입 | 설명 |
+|----|------|------|
+| `doogie-diary` | String | 일기 데이터 (서버로 이전) |
+| `doogie-characters` | String | 캐릭터 데이터 (IndexedDB로 이전) |
+| `doogie-language` | String | 언어 설정 (IndexedDB로 이전) |
+
+> **참고**: 레거시 키는 hyphen(`-`) 구분자를 사용하고, 현재 키는 underscore(`_`) 구분자를 사용합니다. 앱 시작 시 레거시 키가 존재하면 IndexedDB로 마이그레이션 후 삭제합니다.
 
 ---
 

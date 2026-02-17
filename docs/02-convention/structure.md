@@ -80,28 +80,24 @@ Single HTML File 내부는 다음 순서로 구성됩니다.
 <body>
     <!-- ===== SECTION 2: HTML MARKUP ===== -->
     <!-- 2-1. 타이틀 화면 -->
-    <div id="title-screen" class="screen"> ... </div>
+    <div id="titleScreen" class="screen"> ... </div>
 
     <!-- 2-2. 인증 화면 -->
-    <div id="auth-screen" style="display:none;"> ... </div>
+    <div id="authScreen" style="display:none;"> ... </div>
 
-    <!-- 2-3. 일기 작성 화면 -->
-    <div id="diary-screen" class="screen" style="display:none;"> ... </div>
+    <!-- 2-3. 앱 컨테이너 (에디터/리스트/달력 등) -->
+    <div id="appContainer" style="display:none;">
+        <div id="contentView" class="mode-view"> ... </div>
+        <div id="entryList" class="mode-list"> ... </div>
+        <div id="calendarContainer" class="mode-calendar"> ... </div>
+        <div id="helpScreen" class="mode-help"> ... </div>
+        <div id="settingsScreen" class="mode-settings"> ... </div>
+        <div id="creditsScreen" class="mode-credits"> ... </div>
+        <div id="xmasCardScreen" class="mode-xmascard"> ... </div>
+    </div>
 
-    <!-- 2-4. 달력/일기장 화면 -->
-    <div id="calendar-screen" class="screen" style="display:none;"> ... </div>
-
-    <!-- 2-5. 크레딧 화면 -->
-    <div id="credits-screen" class="screen" style="display:none;"> ... </div>
-
-    <!-- 2-6. 도움말 화면 -->
-    <div id="help-screen" style="display:none;"> ... </div>
-
-    <!-- 2-7. 이미지 모달 -->
-    <div id="image-modal" style="display:none;"> ... </div>
-
-    <!-- 2-8. 크리스마스 카드 -->
-    <div id="christmas-card" style="display:none;"> ... </div>
+    <!-- 2-4. 이미지 모달 -->
+    <div id="imageModal" style="display:none;"> ... </div>
 
     <!-- ===== SECTION 3: EXTERNAL SCRIPTS ===== -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -142,10 +138,10 @@ Single HTML File 내부는 다음 순서로 구성됩니다.
 
 | # | 영역 | 의존 방향 |
 |---|------|----------|
-| 1 | 상수/설정 | 없음 (독립) |
-| 2 | `class BkendAPI` | 상수 참조 |
+| 1 | 상수/설정 (`USE_SERVER_MODE`) | 없음 (독립) |
+| 2 | `class BkendAPI` (`projectId`, `environment` 내부 정의) | localStorage 참조 |
 | 3 | `class DiaryDB` | BkendAPI 참조 |
-| 4 | 기능 함수들 | DiaryDB, BkendAPI 참조 |
+| 4 | 기능 함수들 (재시도 로직 등 포함) | DiaryDB, BkendAPI 참조 |
 | 5 | `init()` | 모든 것을 조합 |
 
 ---
@@ -167,7 +163,7 @@ Single HTML File 내부는 다음 순서로 구성됩니다.
 │  (fetch, Authorization 헤더 관리)    │
 ├─────────────────────────────────────┤
 │     상수 & 설정값                     │  ← 의존성 없음
-│  USE_SERVER_MODE, PROJECT_ID ...    │
+│  USE_SERVER_MODE                    │
 └─────────────────────────────────────┘
 ```
 
@@ -188,25 +184,36 @@ document.getElementById('target-screen').style.display = 'flex';
 
 ### 4.2 화면 ID 규칙
 
-| 화면 | ID | display 값 |
-|------|-----|-----------|
-| 타이틀 | `title-screen` | flex (기본) |
-| 인증 | `auth-screen` | none → flex |
-| 에디터 | `diary-screen` | none → flex |
-| 달력 | `calendar-screen` | none → flex |
-| 크레딧 | `credits-screen` | none → flex |
-| 도움말 | `help-screen` | none → block |
+> HTML ID는 JavaScript DOM 요소 참조와 일관성을 위해 **camelCase**를 사용합니다.
+
+| 화면 | ID | CSS 클래스 | display 값 |
+|------|-----|-----------|-----------|
+| 타이틀 | `titleScreen` | `.screen` | flex (기본) |
+| 인증 | `authScreen` | - | none → flex |
+| 앱 컨테이너 | `appContainer` | - | none → flex |
+| 에디터 | `contentView` | `.mode-view` | none → flex |
+| 일기 목록 | `entryList` | `.mode-list` | none → flex |
+| 달력 | `calendarContainer` | `.mode-calendar` | none → flex |
+| 크레딧 | `creditsScreen` | `.mode-credits` | none → flex |
+| 도움말 | `helpScreen` | `.mode-help` | none → block |
+| 설정 | `settingsScreen` | `.mode-settings` | none → flex |
+| 크리스마스 카드 | `xmasCardScreen` | `.mode-xmascard` | none → flex |
 
 ### 4.3 모달/오버레이
 
 ```
 z-index 계층:
-  1     기본 콘텐츠
-  100   드롭다운 메뉴
-  1000  모달 오버레이
-  9999  List 드롭다운 (fixed)
-  10000 확인 다이얼로그
-  99999 CRT 노이즈 효과 (body::before)
+  0~1     기본 콘텐츠, 별, 메뉴
+  10      날짜 헤더
+  100     메뉴바 (sticky)
+  1000    드롭다운 메뉴
+  1001    드롭다운 오버레이
+  2000    크롭 모달
+  3000    크롭 오버레이
+  9998    Picture 드롭다운 (fixed)
+  9999    List 드롭다운 (fixed)
+  10000   확인 다이얼로그
+  10001   다이얼로그 배경
 ```
 
 ---

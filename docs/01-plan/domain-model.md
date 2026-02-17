@@ -47,9 +47,9 @@ erDiagram
     }
 
     SETTINGS {
-        String language "ko|en"
-        Boolean christmas
-        String token "JWT"
+        String doogie_access_token "JWT"
+        String doogie_christmas_mode "true|false"
+        String doogie_xmas_cards "JSON array"
     }
 ```
 
@@ -295,4 +295,4 @@ stateDiagram-v2
 | NeoDunggeunmo | - | 한글 폰트 | Google Fonts |
 | VT323 | - | 영문 폰트 | Google Fonts |
 | Press Start 2P | - | 타이틀 폰트 | Google Fonts |
-| Vite | 6.x | 개발 서버/빌드 | npm |
+| Vite | ^7.3.0 | 개발 서버/빌드 | npm |

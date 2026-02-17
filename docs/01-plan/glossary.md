@@ -64,7 +64,7 @@
 | entries 테이블 | entries table | 일기 데이터를 저장하는 Bkend 테이블 |
 | 썸네일 | Thumbnail | 600px 제한 축소 이미지 (일기 보기용) |
 | Full 이미지 | Full Image | 1200px 제한 원본 이미지 (모달용) |
-| 녹색 팔레트 | Green Palette | 픽셀화에 사용되는 5단계 녹색 색상 세트 |
+| 녹색 팔레트 | Green Palette | 픽셀화에 사용되는 6단계 녹색 색상 세트 |
 | 자동 저장 | Auto Save | 입력 후 2초 지연 저장 (debounce) |
 | 닉네임→이메일 변환 | Nickname-to-Email | `{nickname}@doogie.app` 형식 변환 |
 | PIN→패스워드 변환 | PIN-to-Password | `Doo@gie{pin}#Pwd` 형식 변환 |
