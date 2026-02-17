@@ -13,6 +13,7 @@ API 설계서는 `docs/04-api/api-spec.md`를 참조하세요.
 UI-API 연동 명세는 `docs/06-ui-integration/ui-integration.md`를 참조하세요.
 SEO/보안 점검은 `docs/07-seo-security/seo-security.md`를 참조하세요.
 코드 리뷰/갭 분석은 `docs/08-review/code-review.md`를 참조하세요.
+배포 설정은 `docs/09-deployment/deployment.md`를 참조하세요.
 
 ## 기술 스택
 - Frontend: Vanilla JS (ES6+), Single HTML File (index.html)
