@@ -37,11 +37,12 @@ DOOGIE Diary는 **개인 일기장 앱**으로, 일반 웹 서비스와 보안 �
 | `<meta charset>` | ✅ 있음 | `UTF-8` |
 | `<meta viewport>` | ✅ 있음 | `width=device-width, initial-scale=1.0` |
 | `<html lang>` | ✅ 있음 | `ko` |
-| `<meta description>` | ❌ 없음 | 검색 결과 설명 미제공 |
-| Open Graph 태그 | ❌ 없음 | SNS 공유 미리보기 없음 |
+| `<meta description>` | ✅ 추가됨 | `1990s DOS-style personal diary...` |
+| `<meta theme-color>` | ✅ 추가됨 | `#000000` |
+| Open Graph 태그 | ✅ 추가됨 | `og:title`, `og:description`, `og:type`, `og:image` |
 | Twitter Card | ❌ 없음 | 트위터 공유 미리보기 없음 |
 | Canonical URL | ❌ 없음 | 중복 URL 처리 없음 |
-| Favicon | ❌ 없음 | 브라우저 탭 아이콘 없음 |
+| Favicon | ✅ 추가됨 | SVG 인라인 favicon (DOS 녹색 "D") |
 | robots.txt | ❌ 없음 | 크롤러 가이드 없음 |
 | sitemap.xml | ❌ 없음 | 사이트맵 없음 |
 | 시맨틱 HTML | ❌ 미흡 | div 위주, `<main>`, `<nav>`, `<article>` 미사용 |
@@ -323,13 +324,14 @@ API 프록시: /api/* → https://api-enduser.bkend.ai/*
 
 ### 7.3 보안 헤더 현황
 
-| 헤더 | 현재 상태 | 권장 |
+| 헤더 | 현재 상태 | 값 |
 |------|----------|------|
-| `Strict-Transport-Security` | ❌ 미설정 | `max-age=63072000` |
-| `X-Frame-Options` | ❌ 미설정 | `DENY` |
-| `X-Content-Type-Options` | ❌ 미설정 | `nosniff` |
-| `Referrer-Policy` | ❌ 미설정 | `strict-origin-when-cross-origin` |
-| `Content-Security-Policy` | ❌ 미설정 | 아래 참조 |
+| `Strict-Transport-Security` | ✅ 설정됨 | `max-age=63072000; includeSubDomains; preload` |
+| `X-Frame-Options` | ✅ 설정됨 | `DENY` |
+| `X-Content-Type-Options` | ✅ 설정됨 | `nosniff` |
+| `X-XSS-Protection` | ✅ 설정됨 | `1; mode=block` |
+| `Referrer-Policy` | ✅ 설정됨 | `strict-origin-when-cross-origin` |
+| `Content-Security-Policy` | ❌ 미설정 | 향후 검토 필요 |
 
 ### 7.4 권장 vercel.json 보안 헤더
 
@@ -451,18 +453,12 @@ IndexedDB에 저장되는 데이터:
 ### 9.1 외부 스크립트 로딩
 
 ```html
-현재 (동기 로딩 - 렌더링 차단):
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/omggif@1.0.10/omggif.js"></script>
-
-권장 (비동기 로딩):
-  <script src="..." defer></script>
-
-참고: <body> 끝에 위치하므로 실질적 차단 영향은 제한적
-      하지만 defer 추가 시 병렬 다운로드로 성능 개선
+✅ 완료: 모든 CDN 스크립트에 defer 속성 추가됨
+  <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/omggif@1.0.10/omggif.js"></script>
 ```
 
 ### 9.2 CDN 보안 (Subresource Integrity)
@@ -547,11 +543,11 @@ IndexedDB에 저장되는 데이터:
 ┌────┬──────────────────────────────┬─────────┐
 │ #  │ 항목                          │ 난이도   │
 ├────┼──────────────────────────────┼─────────┤
-│ 1  │ vercel.json 보안 헤더 추가     │ ⭐       │
-│ 2  │ Meta description 추가         │ ⭐       │
-│ 3  │ OG 태그 추가                  │ ⭐       │
-│ 4  │ Favicon 추가                  │ ⭐       │
-│ 5  │ 외부 스크립트에 defer 추가     │ ⭐       │
+│ 1  │ vercel.json 보안 헤더 추가     │ ✅ 완료   │
+│ 2  │ Meta description 추가         │ ✅ 완료   │
+│ 3  │ OG 태그 추가                  │ ✅ 완료   │
+│ 4  │ Favicon 추가                  │ ✅ 완료   │
+│ 5  │ 외부 스크립트에 defer 추가     │ ✅ 완료   │
 └────┴──────────────────────────────┴─────────┘
 
 단기 개선 (코드 수정 필요):
@@ -628,7 +624,7 @@ IndexedDB에 저장되는 데이터:
 
 ## 13. 결론
 
-### DOOGIE의 보안 등급: **양호 (B)**
+### DOOGIE의 보안 등급: **양호 (B+)**
 
 ```
 강점:
@@ -637,11 +633,14 @@ IndexedDB에 저장되는 데이터:
   ✅ 안전한 DOM 조작 패턴 (textContent)
   ✅ 이미지 처리 파이프라인 안전
   ✅ 입력 검증 적절
+  ✅ 보안 헤더 설정 완료 (HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy)
+  ✅ SEO 메타 태그 완료 (description, OG, favicon, theme-color)
+  ✅ CDN 스크립트 defer 적용 완료
+  ✅ init() 에러 핸들링 추가
 
 개선 필요:
-  ⚠️ 보안 헤더 미설정 (vercel.json)
   ⚠️ 마크다운 XSS 방어 미흡 (DOMPurify)
   ⚠️ 이미지 크기/수 제한 없음
   ⚠️ CDN SRI 미적용
-  ⚠️ SEO 메타 태그 부족
+  ⚠️ Content-Security-Policy 미설정
 ```

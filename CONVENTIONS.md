@@ -187,18 +187,34 @@ async function saveEntry() {
 
 ## 4. CSS 스타일
 
-### 4.1 DOS 디자인 시스템 색상
+### 4.1 DOS 디자인 시스템 색상 (CSS 변수)
 
 ```css
-/* 반드시 이 색상 팔레트만 사용 */
---dos-black:       #000000;   /* 배경 */
---dos-green:       #00ff00;   /* 기본 텍스트, 테두리 */
---dos-dark-green:  #003300;   /* 강조 배경, 비활성 */
---dos-mid-green:   #008800;   /* 달력 날짜 */
---dos-bright-green:#00cc00;   /* 보조 텍스트 */
---dos-white:       #ffffff;   /* 호버 효과 */
---dos-orange:      #ff8800;   /* 코드 블록 (마크다운) */
+/* :root에 정의된 CSS Custom Properties — 257곳에서 사용 중 */
+--color-bg: #000000;              /* 배경 */
+--color-bg-accent: #001100;       /* 어두운 배경 강조 */
+--color-bg-field: #002200;        /* 입력 필드 배경 */
+--color-bg-highlight: #003300;    /* 호버/활성 배경 */
+--color-primary: #00ff00;         /* 기본 텍스트, 테두리, 글로우 */
+--color-primary-bright: #55ff55;  /* 마크다운 모드 강조 */
+--color-primary-dim: #00cc00;     /* 보조 밝은 텍스트 */
+--color-primary-dark: #004400;    /* 어두운 강조, 구분선 */
+--color-text: #00ff00;            /* 텍스트 (primary와 동일) */
+--color-text-hover: #ffffff;      /* 호버 시 텍스트 */
+--color-text-secondary: #00aa00;  /* 보조 텍스트, 보조 테두리 */
+--color-text-shadow: #008800;     /* text-shadow 깊이, 흐린 텍스트 */
+--color-text-dim: #006600;        /* 매우 흐린 텍스트 */
+--color-text-muted: #005500;      /* 플레이스홀더 텍스트 */
+--color-border: #00ff00;          /* 테두리 (primary와 동일) */
+
+/* 비 녹색 팔레트 (하드코딩 유지) */
+/* #ff4444 — 에러 상태 */
+/* #ffaa00 — 경고/크리스마스 */
+/* #ff8800 — 코드 블록 (마크다운 미리보기) */
 ```
+
+> **규칙**: CSS에서 색상을 쓸 때는 반드시 `var(--color-*)` 변수를 사용합니다.
+> `@keyframes`, `rgba()`, `gradient()` 내부는 예외입니다.
 
 ### 4.2 미디어 쿼리 브레이크포인트
 
@@ -289,7 +305,7 @@ function showScreen(screenId) {
 | 파일 | 용도 |
 |------|------|
 | `vite.config.js` | 개발 서버 (port 3000, API 프록시) |
-| `vercel.json` | 프로덕션 API 프록시 (rewrites) |
+| `vercel.json` | 프로덕션 API 프록시 (rewrites) + 보안 헤더 |
 
 ### 6.2 API 프록시
 
@@ -302,23 +318,28 @@ function showScreen(screenId) {
 
 ```javascript
 // 코드 내 상수로 관리 (환경 변수 불필요)
-const USE_SERVER_MODE = true;
-const PROJECT_ID = '{project-id}';
-const ENVIRONMENT = 'dev';
-const MAX_ENTRIES_PER_DAY = 100;
-const AUTO_SAVE_DELAY = 2000;  // ms
-const PIXEL_SIZE = 3;          // px
-const THUMBNAIL_MAX = 600;     // px
-const FULL_IMAGE_MAX = 1200;   // px
+const USE_SERVER_MODE = true;            // 서버 모드 (false=IndexedDB 전용)
+const AUTO_SAVE_DELAY = 2000;            // 자동 저장 debounce (ms)
+const NICKNAME_CHECK_DELAY = 500;        // 닉네임 중복 체크 debounce (ms)
+const MAX_ENTRIES_PER_DAY = 100;         // 하루 최대 일기 수
+const IMAGE_THUMBNAIL_SIZE = 600;        // 썸네일 최대 px
+const IMAGE_FULL_SIZE = 1200;            // 원본 최대 px
+const PIXEL_BLOCK_SIZE = 3;              // 픽셀화 블록 크기
+// projectId, environment는 BkendAPI 클래스 내부에 정의
 ```
 
 ### 6.4 로컬 저장소 키
 
 ```javascript
-// localStorage 키: doogie_ 접두사
-'doogie_token'      // JWT Access Token
-'doogie_language'   // 언어 설정 (ko|en)
-'doogie_christmas'  // 크리스마스 모드 (true|false)
+// localStorage 키: doogie_ 접두사 (언더스코어 구분)
+'doogie_access_token'    // JWT Access Token
+'doogie_christmas_mode'  // 크리스마스 모드 (true|false)
+'doogie_xmas_cards'      // 크리스마스 카드 JSON 배열
+
+// 레거시 키 (하이픈 구분 — 호환성 유지)
+'doogie-diary'           // IndexedDB 로컬 데이터
+'doogie-characters'      // 캐릭터 데이터
+'doogie-language'        // 언어 설정 (ko|en)
 ```
 
 ---
