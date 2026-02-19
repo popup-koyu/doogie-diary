@@ -1229,6 +1229,106 @@
             color: var(--color-primary);
         }
 
+        /* Search Screen */
+        .search-screen {
+            display: none;
+            flex-direction: column;
+            gap: 0;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .search-header {
+            flex-shrink: 0;
+            margin-bottom: 15px;
+        }
+
+        .search-prompt {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--color-primary);
+            font-size: 20px;
+        }
+
+        .search-prompt-label {
+            white-space: nowrap;
+            color: var(--color-text-secondary);
+        }
+
+        .search-input {
+            flex: 1;
+            background: var(--color-bg-accent);
+            border: 1px solid var(--color-text-secondary);
+            color: var(--color-primary);
+            padding: 8px 12px;
+            font-family: 'NeoDunggeunmo', monospace;
+            font-size: 18px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 5px var(--color-primary);
+        }
+
+        .search-input::placeholder {
+            color: var(--color-text-muted);
+        }
+
+        .search-result-info {
+            color: var(--color-text-secondary);
+            padding: 8px 0;
+            font-size: 18px;
+            flex-shrink: 0;
+            border-bottom: 1px solid var(--color-primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .search-results {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .search-results .search-snippet {
+            color: var(--color-text-shadow);
+            margin-top: 5px;
+            font-size: 18px;
+            line-height: 1.4;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        .search-highlight {
+            background: var(--color-primary-dark);
+            color: var(--color-primary-bright);
+            padding: 0 2px;
+        }
+
+        .search-empty-state {
+            color: var(--color-text-secondary);
+            text-align: center;
+            margin-top: 60px;
+            line-height: 2;
+        }
+
+        .search-empty-state .search-entry-count {
+            color: var(--color-primary);
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .search-no-results {
+            color: var(--color-text-dim);
+            text-align: center;
+            margin-top: 50px;
+            font-size: 20px;
+        }
+
         /* Settings Screen */
         .settings-screen {
             display: none;
@@ -2588,6 +2688,18 @@
                 font-size: 12px;
                 padding: 10px 15px;
             }
+
+            .search-prompt {
+                font-size: 16px;
+            }
+
+            .search-input {
+                font-size: 16px;
+            }
+
+            .search-result-item {
+                padding: 10px 12px;
+            }
         }
 
         /* Mobile phones */
@@ -2773,6 +2885,30 @@
             .xmas-card-subtitle {
                 font-size: 10px !important;
             }
+
+            .search-prompt {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 5px;
+                font-size: 14px;
+            }
+
+            .search-input {
+                font-size: 14px;
+                padding: 6px 8px;
+            }
+
+            .search-result-item {
+                padding: 8px 10px;
+            }
+
+            .search-result-date {
+                font-size: 13px;
+            }
+
+            .search-snippet {
+                font-size: 12px;
+            }
         }
 
         /* Touch-friendly improvements */
@@ -2888,6 +3024,7 @@
                         <!-- Diary list will be populated here -->
                     </div>
                 </div>
+                <span class="menu-item-top" data-action="search">Search</span>
                 <span class="menu-item-top" data-action="help">Help</span>
                 <span class="menu-item-top xmas-menu-item" data-action="xmascard" id="xmasCardMenu">🎄 Card</span>
                 <span class="menu-item-top" data-action="fullscreen" id="fullscreenBtn">Fullscreen</span>
@@ -2949,6 +3086,18 @@
                 <!-- Entry list will be populated here -->
             </div>
 
+            <div class="content mode-search search-screen" id="searchScreen">
+                <div class="search-header">
+                    <div class="search-prompt">
+                        <span class="search-prompt-label">C:\DOOGIE&gt; SEARCH:</span>
+                        <input type="text" class="search-input" id="searchInput"
+                               placeholder="검색어를 입력하세요..." autocomplete="off">
+                    </div>
+                </div>
+                <div class="search-result-info" id="searchResultInfo"></div>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+
             <div class="content mode-calendar calendar-container" id="calendarContainer">
                 <div class="calendar-left">
                     <div class="calendar-header">
@@ -2979,7 +3128,9 @@
                 <div class="help-item"><span class="shortcut">F2</span> - 현재 일기 저장</div>
                 <div class="help-item"><span class="shortcut">F3</span> - 일기 목록 보기</div>
                 <div class="help-item"><span class="shortcut">F4</span> - 새 일기 작성</div>
-                <div class="help-item"><span class="shortcut">ESC</span> - 목록/도움말에서 나가기</div>
+                <div class="help-item"><span class="shortcut">F6</span> - 검색 열기</div>
+                <div class="help-item"><span class="shortcut">Ctrl+F</span> - 검색 열기</div>
+                <div class="help-item"><span class="shortcut">ESC</span> - 목록/도움말/검색에서 나가기</div>
                 <div style="margin-top: 20px; color: #55ff55;">═══ MARKDOWN MODE ═══</div>
                 <div class="help-item"><span class="shortcut">Ctrl+M</span> - Diary/Markdown 모드 전환</div>
                 <div class="help-item"><span class="shortcut">Ctrl+P</span> - 마크다운 미리보기 토글</div>
@@ -3218,6 +3369,8 @@
         const IMAGE_THUMBNAIL_SIZE = 600;     // 썸네일 최대 px
         const IMAGE_FULL_SIZE = 1200;         // 원본 최대 px
         const PIXEL_BLOCK_SIZE = 3;           // 픽셀화 블록 크기
+        const SEARCH_DEBOUNCE_DELAY = 300;    // 검색 입력 디바운스 (ms)
+        const SEARCH_SNIPPET_RADIUS = 60;     // 검색 결과 미리보기 전후 글자 수
 
         // ============================================
         // Bkend API Client Class
@@ -3743,6 +3896,11 @@
         const helpScreen = document.querySelector('.mode-help');
         const settingsScreen = document.querySelector('.mode-settings');
         const creditsScreen = document.querySelector('.mode-credits');
+        const searchScreen = document.getElementById('searchScreen');
+        const searchInput = document.getElementById('searchInput');
+        const searchResultInfo = document.getElementById('searchResultInfo');
+        const searchResults = document.getElementById('searchResults');
+        let searchTimeout = null;
         const menuItems = document.querySelectorAll('.menu-item');
         const topMenuItems = document.querySelectorAll('.menu-item-top');
         const diaryListPanel = document.getElementById('diaryListPanel');
@@ -6349,6 +6507,8 @@ ${htmlContent}
                 toggleDiaryList();
             } else if (action === 'picture') {
                 togglePictureMenu();
+            } else if (action === 'search') {
+                switchMode('search');
             } else if (action === 'help') {
                 switchMode('help');
             } else if (action === 'xmascard') {
@@ -6990,6 +7150,7 @@ ${htmlContent}
             settingsScreen.style.display = 'none';
             creditsScreen.style.display = 'none';
             xmasCardScreen.style.display = 'none';
+            searchScreen.style.display = 'none';
 
             if (mode === 'view') {
                 contentView.style.display = 'flex';
@@ -7017,6 +7178,11 @@ ${htmlContent}
                 xmasCardScreen.style.display = 'flex';
                 initXmasCardScreen();
                 showStatus('🎄 Christmas Card - Press ESC to return');
+            } else if (mode === 'search') {
+                searchScreen.style.display = 'flex';
+                searchInput.focus();
+                renderSearchEmptyState();
+                showStatus('Type to search - Press ESC to return');
             }
         }
 
@@ -7087,6 +7253,99 @@ ${htmlContent}
             });
             footer.appendChild(settingsButton);
             entryList.appendChild(footer);
+        }
+
+        // Search functions
+        function renderSearchEmptyState() {
+            const totalEntries = Object.keys(entries).length;
+            searchResultInfo.textContent = '';
+            searchResults.innerHTML = '';
+            const emptyDiv = document.createElement('div');
+            emptyDiv.className = 'search-empty-state';
+            emptyDiv.innerHTML = totalEntries > 0
+                ? '총 ' + totalEntries + '개의 일기에서 검색할 수 있습니다.<br>검색어를 입력하세요.'
+                : '저장된 일기가 없습니다.';
+            searchResults.appendChild(emptyDiv);
+        }
+
+        function createSearchSnippet(text, matchIndex, queryLen) {
+            const start = Math.max(0, matchIndex - SEARCH_SNIPPET_RADIUS);
+            const end = Math.min(text.length, matchIndex + queryLen + SEARCH_SNIPPET_RADIUS);
+            const before = (start > 0 ? '...' : '') + escapeHtml(text.substring(start, matchIndex));
+            const match = escapeHtml(text.substring(matchIndex, matchIndex + queryLen));
+            const after = escapeHtml(text.substring(matchIndex + queryLen, end)) + (end < text.length ? '...' : '');
+            return before + '<span class="search-highlight">' + match + '</span>' + after;
+        }
+
+        function performSearch(query) {
+            if (!query || query.trim() === '') {
+                renderSearchEmptyState();
+                return;
+            }
+
+            const lowerQuery = query.toLowerCase();
+            const results = [];
+
+            Object.keys(entries).forEach(key => {
+                const entry = entries[key];
+                const text = entry.text || '';
+                const lowerText = text.toLowerCase();
+                const matchIndex = lowerText.indexOf(lowerQuery);
+                if (matchIndex !== -1) {
+                    results.push({ key, text, matchIndex });
+                }
+            });
+
+            // Sort by date descending
+            results.sort((a, b) => {
+                const keyA = a.key.replace('#', '');
+                const keyB = b.key.replace('#', '');
+                return keyB.localeCompare(keyA);
+            });
+
+            const totalEntries = Object.keys(entries).length;
+            searchResultInfo.textContent = results.length + '개 결과 (총 ' + totalEntries + '개 일기 중)';
+
+            searchResults.innerHTML = '';
+
+            if (results.length === 0) {
+                const noResults = document.createElement('div');
+                noResults.className = 'search-no-results';
+                noResults.textContent = '검색 결과가 없습니다.';
+                searchResults.appendChild(noResults);
+                return;
+            }
+
+            results.forEach(result => {
+                const item = document.createElement('div');
+                item.className = 'search-result-item';
+                item.dataset.entryKey = result.key;
+
+                const parsed = parseEntryKey(result.key.replace('#', ''));
+                const dateLabel = parsed.date.replace(/-/g, '.');
+                const prefix = result.key.startsWith('#') ? '[MD] ' : '';
+                const suffix = parsed.number > 1 ? ' (' + parsed.number + ')' : '';
+
+                const dateDiv = document.createElement('div');
+                dateDiv.className = 'search-result-date';
+                dateDiv.textContent = prefix + dateLabel + suffix;
+
+                const snippetDiv = document.createElement('div');
+                snippetDiv.className = 'search-snippet';
+                snippetDiv.innerHTML = createSearchSnippet(result.text, result.matchIndex, query.length);
+
+                item.appendChild(dateDiv);
+                item.appendChild(snippetDiv);
+
+                item.addEventListener('click', () => {
+                    loadEntry(result.key);
+                    switchMode('view');
+                });
+
+                searchResults.appendChild(item);
+            });
+
+            showStatus(results.length + ' results found');
         }
 
         function loadEntry(key) {
@@ -7254,9 +7513,28 @@ ${htmlContent}
                 }
             }
 
+            // F6 - Search
+            if (e.key === 'F6') {
+                e.preventDefault();
+                if (currentMode === 'search') {
+                    switchMode('view');
+                } else {
+                    switchMode('search');
+                }
+            }
+
+            // Ctrl+F - Search (override browser find)
+            if (e.ctrlKey && e.key === 'f') {
+                e.preventDefault();
+                switchMode('search');
+            }
+
             // ESC - Return to menu or view
             if (e.key === 'Escape') {
-                if (currentMode === 'view') {
+                if (currentMode === 'search') {
+                    searchInput.value = '';
+                    switchMode('view');
+                } else if (currentMode === 'view') {
                     returnToMenu();
                 } else if (currentMode === 'credits') {
                     returnToMenu();
@@ -7265,6 +7543,20 @@ ${htmlContent}
                 } else if (currentMode !== 'title') {
                     switchMode('view');
                 }
+            }
+        });
+
+        // Search input events
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                performSearch(searchInput.value);
+            }, SEARCH_DEBOUNCE_DELAY);
+        });
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                clearTimeout(searchTimeout);
+                performSearch(searchInput.value);
             }
         });
 
